@@ -23,7 +23,7 @@ from wateraccounting import __version__
 
 __author__ = "Quan Pan"
 __copyright__ = "Quan Pan"
-__license__ = "mit"
+__license__ = "apache"
 
 _logger = logging.getLogger(__name__)
 

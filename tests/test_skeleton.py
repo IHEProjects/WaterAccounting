@@ -5,7 +5,7 @@ from wateraccounting.skeleton import fib
 
 __author__ = "Quan Pan"
 __copyright__ = "Quan Pan"
-__license__ = "mit"
+__license__ = "apache"
 
 
 def test_fib():
