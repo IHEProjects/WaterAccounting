@@ -1,5 +1,6 @@
 # PyCharm setting
 PyCharm.jar
+.idea/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
