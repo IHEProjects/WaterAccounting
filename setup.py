@@ -6,6 +6,9 @@
     This file was generated with PyScaffold 3.2.2.
     PyScaffold helps you to put up the scaffold of your new Python project.
     Learn more under: https://pyscaffold.org/
+
+    python setup.py sdist bdist_wheel
+    python -m twine upload dist/*
 """
 import sys
 
