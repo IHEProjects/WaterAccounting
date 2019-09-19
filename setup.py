@@ -8,6 +8,7 @@
     Learn more under: https://pyscaffold.org/
     Learn more under: https://pyscaffold.org/en/latest/features.html
 
+    To use this feature you need to tag with the format MAJOR.MINOR[.PATCH] , e.g. 0.0.1 or 0.1.
     python setup.py --version
 
     python setup.py docs
