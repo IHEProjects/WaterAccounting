@@ -1,9 +1,12 @@
 .. -*- mode: rst -*-
 
-|Travis|_
+|Travis|_ |ReadTheDocs|_
 
 .. |Travis| image:: https://travis-ci.org/IHEProjects/WaterAccounting.svg?branch=master
 .. _Travis: https://travis-ci.org/IHEProjects/WaterAccounting
+
+.. |ReadTheDocs| image:: https://readthedocs.org/projects/wateraccounting/badge/?version=latest
+.. _ReadTheDocs: https://wateraccounting.readthedocs.io/en/latest/?badge=latest
 
 WaterAccounting
 ===============
