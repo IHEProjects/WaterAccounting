@@ -4,7 +4,7 @@
 
 FROM osgeo/gdal:ubuntu-full-latest
 
-ADD tzdata.sh /tzdata.sh
+ADD ./tzdata.sh /tzdata.sh
 RUN ["chmod", "+x", "/tzdata.sh"]
 RUN apt-get update -y
 RUN bash /tzdata.sh
