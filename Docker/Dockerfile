@@ -87,6 +87,13 @@ RUN pip3 install \
     paramiko \
     jupyterlab
 
+# Config
+RUN echo 'defshell -bash' >> /root/.screenrc
+RUN echo 'if [ -f /etc/bash_completion ] && ! shopt -oq posix; then' >> /root/.bashrc && \
+    echo '    . /etc/bash_completion' >> /root/.bashrc && \
+    echo 'fi' >> /root/.bashrc
+
+# Workspace
 RUN mkdir /notebooks
 
 # CMD gdalinfo --version
