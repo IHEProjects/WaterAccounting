@@ -6,6 +6,12 @@
     This file was generated with PyScaffold 3.2.2.
     PyScaffold helps you to put up the scaffold of your new Python project.
     Learn more under: https://pyscaffold.org/
+    Learn more under: https://pyscaffold.org/en/latest/features.html
+
+    python setup.py --version
+
+    python setup.py docs
+    python setup.py doctest
 
     python setup.py sdist bdist_wheel
     twine upload dist/*
