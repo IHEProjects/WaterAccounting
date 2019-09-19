@@ -11,14 +11,18 @@ MAINTAINER "Quan Pan" <quanpan302@hotmail.com>
 #RUN apt-get update -y
 #RUN bash /tzdata.sh
 
-#ENV DEBIAN_FRONTEND=noninteractive
-#RUN apt-get install -y tzdata && \
-#    rm -rf /var/lib/apt/lists/*
+ENV LAST_UPDATE=2019-09-19
 
 RUN apt-get update && \
     apt-get upgrade -y
 
-# Timezone
+# Tools necessary for installing and configuring Ubuntu
+RUN apt-get install -y \
+    apt-utils \
+    locales \
+    tzdata
+
+   # Timezone
 RUN echo "Europe/Amsterdam" | tee /etc/timezone && \
     ln -fs /usr/share/zoneinfo/Europe/Amsterdam /etc/localtime && \
     dpkg-reconfigure -f noninteractive tzdata
@@ -31,18 +35,22 @@ ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US:en
 ENV LC_ALL en_US.UTF-8
 
-# Install basic dependencies
+# Install basic tools
 RUN apt-get install -y \
     software-properties-common \
-    build-essential \
-    python3-dev \
-    python3-pip \
-    python3-scipy \
-    python3-numpy \
-    python3-pandas \
-    libspatialite-dev \
-    sqlite3 \
+    bash-completion \
     curl \
+    wget \
+    unzip \
+    vim \
+    git \
+    build-essential \
+    cmake \
+    sqlite3
+
+# Install basic libraries
+RUN apt-get install -y \
+    libspatialite-dev \
     libpq-dev \
     libcurl4-gnutls-dev \
     libgnutls28-dev \
@@ -54,12 +62,19 @@ RUN apt-get install -y \
     libspatialite-dev \
     libhdf4-alt-dev \
     libhdf5-serial-dev \
-    bash-completion \
-    cmake \
-    vim
+
+# Install python libraries
+RUN apt-get install -y \
+    python3-dev \
+    python3-pip \
+    python3-scipy \
+    python3-numpy \
+    python3-pandas
 
 # Install python dependencies
-RUN pip3 install requests pytest \
+RUN pip3 install \
+    requests \
+    pytest \
     netcdf4 \
     shapely \
     pyshp \
