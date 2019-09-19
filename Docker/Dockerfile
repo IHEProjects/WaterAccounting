@@ -4,10 +4,32 @@
 
 FROM osgeo/gdal:ubuntu-full-latest
 
-ADD ./tzdata.sh /tzdata.sh
-RUN ["chmod", "+x", "/tzdata.sh"]
-RUN apt-get update -y
-RUN bash /tzdata.sh
+MAINTAINER "Quan Pan" <quanpan302@hotmail.com>
+
+#ADD ./tzdata.sh /tzdata.sh
+#RUN ["chmod", "+x", "/tzdata.sh"]
+#RUN apt-get update -y
+#RUN bash /tzdata.sh
+
+#ENV DEBIAN_FRONTEND=noninteractive
+#RUN apt-get install -y tzdata && \
+#    rm -rf /var/lib/apt/lists/*
+
+RUN apt-get update && \
+    apt-get upgrade -y
+
+# Timezone
+RUN echo "Europe/Amsterdam" | tee /etc/timezone && \
+    ln -fs /usr/share/zoneinfo/Europe/Amsterdam /etc/localtime && \
+    dpkg-reconfigure -f noninteractive tzdata
+
+# Locale with UTF-8 support
+RUN echo en_US.UTF-8 UTF-8 >> /etc/locale.gen && \
+    locale-gen && \
+    update-locale LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8
+ENV LANG en_US.UTF-8
+ENV LANGUAGE en_US:en
+ENV LC_ALL en_US.UTF-8
 
 # Install basic dependencies
 RUN apt-get install -y \
