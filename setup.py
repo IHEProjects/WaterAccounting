@@ -8,7 +8,7 @@
     Learn more under: https://pyscaffold.org/
 
     python setup.py sdist bdist_wheel
-    python -m twine upload dist/*
+    twine upload dist/*
 """
 import sys
 
