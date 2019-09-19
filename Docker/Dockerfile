@@ -2,6 +2,7 @@
 # docker run -it --name wapor -p 8888:8888 -v /d/20190904-Training_Oct:/notebooks wapor/jupyter
 # docker system prune -f && docker volume prune -f && docker container prune -f
 
+# GDAL 3.1.0dev-650fc42f344a6a4c65f11eefc47c473e9b445a68, released 2019/08/25
 FROM osgeo/gdal:ubuntu-full-latest
 
 MAINTAINER "Quan Pan" <quanpan302@hotmail.com>
@@ -22,7 +23,7 @@ RUN apt-get install -y \
     locales \
     tzdata
 
-   # Timezone
+# Timezone
 RUN echo "Europe/Amsterdam" | tee /etc/timezone && \
     ln -fs /usr/share/zoneinfo/Europe/Amsterdam /etc/localtime && \
     dpkg-reconfigure -f noninteractive tzdata
@@ -48,6 +49,12 @@ RUN apt-get install -y \
     cmake \
     sqlite3
 
+# Configure bash_completion
+RUN echo 'defshell -bash' >> /root/.screenrc
+RUN echo 'if [ -f /etc/bash_completion ] && ! shopt -oq posix; then' >> /root/.bashrc && \
+    echo '    . /etc/bash_completion' >> /root/.bashrc && \
+    echo 'fi' >> /root/.bashrc
+
 # Install basic libraries
 RUN apt-get install -y \
     libspatialite-dev \
@@ -61,7 +68,7 @@ RUN apt-get install -y \
     libpoppler-dev \
     libspatialite-dev \
     libhdf4-alt-dev \
-    libhdf5-serial-dev \
+    libhdf5-serial-dev
 
 # Install python libraries
 RUN apt-get install -y \
@@ -86,12 +93,6 @@ RUN pip3 install \
     pycurl \
     paramiko \
     jupyterlab
-
-# Config
-RUN echo 'defshell -bash' >> /root/.screenrc
-RUN echo 'if [ -f /etc/bash_completion ] && ! shopt -oq posix; then' >> /root/.bashrc && \
-    echo '    . /etc/bash_completion' >> /root/.bashrc && \
-    echo 'fi' >> /root/.bashrc
 
 # Workspace
 RUN mkdir /notebooks
