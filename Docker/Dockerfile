@@ -2,7 +2,6 @@
 # docker run -it --name wapor -p 8888:8888 -v /d/20190904-Training_Oct:/notebooks wapor/jupyter
 # docker system prune -f && docker volume prune -f && docker container prune -f
 
-# GDAL 3.1.0dev-650fc42f344a6a4c65f11eefc47c473e9b445a68, released 2019/08/25
 FROM osgeo/gdal:ubuntu-full-latest
 
 MAINTAINER "Quan Pan" <quanpan302@hotmail.com>
@@ -13,6 +12,9 @@ MAINTAINER "Quan Pan" <quanpan302@hotmail.com>
 #RUN bash /tzdata.sh
 
 ENV LAST_UPDATE=2019-09-19
+# sha256:8f963a034301d89293ed63d390af1666fd5b4e8f807598f994b5cd95602996ad
+# GDAL 3.1.0dev-650fc42f344a6a4c65f11eefc47c473e9b445a68, released 2019/08/25
+# https://github.com/OSGeo/gdal/commit/650fc42f344a6a4c65f11eefc47c473e9b445a68
 
 RUN apt-get update && \
     apt-get upgrade -y
