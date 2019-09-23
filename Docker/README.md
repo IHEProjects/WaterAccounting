@@ -23,14 +23,14 @@ VirtualBox -> Settings -> Shared Folders
 Add
 
 * Folder Path: D:\WaterAccounting
-* Folder Name: d/WaterAccounting
+* Folder Name: d/wateraccounting
 * Auto-mount
 * Make Permanent
 
 Docker CMD
 
 * docker-machine ssh
-* ls /d/WaterAccounting
+* ls /d/wateraccounting
 
 ### Windows 10, Hyper-V
 
@@ -51,30 +51,35 @@ cmd window 1
 
 ```
 cd D:\WaterAccounting\Docker
-docker build -t wa/jupyter .
+docker build -t wateraccounting/jupyter .
 ```
 
 ### Windows 7, VirtualBox
 
 ```
 cd D:\WaterAccounting
-docker run -it --name jupyter -p 8888:8888 -v /d/WaterAccounting:/notebooks wa/jupyter
+docker run -it --name wa -p 8888:8888 -v /d/WaterAccounting:/notebooks wateraccounting/jupyter
+```
+
+```
+cd D:\test
+docker run -it --name test -p 8888:8888 -v /d/test:/notebooks wateraccounting/jupyter
 ```
 
 ### Windows 10, Hyper-V
 
 ```
 cd D:\WaterAccounting
-docker run -it --name jupyter -p 8888:8888 -v D:/WaterAccounting:/notebooks wa/jupyter
+docker run -it --name wa -p 8888:8888 -v D:/WaterAccounting:/notebooks wateraccounting/jupyter
 ```
 
 ### Mac, Linux
 
 ```
 cd /Volumes/QPan_T5/WaterAccounting/
-docker run -it --name jupyter -p 8888:8888 -v $(PWD):/notebooks wa/jupyter
+docker run -it --name wa -p 8888:8888 -v $(PWD):/notebooks wateraccounting/jupyter
 
-# docker run -d --name jupyter -p 8888:8888 -v $(PWD):/notebooks wa/jupyter
+# docker run -d --name wa -p 8888:8888 -v $(PWD):/notebooks wateraccounting/jupyter
 ```
 
 ## Access to runing docker
@@ -82,7 +87,7 @@ docker run -it --name jupyter -p 8888:8888 -v $(PWD):/notebooks wa/jupyter
 cmd window 2
 
 ```
-docker exec -it jupyter bash
+docker exec -it wa bash
 
 jupyter notebook list
 
@@ -109,11 +114,11 @@ docker system prune -f && docker volume prune -f && docker container prune -f
 ## Save docker images
 
 ```
-docker save --output wa_jupyter.tar wa/jupyter
+docker save --output wateraccounting_jupyter.tar wateraccounting/jupyter
 ```
 
 ## Load docker images
 
 ```
-docker load --input wa_jupyter.tar
+docker load --input wateraccounting_jupyter.tar
 ```
