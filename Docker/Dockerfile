@@ -3,15 +3,24 @@
 # docker system prune -f && docker volume prune -f && docker container prune -f
 
 FROM osgeo/gdal:ubuntu-full-latest
+# /usr/bin
+# /usr/include
+# /usr/lib
+# /usr/lib/python3/dist-packages
+#
+# /usr/local/bin
+# /usr/local/include
+# /usr/local/lib
 
 MAINTAINER "Quan Pan" <quanpan302@hotmail.com>
 
-#ADD ./tzdata.sh /tzdata.sh
-#RUN ["chmod", "+x", "/tzdata.sh"]
-#RUN apt-get update -y
-#RUN bash /tzdata.sh
+# ADD ./tzdata.sh /tzdata.sh
+# RUN ["chmod", "+x", "/tzdata.sh"]
+# RUN apt-get update -y
+# RUN bash /tzdata.sh
 
 ENV LAST_UPDATE=2019-09-19
+# 2019-09-23
 # sha256:8f963a034301d89293ed63d390af1666fd5b4e8f807598f994b5cd95602996ad
 # GDAL 3.1.0dev-650fc42f344a6a4c65f11eefc47c473e9b445a68, released 2019/08/25
 # https://github.com/OSGeo/gdal/commit/650fc42f344a6a4c65f11eefc47c473e9b445a68
