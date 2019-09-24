@@ -14,4 +14,30 @@
 # Example:
 # numpy==1.13.3
 # scipy==1.0
-#
+
+# Export installed requirements to requirements.txt:
+# pip3 freeze > requirements.txt
+
+affine==2.3.0
+cftime==1.0.3.4
+Click==7.0
+click-plugins==1.1.1
+dask==2.4.0
+dask-glm==0.2.0
+dask-ml==1.0.0
+dask-tensorflow==0.0.2
+dask-xgboost==0.1.7
+GDAL==3.0.0
+netCDF4==1.5.2
+numba==0.45.1
+numpy==1.13.3
+pandas==0.22.0
+pycurl==7.43.0.3
+pyproj==2.4.0
+pyshp==2.1.0
+pytest==5.1.3
+PyYAML==5.1.2
+rasterio==1.0.28
+scipy==0.19.1
+Shapely==1.6.4.post2
+xarray==0.13.0
