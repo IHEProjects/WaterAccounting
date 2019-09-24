@@ -5,13 +5,15 @@
 sudo: false
 language: python
 
+python:
+  - "3.6"
+
+virtualenv:
+  system_site_packages: false
+
 ########################################
 # GDAL
 ########################################
-python:
-  - "2.7"
-  - "3.6"
-
 env:
   global:
     - PIP_WHEEL_DIR=$HOME/.cache/pip/wheels
@@ -21,38 +23,33 @@ env:
     - PROJINST=$HOME/gdalinstall
     - PROJBUILD=$HOME/projbuild
   matrix:
-    - GDALVERSION="1.11.5" PROJVERSION="4.8.0"
-    - GDALVERSION="2.0.3" PROJVERSION="4.9.3"
-    - GDALVERSION="2.1.4" PROJVERSION="4.9.3"
-    - GDALVERSION="2.2.4" PROJVERSION="4.9.3"
-    - GDALVERSION="2.3.3" PROJVERSION="4.9.3"
-    - GDALVERSION="2.4.2" PROJVERSION="4.9.3"
-    - GDALVERSION="3.0.1" PROJVERSION="6.1.1"
+    # - GDALVERSION="1.11.5" PROJVERSION="4.8.0"
+    # - GDALVERSION="2.0.3"  PROJVERSION="4.9.3"
+    # - GDALVERSION="2.1.4"  PROJVERSION="4.9.3"
+    # - GDALVERSION="2.2.4"  PROJVERSION="4.9.3"
+    - GDALVERSION="2.3.3"  PROJVERSION="4.9.3"
+    - GDALVERSION="2.4.2"  PROJVERSION="4.9.3"
+    - GDALVERSION="3.0.1"  PROJVERSION="6.1.1" DISTRIB="ubuntu" TOX_PYTHON_VERSION="py36" COVERAGE="true"
+    - GDALVERSION="3.0.1"  PROJVERSION="6.1.1" DISTRIB="conda" PYTHON_VERSION="3.6" COVERAGE="false"
     - GDALVERSION="master" PROJVERSION="6.1.1"
 
-virtualenv:
-  system_site_packages: false
-
 matrix:
-  # fast_finish: true
+  fast_finish: true
   # include:
     # - python: 3.6
     #   env: DISTRIB="ubuntu" TOX_PYTHON_VERSION="py36" COVERAGE="true"
     # - env: DISTRIB="conda" PYTHON_VERSION="3.6" COVERAGE="false"
   # GDAL
   allow_failures:
-    - env: GDALVERSION="1.11.5" PROJVERSION="4.8.0"
-    - env: GDALVERSION="2.0.3" PROJVERSION="4.9.3"
-    - env: GDALVERSION="2.1.4" PROJVERSION="4.9.3"
-    - env: GDALVERSION="2.2.4" PROJVERSION="4.9.3"
-    - env: GDALVERSION="2.3.3" PROJVERSION="4.9.3"
-    - env: GDALVERSION="2.4.2" PROJVERSION="4.9.3"
+    - env: GDALVERSION="2.3.3"  PROJVERSION="4.9.3"
+    - env: GDALVERSION="2.4.2"  PROJVERSION="4.9.3"
     - env: GDALVERSION="master" PROJVERSION="6.1.1"
 
 # GDAL
 addons:
   apt:
     packages:
+    - libgnutls28-dev
     - libhdf5-serial-dev
     - libgdal-dev
     - libatlas-dev
