@@ -4,23 +4,86 @@
 
 sudo: false
 language: python
+
 virtualenv:
   system_site_packages: false
+
+########################################
+# GDAL
+########################################
+env:
+  global:
+    - PIP_WHEEL_DIR=$HOME/.cache/pip/wheels
+    - PIP_FIND_LINKS=file://$HOME/.cache/pip/wheels
+    - GDALINST=$HOME/gdalinstall
+    - GDALBUILD=$HOME/gdalbuild
+    - PROJINST=$HOME/gdalinstall
+    - PROJBUILD=$HOME/projbuild
+  matrix:
+    - GDALVERSION="1.11.5" PROJVERSION="4.8.0"
+    - GDALVERSION="2.0.3" PROJVERSION="4.9.3"
+    - GDALVERSION="2.1.4" PROJVERSION="4.9.3"
+    - GDALVERSION="2.2.4" PROJVERSION="4.9.3"
+    - GDALVERSION="2.3.3" PROJVERSION="4.9.3"
+    - GDALVERSION="2.4.2" PROJVERSION="4.9.3"
+    - GDALVERSION="3.0.1" PROJVERSION="6.1.1"
+    - GDALVERSION="master" PROJVERSION="6.1.1"
+
 matrix:
   fast_finish: true
   include:
     - python: 3.6
       env: DISTRIB="ubuntu" TOX_PYTHON_VERSION="py36" COVERAGE="true"
     - env: DISTRIB="conda" PYTHON_VERSION="3.6" COVERAGE="false"
-install:
-  - source tests/travis_install.sh
-  - pip install -r requirements.txt
+  # GDAL
+  allow_failures:
+    - env: GDALVERSION="1.11.5" PROJVERSION="4.8.0"
+    - env: GDALVERSION="2.0.3" PROJVERSION="4.9.3"
+    - env: GDALVERSION="2.1.4" PROJVERSION="4.9.3"
+    - env: GDALVERSION="2.2.4" PROJVERSION="4.9.3"
+    - env: GDALVERSION="2.3.3" PROJVERSION="4.9.3"
+    - env: GDALVERSION="2.4.2" PROJVERSION="4.9.3"
+    - env: GDALVERSION="master" PROJVERSION="6.1.1"
+
+# GDAL
+addons:
+  apt:
+    packages:
+    - libhdf5-serial-dev
+    - libgdal-dev
+    - libatlas-dev
+    - libatlas-base-dev
+    - gfortran
+
+# GDAL
+before_install:
+  - python -m pip install -U pip
+  - python -m pip install wheel
+  - export PATH=$GDALINST/gdal-$GDALVERSION/bin:$PATH
+  - export LD_LIBRARY_PATH=$GDALINST/gdal-$GDALVERSION/lib:$LD_LIBRARY_PATH
+  - . ./tests/travis_proj_install.sh
+  - travis_wait 20 . ./tests/travis_gdal_install.sh
+  - export GDAL_DATA=$GDALINST/gdal-$GDALVERSION/share/gdal
+  - export PROJ_LIB=$GDALINST/gdal-$GDALVERSION/share/proj
+
+# install:
+  # - source tests/travis_install.sh
+  # - pip install -r requirements.txt
   # ^  DEPRECATION WARNING:
   # The automatic creation of a `requirements.txt` file is deprecated.
   # See `Dependency Management` in the docs for other options.
+
+# GDAL
+install:
+  - "if [ \"$GDALVERSION\" == \"master\" -o $(gdal-config --version) == \"$GDALVERSION\" ]; then echo \"Using gdal $GDALVERSION\"; else echo \"NOT using gdal $GDALVERSION as expected; aborting\"; exit 1; fi"
+  - "pip install -r requirements-dev.txt"
+  - "GDAL_CONFIG=$GDALINST/gdal-$GDALVERSION/bin/gdal-config pip install --upgrade --force-reinstall --no-use-pep517 -e .[test,plot]"
+  - "pip list"
+
 before_script:
   - git config --global user.email "quanpan302@hotmail.com"
   - git config --global user.name "Quan Pan"
+
 script:
   - python setup.py develop
   - tox
@@ -29,11 +92,15 @@ script:
       pre-commit install
       pre-commit run --all-files
     fi
+
 after_success:
   - if [[ "$COVERAGE" == "true" ]]; then coveralls || echo "failed"; fi
+
 after_script:
   - travis-cleanup
+
 cache:
   pip: true
   directories:
+    - $GDALINST
     - $HOME/miniconda
