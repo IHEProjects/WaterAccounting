@@ -1,3 +1,7 @@
+============
+Contributing
+============
+
 Welcome to the Rasterio project. Here's how we work.
 
 Code of Conduct
@@ -16,13 +20,13 @@ Issue Conventions
 
 The Rasterio issue tracker is for actionable issues.
 
-Questions about installation, distribution, and usage should be taken to 
+Questions about installation, distribution, and usage should be taken to
 the project's `general discussion group
 <https://rasterio.groups.io/g/main>`__. Opened issues which fall into one
 of these three categories may be perfunctorily closed.
 
 Questions about development of Rasterio, brainstorming, requests for comment,
-and not-yet-actionable proposals are welcome in the project's 
+and not-yet-actionable proposals are welcome in the project's
 `developers discussion group <https://rasterio.groups.io/g/dev>`__. Issues
 opened in Rasterio's GitHub repo which haven't been socialized there may be
 perfunctorily closed.
@@ -69,7 +73,7 @@ is *dataset object*. A dataset object might be an instance of `DatasetReader`
 or `DatasetWriter`. The canonical way to create a dataset object is by using the
 `rasterio.open()` function.
 
-This is analogous to Python's use of 
+This is analogous to Python's use of
 `file object <https://docs.python.org/3/glossary.html#term-file-object>`__.
 
 Git Conventions
