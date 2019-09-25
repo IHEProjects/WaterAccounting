@@ -4,6 +4,22 @@ WaterAccounting
 
 This is the documentation of **WaterAccounting**.
 
+From the root of the project, run::
+
+    python setup.py --version
+
+Read the Docs, run::
+
+    python setup.py docs
+    python setup.py doctest
+
+    python setup.py test
+
+Git -> tag -> v0.0.1, run::
+
+    python setup.py sdist bdist_wheel
+    twine upload dist/*
+
 .. note::
 
     This is the main page of your project's `Sphinx`_ documentation.

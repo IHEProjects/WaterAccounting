@@ -19,20 +19,6 @@ Description
 
 Temporary project, for own development purpose only.
 
-From the root of the project, run::
-
-    python setup.py --version
-
-    python setup.py docs
-    python setup.py doctest
-
-    python setup.py test
-
-Git, tag, v0.0.1::
-
-    python setup.py sdist bdist_wheel
-    twine upload dist/*
-
 
 Note
 ====
