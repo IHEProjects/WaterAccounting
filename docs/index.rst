@@ -1,8 +1,8 @@
-===============
-WaterAccounting
-===============
+=======
+watools
+=======
 
-This is the documentation of **WaterAccounting**.
+This is the documentation of **watools**.
 
 From the root of the project, run::
 
