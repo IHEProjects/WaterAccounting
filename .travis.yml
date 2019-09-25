@@ -30,8 +30,7 @@ env:
     - GDALVERSION="2.3.3"  PROJVERSION="4.9.3"
     - GDALVERSION="2.4.2"  PROJVERSION="4.9.3"
     - GDALVERSION="3.0.1"  PROJVERSION="6.1.1" DISTRIB="ubuntu" TOX_PYTHON_VERSION="py36" COVERAGE="true"
-    - GDALVERSION="3.0.1"  PROJVERSION="6.1.1" DISTRIB="conda" PYTHON_VERSION="3.6" COVERAGE="false"
-    - GDALVERSION="master" PROJVERSION="6.1.1"
+    - GDALVERSION="master" PROJVERSION="6.1.1" DISTRIB="ubuntu" TOX_PYTHON_VERSION="py36" COVERAGE="true"
 
 matrix:
   fast_finish: true
@@ -43,7 +42,7 @@ matrix:
   allow_failures:
     - env: GDALVERSION="2.3.3"  PROJVERSION="4.9.3"
     - env: GDALVERSION="2.4.2"  PROJVERSION="4.9.3"
-    - env: GDALVERSION="master" PROJVERSION="6.1.1"
+    # - env: GDALVERSION="master" PROJVERSION="6.1.1"
 
 # GDAL
 addons:
