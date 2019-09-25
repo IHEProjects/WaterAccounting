@@ -10,8 +10,11 @@ From the root of the project, run::
 
 Read the Docs, run::
 
-    python setup.py docs
     python setup.py doctest
+
+    python setup.py docs
+
+Unit test, run::
 
     python setup.py test
 

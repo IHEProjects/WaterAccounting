@@ -13,11 +13,19 @@ WaterAccounting
 
 Water Accounting Tools
 
-
-Description
-===========
-
 Temporary project, for own development purpose only.
+
+
+Collect
+-------
+
++------------+------------------------------------------+
+| Portal     | Link                                     |
++============+==========================================+
+| Copernicus | https://land.copernicus.vgt.vito.be/PDF/ |
++------------+------------------------------------------+
+| VITO       | https://www.vito-eodata.be/PDF/datapool/ |
++------------+------------------------------------------+
 
 
 Note

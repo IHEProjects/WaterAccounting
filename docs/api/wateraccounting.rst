@@ -1,6 +1,13 @@
 wateraccounting package
 =======================
 
+Subpackages
+-----------
+
+.. toctree::
+
+    wateraccounting.Collect
+
 Submodules
 ----------
 
