@@ -10,20 +10,6 @@
 
     To use this feature you need to tag with the format vMAJOR.MIN0OR[.PATCH] ,
     e.g. 0.0.1 or 0.1.
-
-    From the root of the project, run::
-
-        python setup.py --version
-
-        python setup.py docs
-        python setup.py doctest
-
-        python setup.py test
-
-   Git, tag, v0.0.1::
-
-        python setup.py sdist bdist_wheel
-        twine upload dist/*
 """
 import sys
 
