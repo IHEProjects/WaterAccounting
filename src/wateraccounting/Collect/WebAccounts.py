@@ -43,7 +43,9 @@ def Accounts(File='', Type=None):
 
         >>> from wateraccounting.Collect.WebAccounts import Accounts
         >>> Accounts(File='config.yml', Type='test')
-        'test' is not supported.
+        Traceback (most recent call last):
+            ...
+        KeyError: 'test'
 
         >>> Accounts(File='config.yml', Type='FTP_WA')
         {'username': 'wateraccountingguest', 'password': 'W@t3r@ccounting'}
@@ -59,7 +61,7 @@ def Accounts(File='', Type=None):
 
                 return user
             except KeyError as err:
-                print("{err} is not supported.".format(err=err))
+                raise KeyError("{err} is not supported.".format(err=err))
     elif IOError:
         print("Can't find {file}".format(file=File))
         sys.exit()
