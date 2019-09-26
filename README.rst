@@ -6,7 +6,7 @@
 .. _Travis: https://travis-ci.org/IHEProjects/WaterAccounting
 
 .. |ReadTheDocs| image:: https://readthedocs.org/projects/wateraccounting/badge/?version=latest
-.. _ReadTheDocs: https://wateraccounting.readthedocs.io/en/latest/?badge=latest
+.. _ReadTheDocs: https://wateraccounting.readthedocs.io/en/latest/
 
 WaterAccounting
 ===============
