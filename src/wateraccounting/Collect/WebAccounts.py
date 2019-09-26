@@ -27,7 +27,7 @@ def Accounts(Type=None):
 
     :Example:
 
-        >>> from watools.Collect.WebAccounts import Accounts
+        >>> from wateraccounting.Collect.WebAccounts import Accounts
         >>> Accounts(Type='NASA')
         ['username', 'password']
     """

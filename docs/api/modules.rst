@@ -1,7 +1,7 @@
-watools
-=======
+wateraccounting
+===============
 
 .. toctree::
    :maxdepth: 4
 
-   watools
+   wateraccounting

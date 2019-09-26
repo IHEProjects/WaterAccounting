@@ -2,14 +2,14 @@
 
 |Travis|_ |ReadTheDocs|_
 
-.. |Travis| image:: https://travis-ci.org/IHEProjects/watools.svg?branch=master
-.. _Travis: https://travis-ci.org/IHEProjects/watools
+.. |Travis| image:: https://travis-ci.org/IHEProjects/WaterAccounting.svg?branch=master
+.. _Travis: https://travis-ci.org/IHEProjects/WaterAccounting
 
-.. |ReadTheDocs| image:: https://readthedocs.org/projects/watools/badge/?version=latest
-.. _ReadTheDocs: https://watools.readthedocs.io/en/latest/?badge=latest
+.. |ReadTheDocs| image:: https://readthedocs.org/projects/wateraccounting/badge/?version=latest
+.. _ReadTheDocs: https://wateraccounting.readthedocs.io/en/latest/?badge=latest
 
-watools
-=======
+WaterAccounting
+===============
 
 Water Accounting Tools
 

@@ -4,7 +4,7 @@ Authors: Tim Hessels and Gonzalo Espinoza
          UNESCO-IHE 2016
 Contact: t.hessels@unesco-ihe.org
          g.espinoza@unesco-ihe.org
-Repository: https://github.com/watools/watools
+
 Module: Collect/ETmonitor
 
 Restrictions:
@@ -18,7 +18,7 @@ resulting tiff files are in the WGS84 projection.
 The data is available between 2003-01-01 till 2014-12-31.
 
 Example:
-from watools.Collect import ALEXI
+from wateraccounting.Collect import ALEXI
 ALEXI.monthly(Dir='C:/Temp/', Startdate='2003-02-24', Enddate='2003-03-09',
                      latlim=[50,54], lonlim=[3,7])
 
@@ -33,9 +33,9 @@ import pandas as pd
 from ftplib import FTP
 
 # Water Accounting Modules
-import watools.Collect.WebAccounts as WebAccounts
-import watools.General.raster_conversions as RC
-import watools.General.data_conversions as DC
+import wateraccounting.Collect.WebAccounts as WebAccounts
+import wateraccounting.General.raster_conversions as RC
+import wateraccounting.General.data_conversions as DC
 
 
 def DownloadData(Dir, Startdate, Enddate, latlim, lonlim, TimeStep, Waitbar):
@@ -121,7 +121,7 @@ def DownloadData(Dir, Startdate, Enddate, latlim, lonlim, TimeStep, Waitbar):
     # Create Waitbar
     total_amount = len(Dates)
     if Waitbar == 1:
-        import watools.Functions.Start.WaitbarConsole as WaitbarConsole
+        import wateraccounting.Functions.Start.WaitbarConsole as WaitbarConsole
         amount = 0
         WaitbarConsole.printWaitBar(amount, total_amount, prefix='Progress:',
                                     suffix='Complete', length=50)
@@ -192,7 +192,7 @@ def ALEXI_weekly(Date, Enddate, output_folder, latlim, lonlim, Year, Waitbar,
 
         # Adjust waitbar
         if Waitbar == 1:
-            import watools.Functions.Start.WaitbarConsole as WaitbarConsole
+            import wateraccounting.Functions.Start.WaitbarConsole as WaitbarConsole
             amount += 1
             WaitbarConsole.printWaitBar(amount, total_amount, prefix='Progress:',
                                         suffix='Complete', length=50)
@@ -235,7 +235,7 @@ def ALEXI_daily(Dates, output_folder, latlim, lonlim, Waitbar, total_amount, Tim
 
         # Adjust waitbar
         if Waitbar == 1:
-            import watools.Functions.Start.WaitbarConsole as WaitbarConsole
+            import wateraccounting.Functions.Start.WaitbarConsole as WaitbarConsole
             amount += 1
             WaitbarConsole.printWaitBar(amount, total_amount, prefix='Progress:',
                                         suffix='Complete', length=50)

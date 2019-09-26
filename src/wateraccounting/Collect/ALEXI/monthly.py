@@ -6,7 +6,7 @@ Created on Mon Aug 28 07:54:17 2017
 """
 import os
 import sys
-from watools.Collect.ALEXI.DataAccess import DownloadData
+from wateraccounting.Collect.ALEXI.DataAccess import DownloadData
 
 
 def main(Dir, Startdate='', Enddate='', latlim=[-60, 70], lonlim=[-180, 180],
@@ -39,7 +39,7 @@ def main(Dir, Startdate='', Enddate='', latlim=[-60, 70], lonlim=[-180, 180],
         os.mkdir(Dir_ALEXI_Monthly)
 
     # Create monthly maps based on weekly maps
-    import watools.Functions.Start.Weekly_to_monthly_flux as Week2month
+    import wateraccounting.Functions.Start.Weekly_to_monthly_flux as Week2month
     Week2month.Nearest_Interpolate(Dir_ALEXI_Weekly, Startdate, Enddate,
                                    Dir_ALEXI_Monthly)
 

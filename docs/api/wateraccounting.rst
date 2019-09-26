@@ -1,20 +1,20 @@
-watools package
-===============
+wateraccounting package
+=======================
 
 Subpackages
 -----------
 
 .. toctree::
 
-    watools.Collect
+    wateraccounting.Collect
 
 Submodules
 ----------
 
-watools.skeleton module
------------------------
+wateraccounting.skeleton module
+-------------------------------
 
-.. automodule:: watools.skeleton
+.. automodule:: wateraccounting.skeleton
     :members:
     :undoc-members:
     :show-inheritance:
@@ -23,7 +23,7 @@ watools.skeleton module
 Module contents
 ---------------
 
-.. automodule:: watools
+.. automodule:: wateraccounting
     :members:
     :undoc-members:
     :show-inheritance:

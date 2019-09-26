@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import sys
-from watools.Collect.ALEXI.DataAccess import DownloadData
+from wateraccounting.Collect.ALEXI.DataAccess import DownloadData
 
 
 def main(Dir, Startdate='', Enddate='', latlim=[-60, 70], lonlim=[-180, 180], Waitbar = 1):

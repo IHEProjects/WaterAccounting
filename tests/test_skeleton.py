@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import pytest
-from watools.skeleton import fib
+from wateraccounting.skeleton import fib
 
 __author__ = "Quan Pan"
 __copyright__ = "Quan Pan"
