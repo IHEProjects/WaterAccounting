@@ -18,7 +18,9 @@ Unit test, run::
 
     python setup.py test
 
-Git -> tag -> v0.0.1, run::
+Commit -> Git - tag - add - v0.0.1 -> setup.py -> push,
+Github - Release - new release v0.0.1,
+run setup.py::
 
     python setup.py sdist bdist_wheel
     twine upload dist/*
