@@ -49,7 +49,8 @@ def DownloadData(Dir, Startdate, Enddate, latlim, lonlim, TimeStep, Waitbar):
     :param Enddate: 'yyyy-mm-dd'
     :param latlim: [ymin, ymax] (values must be between -60 and 70)
     :param lonlim: [xmin, xmax] (values must be between -180 and 180)
-    :param TimeStep: 'daily' or 'weekly'  (by using here monthly, an older dataset will be used)
+    :param TimeStep: 'daily' or 'weekly'  (by using here monthly,
+     an older dataset will be used)
     :param Waitbar: Waitbar
     :type Dir: string
     :type Startdate: string
@@ -58,7 +59,12 @@ def DownloadData(Dir, Startdate, Enddate, latlim, lonlim, TimeStep, Waitbar):
     :type lonlim: list
     :type TimeStep: string
     :type Waitbar: bool
-    :return: Void
+    :return: void
+
+    :Example:
+
+        >>> print('Example')
+        Example
     """
     # Check the latitude and longitude and otherwise set lat or lon on greatest extent
     if latlim[0] < -60 or latlim[1] > 70:
@@ -254,22 +260,36 @@ def ALEXI_daily(Dates, output_folder, latlim, lonlim, Waitbar, total_amount, Tim
         os.remove(os.path.join(output_folder, f))
 
 
-def Download_ALEXI_from_WA_FTP(local_filename, DirFile, filename, lonlim, latlim, yID,
-                               xID, TimeStep):
-    """
+def Download_ALEXI_from_WA_FTP(local_filename, DirFile, filename,
+                               lonlim, latlim, yID, xID, TimeStep):
+    """Retrieves ALEXI data
+
     This function retrieves ALEXI data for a given date from the
-    ftp.watools.unesco-ihe.org server.
+    `<ftp.watools.unesco-ihe.org>`_ server.
 
-    Restrictions:
-    The data and this python file may not be distributed to others without
-    permission of the WA+ team due data restriction of the ALEXI developers.
+    :param local_filename: name of the temporary file which contains global ALEXI data
+    :param DirFile: name of the end file with the weekly ALEXI data
+    :param filename: name of the end file
+    :param lonlim: [ymin, ymax] (values must be between -60 and 70)
+    :param latlim: [xmin, xmax] (values must be between -180 and 180)
+    :param yID:
+    :param xID:
+    :param TimeStep: 'daily' or 'weekly'  (by using here monthly,
+     an older dataset will be used)
+    :type local_filename: string
+    :type DirFile: string
+    :type filename: string
+    :type lonlim: list
+    :type latlim: list
+    :type yID: list
+    :type xID: list
+    :type TimeStep: string
+    :return: void
 
-    Keyword arguments:
-    local_filename -- name of the temporary file which contains global ALEXI data
-    DirFile -- name of the end file with the weekly ALEXI data
-    filename -- name of the end file
-    lonlim -- [ymin, ymax] (values must be between -60 and 70)
-    latlim -- [xmin, xmax] (values must be between -180 and 180)
+    :Example:
+
+        >>> print('Example')
+        Example
     """
 
     # Collect account and FTP information
