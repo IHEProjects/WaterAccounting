@@ -34,8 +34,8 @@ from ftplib import FTP
 
 # Water Accounting Modules
 import wateraccounting.Collect.WebAccounts as WebAccounts
-import wateraccounting.General.raster_conversions as RC
-import wateraccounting.General.data_conversions as DC
+# import wateraccounting.General.raster_conversions as RC
+# import wateraccounting.General.data_conversions as DC
 
 
 def DownloadData(Dir, Startdate, Enddate, latlim, lonlim, TimeStep, Waitbar):
@@ -280,24 +280,24 @@ def Download_ALEXI_from_WA_FTP(local_filename, DirFile, filename, lonlim, latlim
     ftp.retrbinary("RETR " + filename, lf.write)
     lf.close()
 
-    if TimeStep is "weekly":
-        # Open global ALEXI data
-        dataset = RC.Open_tiff_array(local_filename)
-
-        # Clip extend out of world data
-        data = dataset[yID[0]:yID[1], xID[0]:xID[1]]
-        data[data < 0] = -9999
-
-    if TimeStep is "daily":
-        DC.Extract_Data_gz(local_filename, os.path.splitext(local_filename)[0])
-
-        raw_data = np.fromfile(os.path.splitext(local_filename)[0], dtype="<f4")
-        dataset = np.flipud(np.resize(raw_data, [3000, 7200]))
-        data = dataset[yID[0]:yID[1],
-               xID[0]:xID[1]] / 2.45  # Values are in MJ/m2d so convert to mm/d
-        data[data < 0] = -9999
-
-    # make geotiff file
-    geo = [lonlim[0], 0.05, 0, latlim[1], 0, -0.05]
-    DC.Save_as_tiff(name=DirFile, data=data, geo=geo, projection="WGS84")
+    # if TimeStep is "weekly":
+    #     # Open global ALEXI data
+    #     dataset = RC.Open_tiff_array(local_filename)
+    #
+    #     # Clip extend out of world data
+    #     data = dataset[yID[0]:yID[1], xID[0]:xID[1]]
+    #     data[data < 0] = -9999
+    #
+    # if TimeStep is "daily":
+    #     DC.Extract_Data_gz(local_filename, os.path.splitext(local_filename)[0])
+    #
+    #     raw_data = np.fromfile(os.path.splitext(local_filename)[0], dtype="<f4")
+    #     dataset = np.flipud(np.resize(raw_data, [3000, 7200]))
+    #     data = dataset[yID[0]:yID[1],
+    #            xID[0]:xID[1]] / 2.45  # Values are in MJ/m2d so convert to mm/d
+    #     data[data < 0] = -9999
+    #
+    # # make geotiff file
+    # geo = [lonlim[0], 0.05, 0, latlim[1], 0, -0.05]
+    # DC.Save_as_tiff(name=DirFile, data=data, geo=geo, projection="WGS84")
     return
