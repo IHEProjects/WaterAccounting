@@ -23,7 +23,6 @@ PyPI upload, run ``setup.py``::
     1. Commit -> Git - tag - add - v0.0.1 -> ``setup.py`` -> push
     2. Github - Release - new release v0.0.1
 
-
     python setup.py sdist bdist_wheel
     twine upload dist/*
 
