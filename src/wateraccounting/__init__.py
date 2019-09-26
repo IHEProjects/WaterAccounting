@@ -1,4 +1,9 @@
 # -*- coding: utf-8 -*-
+"""
+Water Accounting Tools
+"""
+
+
 from pkg_resources import get_distribution, DistributionNotFound
 
 try:
