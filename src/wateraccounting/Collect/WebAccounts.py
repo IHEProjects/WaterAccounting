@@ -24,8 +24,8 @@ def Accounts(File='', Type=None):
     Don't synchronize the details to github.
 
     :param File: configuration yaml file
-    :type File: string
     :param Type: portal name
+    :type File: string
     :type Type: string
     :return: {'username': '', 'password': ''}
     :rtype: dict

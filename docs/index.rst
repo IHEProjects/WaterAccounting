@@ -27,6 +27,10 @@ PyPI upload, run ``setup.py``::
     python setup.py sdist bdist_wheel
     twine upload dist/*
 
+.. warning::
+
+    Must contain **config.yml** file.
+
 .. note::
 
     This is the main page of your project's `Sphinx`_ documentation.

@@ -1,26 +1,25 @@
 # -*- coding: utf-8 -*-
 """
-Authors: Tim Hessels and Gonzalo Espinoza
-         UNESCO-IHE 2016
-Contact: t.hessels@unesco-ihe.org
-         g.espinoza@unesco-ihe.org
+**DataAccess**
 
-Module: Collect/ETmonitor
+`Restrictions`
 
-Restrictions:
 The data and this python file may not be distributed to others without
 permission of the WA+ team due data restriction of the ALEXI developers.
 
-Description:
-This script collects ALEXI data from the UNESCO-IHE FTP server. The data has a
-monthly temporal resolution and a spatial resolution of 0.05 degree. The
-resulting tiff files are in the WGS84 projection.
-The data is available between 2003-01-01 till 2014-12-31.
+`Description`
 
-Example:
-from wateraccounting.Collect import ALEXI
-ALEXI.monthly(Dir='C:/Temp/', Startdate='2003-02-24', Enddate='2003-03-09',
-                     latlim=[50,54], lonlim=[3,7])
+This script collects ALEXI data from the UNESCO-IHE FTP server.
+The data has a monthly temporal resolution and a spatial resolution of ``0.05`` degree.
+The resulting tiff files are in the ``WGS84`` projection.
+The data is available between ``2003-01-01 till 2014-12-31``.
+
+**Examples:**
+::
+
+    from wateraccounting.Collect import ALEXI
+    ALEXI.monthly(Dir='C:/Temp/', Startdate='2003-02-24', Enddate='2003-03-09',
+                         latlim=[50,54], lonlim=[3,7])
 
 """
 # General modules
@@ -39,18 +38,27 @@ import wateraccounting.Collect.WebAccounts as WebAccounts
 
 
 def DownloadData(Dir, Startdate, Enddate, latlim, lonlim, TimeStep, Waitbar):
-    """
+    """Downloads ALEXI ET data
+
     This scripts downloads ALEXI ET data from the UNESCO-IHE ftp server.
     The output files display the total ET in mm for a period of one week.
     The name of the file corresponds to the first day of the week.
 
-    Keyword arguments:
-    Dir -- 'C:/file/to/path/'
-    Startdate -- 'yyyy-mm-dd'
-    Enddate -- 'yyyy-mm-dd'
-    TimeStep -- 'daily' or 'weekly'  (by using here monthly, an older dataset will be used)
-    lonlim -- [ymin, ymax] (values must be between -60 and 70)
-    latlim -- [xmin, xmax] (values must be between -180 and 180)
+    :param Dir: 'C:/file/to/path/'
+    :param Startdate: 'yyyy-mm-dd'
+    :param Enddate: 'yyyy-mm-dd'
+    :param latlim: [ymin, ymax] (values must be between -60 and 70)
+    :param lonlim: [xmin, xmax] (values must be between -180 and 180)
+    :param TimeStep: 'daily' or 'weekly'  (by using here monthly, an older dataset will be used)
+    :param Waitbar: Waitbar
+    :type Dir: string
+    :type Startdate: string
+    :type Enddate: string
+    :type latlim: list
+    :type lonlim: list
+    :type TimeStep: string
+    :type Waitbar: bool
+    :return: Void
     """
     # Check the latitude and longitude and otherwise set lat or lon on greatest extent
     if latlim[0] < -60 or latlim[1] > 70:
