@@ -12,33 +12,54 @@ Save user account and password
 """
 
 
-def Accounts(Type=None):
+import os
+import sys
+import yaml
+
+
+def _list():
+    """List.
+
+    :return: suppored portals
+    :rtype: list
+    """
+    return ['NASA', 'GLEAM', 'FTP_WA', 'MSWEP', 'Copernicus', 'VITO']
+
+
+def Accounts(File='', Type=None):
     """Save user account and password.
 
-    .. note::
+    This is the main function to configure user's credentials.
+    Don't synchronize the details to github.
 
-        This is the main function to configure user's credentials.
-        Don't synchronize the details to github.
-
+    :param File: configuration yaml file
+    :type File: string
     :param Type: portal name
     :type Type: string
-    :return: selected portal [username, password]
-    :rtype: array
+    :return: {'username': '', 'password': ''}
+    :rtype: dict
 
     :Example:
 
         >>> from wateraccounting.Collect.WebAccounts import Accounts
-        >>> Accounts(Type='NASA')
-        ['username', 'password']
+        >>> Accounts(File='config.yml', Type='test')
+        'test' is not supported.
+
+        >>> Accounts(File='config.yml', Type='FTP_WA')
+        {'username': 'wateraccountingguest', 'password': 'W@t3r@ccounting'}
     """
-    User_Pass = {
-        'NASA': ['username', 'password'],
-        'GLEAM': ['', ''],
-        'FTP_WA': ['', ''],
-        'MSWEP': ['', ''],
-        'Copernicus': ['', ''],
-        'VITO': ['', '']}
+    if os.path.exists(File):
+        list = _list()
+        user = {'username': '', 'password': ''}
 
-    Selected_Path = User_Pass[Type]
+        with open(File, 'r') as fp_cfg:
+            try:
+                cfg = yaml.load(fp_cfg, Loader=yaml.FullLoader)
+                user = cfg['account'][Type]
 
-    return (Selected_Path)
+                return user
+            except KeyError as err:
+                print("{err} is not supported.".format(err=err))
+    elif IOError:
+        print("Can't find {file}".format(file=File))
+        sys.exit()
