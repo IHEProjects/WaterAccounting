@@ -13,7 +13,7 @@ WaterAccounting
 
 Water Accounting Tools
 
-Temporary project, for own development purpose only.
+Temporary **watools** project, for development only.
 
 
 Collect
