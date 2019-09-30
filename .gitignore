@@ -1,5 +1,5 @@
 # Configuration yaml
-config.yml
+src/wateraccounting/Collect/config.yml
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
