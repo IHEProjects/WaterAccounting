@@ -46,7 +46,7 @@ except ImportError:
 # Global Variables
 this = sys.modules[__name__]
 this.conf = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'config.yml')
-this.port = ['NASA', 'GLEAM', 'FTP_WA', 'MSWEP', 'Copernicus', 'VITO']
+this.port = ['NASA', 'GLEAM', 'FTP_WA', 'FTP_WA_GUESS', 'MSWEP', 'Copernicus', 'VITO']
 this.user = {'username': '', 'password': ''}
 
 
@@ -69,7 +69,7 @@ def Accounts(Type=None):
             ...
         KeyError: 'test'
 
-        >>> user = Accounts(Type='FTP_WA')
+        >>> user = Accounts(Type='FTP_WA_GUESS')
         >>> user
         {'username': 'wateraccountingguest', 'password': 'W@t3r@ccounting'}
     """
