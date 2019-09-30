@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 """
 """
-import pytest
-
 import os
 import numpy as np
+
+import pytest
 
 # import wateraccounting.Collect as Collect
 import wateraccounting.Collect.core as core
