@@ -75,6 +75,7 @@ before_install:
 
 # GDAL
 install:
+  - "which python"
   - "if [ \"$GDALVERSION\" == \"master\" -o $(gdal-config --version) == \"$GDALVERSION\" ]; then echo \"Using gdal $GDALVERSION\"; else echo \"NOT using gdal $GDALVERSION as expected; aborting\"; exit 1; fi"
   - "python -m pip wheel -r requirements-dev.txt"
   - "python -m pip install -r requirements-dev.txt"
@@ -86,6 +87,7 @@ before_script:
   - git config --global user.name "Quan Pan"
 
 script:
+  - python -c 'import numpy;print(numpy.__version__);'
   - python setup.py develop
   - tox
   - |
