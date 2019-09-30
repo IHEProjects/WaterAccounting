@@ -34,6 +34,11 @@ numpy==1.13.3
 pandas==0.22.0
 pycurl==7.43.0.3
 pyproj==2.4.0
+PyScaffold==3.2.2
+pyscaffoldext-custom-extension==0.5
+pyscaffoldext-dsproject==0.4
+pyscaffoldext-markdown==0.3.1
+pyscaffoldext-pyproject==0.2.1
 pyshp==2.1.0
 pytest==5.1.3
 PyYAML==5.1.2
