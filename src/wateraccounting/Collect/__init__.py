@@ -18,3 +18,4 @@ Get user account and password, from your ``config.yml`` file.
 | VITO       | https://www.vito-eodata.be/PDF/datapool/ |
 +------------+------------------------------------------+
 """
+__version__ = '0.0.1'  # TODO, 20190930, QPan, read from setup.py (git tag)

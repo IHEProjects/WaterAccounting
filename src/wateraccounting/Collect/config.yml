@@ -1,0 +1,24 @@
+account:
+  NASA:
+    username: ''
+    password: ''
+
+  GLEAM:
+    username: ''
+    password: ''
+
+  FTP_WA:
+    username: 'wateraccountingguest'
+    password: 'W@t3r@ccounting'
+
+  MSWEP:
+    username: ''
+    password: ''
+
+  Copernicus:
+    username: ''
+    password: ''
+
+  VITO:
+    username: ''
+    password: ''

@@ -32,9 +32,7 @@ import pandas as pd
 from ftplib import FTP
 
 # Water Accounting Modules
-import wateraccounting.Collect.WebAccounts as WebAccounts
-# import wateraccounting.General.raster_conversions as RC
-# import wateraccounting.General.data_conversions as DC
+import wateraccounting.Collect.core as core
 
 
 def DownloadData(Dir, Startdate, Enddate, latlim, lonlim, TimeStep, Waitbar):
@@ -50,16 +48,15 @@ def DownloadData(Dir, Startdate, Enddate, latlim, lonlim, TimeStep, Waitbar):
     :param latlim: [ymin, ymax] (values must be between -60 and 70)
     :param lonlim: [xmin, xmax] (values must be between -180 and 180)
     :param TimeStep: 'daily' or 'weekly'  (by using here monthly,
-     an older dataset will be used)
+        an older dataset will be used)
     :param Waitbar: Waitbar
-    :type Dir: string
-    :type Startdate: string
-    :type Enddate: string
+    :type Dir: str
+    :type Startdate: str
+    :type Enddate: str
     :type latlim: list
     :type lonlim: list
-    :type TimeStep: string
+    :type TimeStep: str
     :type Waitbar: bool
-    :return: void
 
     :Example:
 
@@ -135,10 +132,10 @@ def DownloadData(Dir, Startdate, Enddate, latlim, lonlim, TimeStep, Waitbar):
     # Create Waitbar
     total_amount = len(Dates)
     if Waitbar == 1:
-        import wateraccounting.Functions.Start.WaitbarConsole as WaitbarConsole
         amount = 0
-        WaitbarConsole.printWaitBar(amount, total_amount, prefix='Progress:',
-                                    suffix='Complete', length=50)
+        core.WaitBar(amount, total_amount,
+                     prefix='Progress:', suffix='Complete',
+                     length=50)
 
     if TimeStep == 'weekly':
         ALEXI_weekly(Date, Enddate, output_folder, latlim, lonlim, Year, Waitbar,
@@ -147,6 +144,125 @@ def DownloadData(Dir, Startdate, Enddate, latlim, lonlim, TimeStep, Waitbar):
     if TimeStep == 'daily':
         ALEXI_daily(Dates, output_folder, latlim, lonlim, Waitbar, total_amount,
                     TimeStep)
+
+
+def Download_ALEXI_from_WA_FTP(local_filename, DirFile, filename,
+                               lonlim, latlim, yID, xID, TimeStep):
+    """Retrieves ALEXI data
+
+    This function retrieves ALEXI data for a given date from the
+    `<ftp.wateraccounting.unesco-ihe.org>`_ server.
+
+    :param local_filename: name of the temporary file which contains global ALEXI data
+    :param DirFile: name of the end file with the weekly ALEXI data
+    :param filename: name of the end file
+    :param lonlim: [ymin, ymax] (values must be between -60 and 70)
+    :param latlim: [xmin, xmax] (values must be between -180 and 180)
+    :param yID:
+    :param xID:
+    :param TimeStep: 'daily' or 'weekly'  (by using here monthly,
+     an older dataset will be used)
+    :type local_filename: str
+    :type DirFile: str
+    :type filename: str
+    :type lonlim: list
+    :type latlim: list
+    :type yID: list
+    :type xID: list
+    :type TimeStep: str
+
+    :Example:
+
+        >>> print('Example')
+        Example
+    """
+
+    # Collect account and FTP information
+    user = core.Accounts(Type='FTP_WA')
+    username = user['username']
+    password = user['password']
+    print(user)
+
+    # TODO, 20190930, QPan, ftpserver: [Errno 11004] getaddrinfo failed
+    ftpserver = "ftp://ftp.wateraccounting.unesco-ihe.org"
+
+    # Download data from FTP
+    ftp = FTP(ftpserver)
+    ftp.login(username, password)
+    if TimeStep is "weekly":
+        directory = "/WaterAccounting/Data_Satellite/Evaporation/ALEXI/World/"
+    if TimeStep is "daily":
+        directory = "/WaterAccounting/Data_Satellite/Evaporation/ALEXI/World_05182018/"
+    ftp.cwd(directory)
+    lf = open(local_filename, "wb")
+    ftp.retrbinary("RETR " + filename, lf.write)
+    lf.close()
+
+    if TimeStep is "daily":
+        core.Extract_Data_gz(local_filename, os.path.splitext(local_filename)[0])
+
+        raw_data = np.fromfile(os.path.splitext(local_filename)[0], dtype="<f4")
+        dataset = np.flipud(np.resize(raw_data, [3000, 7200]))
+        # Values are in MJ/m2d so convert to mm/d
+        data = dataset[yID[0]:yID[1], xID[0]:xID[1]] / 2.45  # mm/d
+        data[data < 0] = -9999
+
+    if TimeStep is "weekly":
+        # Open global ALEXI data
+        dataset = core.Open_tiff_array(local_filename)
+
+        # Clip extend out of world data
+        data = dataset[yID[0]:yID[1], xID[0]:xID[1]]
+        data[data < 0] = -9999
+
+    # make geotiff file
+    geo = [lonlim[0], 0.05, 0, latlim[1], 0, -0.05]
+    core.Save_as_tiff(name=DirFile, data=data, geo=geo, projection="WGS84")
+    return
+
+
+def ALEXI_daily(Dates, output_folder, latlim, lonlim, Waitbar, total_amount, TimeStep):
+    amount = 0
+    for Date in Dates:
+
+        # Date as printed in filename
+        DirFile = os.path.join(output_folder,
+                               'ETa_ALEXI_CSFR_mm-day-1_daily_%d.%02d.%02d.tif' % (
+                               Date.year, Date.month, Date.day))
+        DOY = Date.timetuple().tm_yday
+
+        # Define end filename
+        filename = "EDAY_CERES_%d%03d.dat.gz" % (Date.year, DOY)
+
+        # Temporary filename for the downloaded global file
+        local_filename = os.path.join(output_folder, filename)
+
+        # Define IDs
+        yID = 3000 - np.int16(
+            np.array([np.ceil((latlim[1] + 60) * 20), np.floor((latlim[0] + 60) * 20)]))
+        xID = np.int16(
+            np.array([np.floor((lonlim[0]) * 20), np.ceil((lonlim[1]) * 20)]) + 3600)
+
+        # Download the data from FTP server if the file not exists
+        if not os.path.exists(DirFile):
+            try:
+                Download_ALEXI_from_WA_FTP(local_filename, DirFile, filename, lonlim,
+                                           latlim, yID, xID, TimeStep)
+            except BaseException as err:
+                print("Was not able to download file with date %s" % Date)
+                print(err)
+
+        # Adjust waitbar
+        if Waitbar == 1:
+            amount += 1
+            core.WaitBar(amount, total_amount,
+                         prefix='Progress:', suffix='Complete',
+                         length=50)
+
+    os.chdir(output_folder)
+    re = glob.glob("*.dat")
+    for f in re:
+        os.remove(os.path.join(output_folder, f))
 
 
 def ALEXI_weekly(Date, Enddate, output_folder, latlim, lonlim, Year, Waitbar,
@@ -215,117 +331,3 @@ def ALEXI_weekly(Date, Enddate, output_folder, latlim, lonlim, Year, Waitbar,
         Date = pd.Timestamp(Date)
         if Date.toordinal() > Stop:
             End_date = 1
-
-
-def ALEXI_daily(Dates, output_folder, latlim, lonlim, Waitbar, total_amount, TimeStep):
-    amount = 0
-    for Date in Dates:
-
-        # Date as printed in filename
-        DirFile = os.path.join(output_folder,
-                               'ETa_ALEXI_CSFR_mm-day-1_daily_%d.%02d.%02d.tif' % (
-                               Date.year, Date.month, Date.day))
-        DOY = Date.timetuple().tm_yday
-
-        # Define end filename
-        filename = "EDAY_CERES_%d%03d.dat.gz" % (Date.year, DOY)
-
-        # Temporary filename for the downloaded global file
-        local_filename = os.path.join(output_folder, filename)
-
-        # Define IDs
-        yID = 3000 - np.int16(
-            np.array([np.ceil((latlim[1] + 60) * 20), np.floor((latlim[0] + 60) * 20)]))
-        xID = np.int16(
-            np.array([np.floor((lonlim[0]) * 20), np.ceil((lonlim[1]) * 20)]) + 3600)
-
-        # Download the data from FTP server if the file not exists
-        if not os.path.exists(DirFile):
-            try:
-                Download_ALEXI_from_WA_FTP(local_filename, DirFile, filename, lonlim,
-                                           latlim, yID, xID, TimeStep)
-            except:
-                print("Was not able to download file with date %s" % Date)
-
-        # Adjust waitbar
-        if Waitbar == 1:
-            import wateraccounting.Functions.Start.WaitbarConsole as WaitbarConsole
-            amount += 1
-            WaitbarConsole.printWaitBar(amount, total_amount, prefix='Progress:',
-                                        suffix='Complete', length=50)
-
-    os.chdir(output_folder)
-    re = glob.glob("*.dat")
-    for f in re:
-        os.remove(os.path.join(output_folder, f))
-
-
-def Download_ALEXI_from_WA_FTP(local_filename, DirFile, filename,
-                               lonlim, latlim, yID, xID, TimeStep):
-    """Retrieves ALEXI data
-
-    This function retrieves ALEXI data for a given date from the
-    `<ftp.watools.unesco-ihe.org>`_ server.
-
-    :param local_filename: name of the temporary file which contains global ALEXI data
-    :param DirFile: name of the end file with the weekly ALEXI data
-    :param filename: name of the end file
-    :param lonlim: [ymin, ymax] (values must be between -60 and 70)
-    :param latlim: [xmin, xmax] (values must be between -180 and 180)
-    :param yID:
-    :param xID:
-    :param TimeStep: 'daily' or 'weekly'  (by using here monthly,
-     an older dataset will be used)
-    :type local_filename: string
-    :type DirFile: string
-    :type filename: string
-    :type lonlim: list
-    :type latlim: list
-    :type yID: list
-    :type xID: list
-    :type TimeStep: string
-    :return: void
-
-    :Example:
-
-        >>> print('Example')
-        Example
-    """
-
-    # Collect account and FTP information
-    username, password = WebAccounts.Accounts(Type='FTP_WA')
-    ftpserver = "ftp.watools.unesco-ihe.org"
-
-    # Download data from FTP
-    ftp = FTP(ftpserver)
-    ftp.login(username, password)
-    if TimeStep is "weekly":
-        directory = "/watools/Data_Satellite/Evaporation/ALEXI/World/"
-    if TimeStep is "daily":
-        directory = "/watools/Data_Satellite/Evaporation/ALEXI/World_05182018/"
-    ftp.cwd(directory)
-    lf = open(local_filename, "wb")
-    ftp.retrbinary("RETR " + filename, lf.write)
-    lf.close()
-
-    # if TimeStep is "weekly":
-    #     # Open global ALEXI data
-    #     dataset = RC.Open_tiff_array(local_filename)
-    #
-    #     # Clip extend out of world data
-    #     data = dataset[yID[0]:yID[1], xID[0]:xID[1]]
-    #     data[data < 0] = -9999
-    #
-    # if TimeStep is "daily":
-    #     DC.Extract_Data_gz(local_filename, os.path.splitext(local_filename)[0])
-    #
-    #     raw_data = np.fromfile(os.path.splitext(local_filename)[0], dtype="<f4")
-    #     dataset = np.flipud(np.resize(raw_data, [3000, 7200]))
-    #     data = dataset[yID[0]:yID[1],
-    #            xID[0]:xID[1]] / 2.45  # Values are in MJ/m2d so convert to mm/d
-    #     data[data < 0] = -9999
-    #
-    # # make geotiff file
-    # geo = [lonlim[0], 0.05, 0, latlim[1], 0, -0.05]
-    # DC.Save_as_tiff(name=DirFile, data=data, geo=geo, projection="WGS84")
-    return
