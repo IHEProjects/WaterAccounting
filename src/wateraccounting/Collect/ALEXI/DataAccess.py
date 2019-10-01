@@ -44,21 +44,15 @@ def DownloadData(Dir, Startdate, Enddate, latlim, lonlim, TimeStep, Waitbar):
     The output files display the total ET in mm for a period of one week.
     The name of the file corresponds to the first day of the week.
 
-    :param Dir: 'C:/file/to/path/'
-    :param Startdate: 'yyyy-mm-dd'
-    :param Enddate: 'yyyy-mm-dd'
-    :param latlim: [ymin, ymax] (values must be between -60 and 70)
-    :param lonlim: [xmin, xmax] (values must be between -180 and 180)
-    :param TimeStep: 'daily' or 'weekly'  (by using here monthly,
+    Args:
+      Dir (str): 'C:/file/to/path/'
+      Startdate (str): 'yyyy-mm-dd'
+      Enddate (str): 'yyyy-mm-dd'
+      latlim (list): [ymin, ymax] (values must be between -60 and 70)
+      lonlim (list): [xmin, xmax] (values must be between -180 and 180)
+      TimeStep (str): 'daily' or 'weekly'  (by using here monthly,
         an older dataset will be used)
-    :param Waitbar: Waitbar
-    :type Dir: str
-    :type Startdate: str
-    :type Enddate: str
-    :type latlim: list
-    :type lonlim: list
-    :type TimeStep: str
-    :type Waitbar: bool
+      Waitbar (bool): Waitbar
 
     :Example:
 
@@ -155,23 +149,16 @@ def Download_ALEXI_from_WA_FTP(local_filename, DirFile, filename,
     This function retrieves ALEXI data for a given date from the
     `<ftp.wateraccounting.unesco-ihe.org>`_ server.
 
-    :param local_filename: name of the temporary file which contains global ALEXI data
-    :param DirFile: name of the end file with the weekly ALEXI data
-    :param filename: name of the end file
-    :param lonlim: [ymin, ymax] (values must be between -60 and 70)
-    :param latlim: [xmin, xmax] (values must be between -180 and 180)
-    :param yID:
-    :param xID:
-    :param TimeStep: 'daily' or 'weekly'  (by using here monthly,
+    Args:
+      local_filename (str): name of the temporary file which contains global ALEXI data
+      DirFile (str): name of the end file with the weekly ALEXI data
+      filename (str): name of the end file
+      latlim (list): [ymin, ymax] (values must be between -60 and 70)
+      lonlim (list): [xmin, xmax] (values must be between -180 and 180)
+      yID (list): latlim to index
+      xID (list): lonlim to index
+      TimeStep (str): 'daily' or 'weekly'  (by using here monthly,
         an older dataset will be used)
-    :type local_filename: str
-    :type DirFile: str
-    :type filename: str
-    :type lonlim: list
-    :type latlim: list
-    :type yID: list
-    :type xID: list
-    :type TimeStep: str
 
     :Example:
 

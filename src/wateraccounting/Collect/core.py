@@ -19,6 +19,21 @@ Before use this module, set account information in the `Collect/config.yml` file
 .. note::
 
     config.yml is in **"src/wateraccounting/Collect"** module.
+
+.. warning::
+
+    TODO, 20190931, QPan, core.py
+
+    1. Create config.yml contains
+        a. Portal name
+        b. Portal url
+        c. Portal data name, directory
+        d. Portal data range, resolution
+        e. Portal data file name template on ftp
+        f. Portal data file name template on local
+    2. Add exception to check data meta information
+    3. Estimate data size and tiff location to decided download or not
+    4. Add unit test, and test datasets under "tests/data"
 """
 # General modules
 import os
@@ -56,10 +71,11 @@ def Accounts(Type=None):
     This is the main function to configure user's credentials.
     Don't synchronize the details to github.
 
-    :param Type: portal name
-    :type Type: str
-    :return: {'username': '', 'password': ''}
-    :rtype: dict
+    Args:
+      Type (str): portal name
+
+    Returns:
+      dict: {'username': '', 'password': ''}
 
     :Example:
 
@@ -97,13 +113,13 @@ def Open_tiff_array(file='', band=''):
 
     This function load tiff band as numpy.ndarray.
 
-    :param file: 'C:/file/to/path/file.tif' or a gdal file (gdal.Open(file))
+    Args:
+      file (str): 'C:/file/to/path/file.tif' or a gdal file (gdal.Open(file))
         string that defines the input tiff file or gdal file
-    :param band: Defines the band of the tiff that must be opened
-    :type file: str
-    :type Startdate: int
-    :return: data
-    :rtype: numpy.ndarray
+      band (int): Defines the band of the tiff that must be opened
+
+    Returns:
+      :obj:`numpy.ndarray`: data
 
     :Example:
 
@@ -148,11 +164,9 @@ def Extract_Data_gz(file, outfile):
 
     This function extract zip file as gz file.
 
-    :param file: 'C:/file/to/path/file.zip' name of the file that must be unzipped
-    :param outfile: directory where the unzipped data must be
-        stored
-    :type file: str
-    :type outfile: int
+    Args:
+      file (str): 'C:/file/to/path/file.zip' name of the file that must be unzipped
+      outfile (str): directory where the unzipped data must be stored
 
     :Example:
 
@@ -173,15 +187,12 @@ def Save_as_tiff(name='', data='', geo='', projection=''):
 
     This function save the array as a geotiff.
 
-    :param name: directory name
-    :param data: dataset of the geotiff
-    :param geo: geospatial dataset, [minimum lon, pixelsize, rotation,
+    Args:
+      name (str): directory name
+      data (:obj:`numpy.ndarray`): dataset of the geotiff
+      geo (list): geospatial dataset, [minimum lon, pixelsize, rotation,
         maximum lat, rotation, pixelsize]
-    :param projection: the EPSG code
-    :type name: str
-    :type data: numpy.ndarray
-    :type geo: list
-    :type projection: int
+      projection (int): the EPSG code
 
     :Example:
 
@@ -248,20 +259,14 @@ def WaitBar(i, total, prefix='', suffix='', decimals=1, length=100, fill='█'):
 
     This function will print a waitbar in the console
 
-    :param i: Iteration number
-    :param total: Total iterations
-    :param prefix: Prefix name of bar
-    :param suffix: Suffix name of bar
-    :param decimals: decimal of the wait bar
-    :param length: width of the wait bar
-    :param fill: bar fill
-    :type i: int
-    :type total: int
-    :type prefix: str
-    :type suffix: str
-    :type decimals: int
-    :type length: int
-    :type fill: str
+    Args:
+      i (int): Iteration number
+      total (int): Total iterations
+      prefix (str): Prefix name of bar
+      suffix (str): Suffix name of bar
+      decimals (int): decimal of the wait bar
+      length (int): width of the wait bar
+      fill (str): bar fill
     """
     import sys
     import os
