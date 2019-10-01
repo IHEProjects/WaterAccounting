@@ -1,0 +1,8 @@
+channels:
+- defaults
+dependencies:
+- libgdal=3.0.*
+- numpy
+- pandas
+- PyYAML
+- GDAL=3.0.*
