@@ -22,6 +22,7 @@ affine==2.3.0
 cftime==1.0.3.4
 Click==7.0
 click-plugins==1.1.1
+cryptography==2.6.1
 dask==2.4.0
 dask-glm==0.2.0
 dask-ml==1.0.0
@@ -34,11 +35,6 @@ numpy==1.13.3
 pandas==0.22.0
 pycurl==7.43.0.3
 pyproj==2.4.0
-PyScaffold==3.2.2
-pyscaffoldext-custom-extension==0.5
-pyscaffoldext-dsproject==0.4
-pyscaffoldext-markdown==0.3.1
-pyscaffoldext-pyproject==0.2.1
 pyshp==2.1.0
 pytest==5.1.3
 PyYAML==5.1.2

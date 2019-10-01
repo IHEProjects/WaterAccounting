@@ -4,8 +4,9 @@ channels:
 - conda-forge
 dependencies:
 - python>=3.6
-- numpy
-- pandas
+- numpy=1.13.*
+- pandas=0.22.*
 - libgdal=3.0.*
 - gdal=3.0.*
-- pyyaml
+- pyyaml=5.1
+- cryptography=2.6.*

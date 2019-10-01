@@ -12,3 +12,9 @@
 # sphinx
 # sphinx-rtd-theme
 # wheel
+
+PyScaffold==3.2.2
+pyscaffoldext-custom-extension==0.5
+pyscaffoldext-dsproject==0.4
+pyscaffoldext-markdown==0.3.1
+pyscaffoldext-pyproject==0.2.1
