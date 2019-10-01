@@ -1,8 +1,7 @@
-name: _rasterio
+name: _WaterAccounting
 channels:
 - defaults
 - conda-forge
 dependencies:
 - python>=3.6
-- cython
-- libgdal
+- libgdal=3.0.*

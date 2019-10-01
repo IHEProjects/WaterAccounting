@@ -1,48 +1,47 @@
-# .readthedocs.yml
-# Read the Docs configuration file
-# See https://docs.readthedocs.io/en/stable/config-file/v2.html for details
-
-# Required
-version: 2
-
-# Build documentation in the docs/ directory with Sphinx
-sphinx:
-  configuration: docs/conf.py
-
-# Build documentation with MkDocs
-#mkdocs:
-#  configuration: mkdocs.yml
-
-# Optionally build your docs in additional formats such as PDF and ePub
-formats: all
-
-# Optionally set the version of Python and requirements required to build your docs
-
-# From PyScaffold
+## .readthedocs.yml
+## Read the Docs configuration file
+## See https://docs.readthedocs.io/en/stable/config-file/v2.html for details
+#
+## Required
+#version: 2
+#
+## Build documentation in the docs/ directory with Sphinx
+#sphinx:
+#  configuration: docs/conf.py
+#
+## Build documentation with MkDocs
+##mkdocs:
+##  configuration: mkdocs.yml
+#
+## Optionally build your docs in additional formats such as PDF and ePub
+#formats: all
+#
+## Optionally set the version of Python and requirements required to build your docs
+#
+## From PyScaffold
 #python:
 #  version: 3.6
 #  install:
 #    - requirements: docs/requirements.txt
 #    - requirements: requirements.txt
+#
+## PyScaffold: docs/requirements.txt
+##numpy
+##pandas
+##PyYAML
 
-# PyScaffold: docs/requirements.txt
-#numpy
-#pandas
-#PyYAML
-
-# From rasterio, fiona
+# From rasterio
 python:
   version: 3
   pip_install: true
 conda:
   file: environment.yml
 
-# rasterio, fiona: environment.yml
-#name: _wateraccounting
+# rasterio: environment.yml
+#name: _WaterAccounting
 #channels:
 #- defaults
 #- conda-forge
 #dependencies:
 #- python>=3.6
-#- cython
-#- libgdal
+#- libgdal=3.0.*
