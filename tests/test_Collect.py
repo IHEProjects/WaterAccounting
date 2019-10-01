@@ -22,7 +22,7 @@ __dir_data = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'data')
 
 
 def test_core_Accounts():
-    assert core.Accounts('FTP_WA') == \
+    assert core.Accounts('FTP_WA_GUESS') == \
            {'username': 'wateraccountingguest',
             'password': 'W@t3r@ccounting'}
 
