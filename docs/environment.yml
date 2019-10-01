@@ -9,4 +9,3 @@ dependencies:
 - libgdal=3.0.*
 - gdal=3.0.*
 - pyyaml=5.1
-- cryptography=2.6.*

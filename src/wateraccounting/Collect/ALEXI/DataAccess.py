@@ -172,8 +172,6 @@ def Download_ALEXI_from_WA_FTP(local_filename, DirFile, filename,
     password = user['password']
 
     ftpserver = "ftp.wateraccounting.unesco-ihe.org"
-    # TODO, 20190930, QPan, ftpserver: [Errno 11004] getaddrinfo failed
-    # TODO, 20190931, QPan, ftpserver: 550 The system cannot find the file specified
 
     # Download data from FTP
     ftp = FTP(ftpserver)
