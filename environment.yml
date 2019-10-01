@@ -1,4 +1,4 @@
-name: _wateraccounting
+name: _WaterAccounting
 channels:
 - defaults
 - conda-forge
