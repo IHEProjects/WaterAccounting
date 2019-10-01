@@ -18,8 +18,10 @@ The data is available between ``2003-01-01 till 2014-12-31``.
 ::
 
     from wateraccounting.Collect import ALEXI
-    ALEXI.monthly(Dir='C:/Temp/', Startdate='2003-02-24', Enddate='2003-03-09',
-                         latlim=[50,54], lonlim=[3,7])
+    ALEXI.DataAccess.DownloadData(Dir=os.path.join(__dir_data, 'download'),
+                                  Startdate='2005-01-01', Enddate='2005-02-01',
+                                  latlim=[50, 54], lonlim=[3, 7], TimeStep='daily',
+                                  Waitbar=1)
 
 """
 # General modules
@@ -161,7 +163,7 @@ def Download_ALEXI_from_WA_FTP(local_filename, DirFile, filename,
     :param yID:
     :param xID:
     :param TimeStep: 'daily' or 'weekly'  (by using here monthly,
-     an older dataset will be used)
+        an older dataset will be used)
     :type local_filename: str
     :type DirFile: str
     :type filename: str
@@ -181,10 +183,10 @@ def Download_ALEXI_from_WA_FTP(local_filename, DirFile, filename,
     user = core.Accounts(Type='FTP_WA')
     username = user['username']
     password = user['password']
-    print(user)
 
-    # TODO, 20190930, QPan, ftpserver: [Errno 11004] getaddrinfo failed
     ftpserver = "ftp.wateraccounting.unesco-ihe.org"
+    # TODO, 20190930, QPan, ftpserver: [Errno 11004] getaddrinfo failed
+    # TODO, 20190931, QPan, ftpserver: 550 The system cannot find the file specified
 
     # Download data from FTP
     ftp = FTP(ftpserver)
@@ -228,7 +230,7 @@ def ALEXI_daily(Dates, output_folder, latlim, lonlim, Waitbar, total_amount, Tim
         # Date as printed in filename
         DirFile = os.path.join(output_folder,
                                'ETa_ALEXI_CSFR_mm-day-1_daily_%d.%02d.%02d.tif' % (
-                               Date.year, Date.month, Date.day))
+                                   Date.year, Date.month, Date.day))
         DOY = Date.timetuple().tm_yday
 
         # Define end filename
@@ -277,12 +279,12 @@ def ALEXI_weekly(Date, Enddate, output_folder, latlim, lonlim, Year, Waitbar,
         Datesname = Date + pd.DateOffset(days=-7)
         DirFile = os.path.join(output_folder,
                                'ETa_ALEXI_CSFR_mm-week-1_weekly_%s.%02s.%02s.tif' % (
-                               Datesname.strftime('%Y'), Datesname.strftime('%m'),
-                               Datesname.strftime('%d')))
+                                   Datesname.strftime('%Y'), Datesname.strftime('%m'),
+                                   Datesname.strftime('%d')))
 
         # Define end filename
         filename = "ALEXI_weekly_mm_%s_%s.tif" % (
-        Date.strftime('%j'), Date.strftime('%Y'))
+            Date.strftime('%j'), Date.strftime('%Y'))
 
         # Temporary filename for the downloaded global file
         local_filename = os.path.join(output_folder, filename)
