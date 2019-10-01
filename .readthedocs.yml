@@ -17,8 +17,6 @@ sphinx:
 formats: all
 
 # Optionally set the version of Python and requirements required to build your docs
-
-# From PyScaffold
 python:
   version: 3.6
   install:
@@ -27,23 +25,10 @@ python:
 conda:
   environment: docs/environment.yml
 
-# PyScaffold: docs/requirements.txt
-#numpy
-#pandas
-#PyYAML
-
 ## From rasterio, readthedoc.yml version 1
+## Automatically find sphinx.configuration file from docs/conf.py
 #python:
 #  version: 3
 #  pip_install: true
 #conda:
 #  environment: docs/environment.yml
-#
-## rasterio: environment.yml
-##name: _WaterAccounting
-##channels:
-##- defaults
-##- conda-forge
-##dependencies:
-##- python>=3.6
-##- libgdal=3.0.*

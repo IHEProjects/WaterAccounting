@@ -6,4 +6,5 @@ dependencies:
 - python>=3.6
 - libgdal=3.0.*
 - numpy
+- pandas
 - pyyaml
