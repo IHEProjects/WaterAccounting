@@ -1,4 +1,4 @@
-GDAL==3.0.1
 numpy
 pandas
 PyYAML
+GDAL==3.0.1
