@@ -45,14 +45,14 @@ def DownloadData(Dir, Startdate, Enddate, latlim, lonlim, TimeStep, Waitbar):
     The name of the file corresponds to the first day of the week.
 
     Args:
-      Dir (str): 'C:/file/to/path/'
-      Startdate (str): 'yyyy-mm-dd'
-      Enddate (str): 'yyyy-mm-dd'
-      latlim (list): [ymin, ymax] (values must be between -60 and 70)
-      lonlim (list): [xmin, xmax] (values must be between -180 and 180)
+      Dir (str): 'C:/file/to/path/'.
+      Startdate (str): 'yyyy-mm-dd'.
+      Enddate (str): 'yyyy-mm-dd'.
+      latlim (list): [ymin, ymax] (values must be between -60 and 70).
+      lonlim (list): [xmin, xmax] (values must be between -180 and 180).
       TimeStep (str): 'daily' or 'weekly'  (by using here monthly,
-        an older dataset will be used)
-      Waitbar (bool): Waitbar
+        an older dataset will be used).
+      Waitbar (bool): Waitbar.
 
     :Example:
 
@@ -150,15 +150,15 @@ def Download_ALEXI_from_WA_FTP(local_filename, DirFile, filename,
     `<ftp.wateraccounting.unesco-ihe.org>`_ server.
 
     Args:
-      local_filename (str): name of the temporary file which contains global ALEXI data
-      DirFile (str): name of the end file with the weekly ALEXI data
-      filename (str): name of the end file
-      latlim (list): [ymin, ymax] (values must be between -60 and 70)
-      lonlim (list): [xmin, xmax] (values must be between -180 and 180)
-      yID (list): latlim to index
-      xID (list): lonlim to index
+      local_filename (str): name of the temporary file which contains global ALEXI data.
+      DirFile (str): name of the end file with the weekly ALEXI data.
+      filename (str): name of the end file.
+      latlim (list): [ymin, ymax] (values must be between -60 and 70).
+      lonlim (list): [xmin, xmax] (values must be between -180 and 180).
+      yID (list): latlim to index.
+      xID (list): lonlim to index.
       TimeStep (str): 'daily' or 'weekly'  (by using here monthly,
-        an older dataset will be used)
+        an older dataset will be used).
 
     :Example:
 

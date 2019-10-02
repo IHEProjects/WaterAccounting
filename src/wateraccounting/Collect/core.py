@@ -19,40 +19,18 @@ Before use this module, set account information in the `Collect/config.yml` file
 .. note::
 
     config.yml is in **"src/wateraccounting/Collect"** module.
-
-.. warning::
-
-    TODO, 20190931, QPan, core.py
-
-    1. cryptography config.yml file
-    2. Create config.yml contains
-        a. Portal name
-        b. Portal url
-        c. Portal data name, directory
-        d. Portal data range, resolution
-        e. Portal data file name template on ftp
-        f. Portal data file name template on local
-    3. Add exception to check data meta information
-    4. Estimate data size and tiff location to decided download or not
-    5. Add unit test, and test datasets under "tests/data"
 """
-# General modules
 import os
 import sys
-
-# Configuration modules
 import yaml
-
-# File modules
 import gzip
-import zipfile
-import tarfile
-
-# Data modules
+# import zipfile
+# import tarfile
 import numpy as np
-import pandas as pd
+# import pandas as pd
 
-# GIS modules
+from . import credential
+
 try:
     from osgeo import gdal, osr
 except ImportError:
@@ -61,50 +39,57 @@ except ImportError:
 
 # Global Variables
 this = sys.modules[__name__]
-this.conf = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'config.yml')
 this.port = ['NASA', 'GLEAM', 'FTP_WA', 'FTP_WA_GUESS', 'MSWEP', 'Copernicus', 'VITO']
 this.user = {'username': '', 'password': ''}
 
 
-def Accounts(Type=None):
+def Accounts(path='', file='config.yml', password='WaterAccounting', Type=None):
     """Save user account and password.
 
     This is the main function to configure user's credentials.
     Don't synchronize the details to github.
 
     Args:
-      Type (str): portal name
+      path (str): Directory to config.yml.
+      file (str): File name of config.yml.
+      password (str): Default value is "WaterAccounting".
+      Type (str): Portal name.
 
     Returns:
-      dict: {'username': '', 'password': ''}
+      dict: {'username': '', 'password': ''}.
 
     :Example:
 
+        >>> import os
         >>> from wateraccounting.Collect.core import Accounts
-        >>> user = Accounts(Type='test')
+        >>> path = os.path.join(os.getcwd(), 'tests', 'data')
+        >>> file = 'config-example.yml-encrypted'
+        >>> password = 'WaterAccounting'
+
+        >>> user = Accounts(path, file, password, Type='test')
         Traceback (most recent call last):
             ...
         KeyError: 'test'
 
-        >>> user = Accounts(Type='FTP_WA_GUESS')
+        >>> user = Accounts(path, file, password, Type='FTP_WA_GUESS')
         >>> user
         {'username': 'wateraccountingguest', 'password': 'W@t3r@ccounting'}
     """
-    _file = this.conf
     _list = this.port
     _user = this.user
 
-    if os.path.exists(_file):
-        with open(_file, 'r') as fp_cfg:
-            conf = yaml.load(fp_cfg, Loader=yaml.FullLoader)
+    if os.path.exists(os.path.join(path, file)):
 
-            if Type in _list:
-                _user = conf['account'][Type]
-            else:
-                raise KeyError("{err} not supported {list}.".format(
-                    err=Type, list=_list))
+        conf = yaml.load(credential.decrypt_cfg(path, file, password),
+                         Loader=yaml.FullLoader)
+
+        if Type in _list:
+            _user = conf['account'][Type]
+        else:
+            raise KeyError("{err} not supported {list}.".format(
+                err=Type, list=_list))
     elif IOError:
-        raise IOError("{file} not found.".format(file=_file))
+        raise IOError("{file} not found.".format(file=file))
         sys.exit(1)
     return _user
 
@@ -116,16 +101,18 @@ def Open_tiff_array(file='', band=''):
 
     Args:
       file (str): 'C:/file/to/path/file.tif' or a gdal file (gdal.Open(file))
-        string that defines the input tiff file or gdal file
-      band (int): Defines the band of the tiff that must be opened
+        string that defines the input tiff file or gdal file.
+      band (int): Defines the band of the tiff that must be opened.
 
     Returns:
-      :obj:`numpy.ndarray`: data
+      :obj:`numpy.ndarray`: Band data.
 
     :Example:
 
+        >>> import os
         >>> from wateraccounting.Collect.core import Open_tiff_array
-        >>> file = 'tests/data/BigTIFF/Classic.tif'
+        >>> path = os.path.join(os.getcwd(), 'tests', 'data', 'BigTIFF')
+        >>> file = os.path.join(path, 'Classic.tif')
         >>> data = Open_tiff_array(file, 1)
 
         >>> type(data)
@@ -166,8 +153,8 @@ def Extract_Data_gz(file, outfile):
     This function extract zip file as gz file.
 
     Args:
-      file (str): 'C:/file/to/path/file.zip' name of the file that must be unzipped
-      outfile (str): directory where the unzipped data must be stored
+      file (str): Name of the file that must be unzipped.
+      outfile (str): Directory where the unzipped data must be stored.
 
     :Example:
 
@@ -189,18 +176,19 @@ def Save_as_tiff(name='', data='', geo='', projection=''):
     This function save the array as a geotiff.
 
     Args:
-      name (str): directory name
-      data (:obj:`numpy.ndarray`): dataset of the geotiff
-      geo (list): geospatial dataset, [minimum lon, pixelsize, rotation,
-        maximum lat, rotation, pixelsize]
-      projection (int): the EPSG code
+      name (str): Directory name.
+      data (:obj:`numpy.ndarray`): Dataset of the geotiff.
+      geo (list): Geospatial dataset, [minimum lon, pixelsize, rotation,
+        maximum lat, rotation, pixelsize].
+      projection (int): EPSG code.
 
     :Example:
 
         >>> from wateraccounting.Collect.core import Open_tiff_array
         >>> from wateraccounting.Collect.core import Save_as_tiff
-        >>> file = 'tests/data/BigTIFF/Classic.tif'
-        >>> test = 'tests/data/BigTIFF/test.tif'
+        >>> path = os.path.join(os.getcwd(), 'tests', 'data', 'BigTIFF')
+        >>> file = os.path.join(path, 'Classic.tif')
+        >>> test = os.path.join(path, 'test.tif')
 
         >>> data = Open_tiff_array(file, 1)
         >>> data
@@ -261,13 +249,13 @@ def WaitBar(i, total, prefix='', suffix='', decimals=1, length=100, fill='█'):
     This function will print a waitbar in the console
 
     Args:
-      i (int): Iteration number
-      total (int): Total iterations
-      prefix (str): Prefix name of bar
-      suffix (str): Suffix name of bar
-      decimals (int): decimal of the wait bar
-      length (int): width of the wait bar
-      fill (str): bar fill
+      i (int): Iteration number.
+      total (int): Total iterations.
+      prefix (str): Prefix name of bar.
+      suffix (str): Suffix name of bar.
+      decimals (int): Decimal of the wait bar.
+      length (int): Width of the wait bar.
+      fill (str): Bar fill.
     """
     import sys
     import os

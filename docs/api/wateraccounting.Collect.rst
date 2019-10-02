@@ -19,6 +19,14 @@ wateraccounting.Collect.core module
     :undoc-members:
     :show-inheritance:
 
+wateraccounting.Collect.credential module
+-----------------------------------------
+
+.. automodule:: wateraccounting.Collect.credential
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 
 Module contents
 ---------------
