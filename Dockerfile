@@ -1,5 +1,6 @@
-# docker build -t wapor/jupyter .
-# docker run -it --name wapor -p 8888:8888 -v /d/20190904-Training_Oct:/notebooks wapor/jupyter
+# docker pull quanpan302/ihe_projects_wateraccounting
+# docker build -t quanpan302/ihe_projects_wateraccounting .
+# docker run -it --name wa -p 8888:8888 -v /d/WaterAccounting:/notebooks quanpan302/ihe_projects_wateraccounting
 # docker system prune -f && docker volume prune -f && docker container prune -f
 
 FROM osgeo/gdal:ubuntu-full-latest

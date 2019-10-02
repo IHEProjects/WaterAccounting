@@ -92,7 +92,7 @@ def encrypt_cfg(path='', file='config.yml', password='WaterAccounting'):
         >>> import os
         >>> from wateraccounting.Collect.credential import encrypt_cfg
         >>> path = os.path.join(os.getcwd(), 'tests', 'data')
-        >>> file = 'config-example.yml'
+        >>> file = 'config-test.yml'
         >>> password = 'WaterAccounting'
         >>> key = encrypt_cfg(path, file, password)
         >>> key.decode('utf8')
@@ -132,7 +132,7 @@ def decrypt_cfg(path='', file='config.yml-encrypted', password='WaterAccounting'
         >>> import os
         >>> from wateraccounting.Collect.credential import decrypt_cfg
         >>> path = os.path.join(os.getcwd(), 'tests', 'data')
-        >>> file = 'config-example.yml-encrypted'
+        >>> file = 'config-test.yml-encrypted'
         >>> password = 'WaterAccounting'
         >>> config = decrypt_cfg(path, file, password)
         >>> type(config)

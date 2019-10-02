@@ -25,8 +25,8 @@ __path_data = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'data')
 
 def test_credential():
     path = __path_data
-    file_org = 'config-example.yml'
-    file_enc = 'config-example.yml-encrypted'
+    file_org = 'config-test.yml'
+    file_enc = 'config-test.yml-encrypted'
     password = 'WaterAccounting'
 
     key1 = credential.get_key(password)
@@ -41,7 +41,7 @@ def test_credential():
 
 def test_collect_Accounts():
     path = __path_data
-    file = 'config-example.yml-encrypted'
+    file = 'config-test.yml-encrypted'
     password = 'WaterAccounting'
 
     assert collect.Accounts(path, file, password, 'FTP_WA_GUESS') == {

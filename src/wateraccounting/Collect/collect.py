@@ -67,7 +67,7 @@ def Accounts(path='', file='config.yml', password='WaterAccounting', Type=None):
         >>> import os
         >>> from wateraccounting.Collect.collect import Accounts
         >>> path = os.path.join(os.getcwd(), 'tests', 'data')
-        >>> file = 'config-example.yml-encrypted'
+        >>> file = 'config-test.yml-encrypted'
         >>> password = 'WaterAccounting'
 
         >>> user = Accounts(path, file, password, Type='test')
