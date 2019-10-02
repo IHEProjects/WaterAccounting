@@ -44,8 +44,8 @@ def get_key(password='WaterAccounting'):
 
     Returns:
       bytes: A URL-safe base64-encoded 32-byte key.
-        This must be kept secret.
-        Anyone with this key is able to create and read messages.
+      This must be kept secret.
+      Anyone with this key is able to create and read messages.
 
     :Example:
 
@@ -84,8 +84,8 @@ def encrypt_cfg(path='', file='config.yml', password='WaterAccounting'):
 
     Returns:
       bytes: A URL-safe base64-encoded 32-byte key.
-        This must be kept secret.
-        Anyone with this key is able to create and read messages.
+      This must be kept secret.
+      Anyone with this key is able to create and read messages.
 
     :Example:
 
@@ -125,7 +125,7 @@ def decrypt_cfg(path='', file='config.yml-encrypted', password='WaterAccounting'
       password (str): Default value is "WaterAccounting".
 
     Returns:
-      string: Decrypted Yaml data.
+      str: Decrypted Yaml data.
 
     :Example:
 

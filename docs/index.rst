@@ -8,15 +8,15 @@ From the root of the project, run::
 
     python setup.py --version
 
+Unit test, run::
+
+    python setup.py test
+
 Read the Docs, run::
 
     python setup.py doctest
 
     python setup.py docs
-
-Unit test, run::
-
-    python setup.py test
 
 PyPI upload, run ``setup.py``::
 

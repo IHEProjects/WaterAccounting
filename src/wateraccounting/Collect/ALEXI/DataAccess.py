@@ -26,6 +26,7 @@ The data is available between ``2003-01-01 till 2014-12-31``.
 """
 # General modules
 import os
+import sys
 import glob
 import math
 import datetime
@@ -35,6 +36,26 @@ from ftplib import FTP
 
 # Water Accounting Modules
 import wateraccounting.Collect.core as core
+
+
+# Global Variables
+# this = sys.modules[__name__]
+
+
+def _get_user():
+    """Get user information from `config.yml-encrypted`
+
+    Returns:
+      dict: {'username': '', 'password': ''}.
+    """
+    path = os.getcwd()
+    file = 'config.yml-encrypted'
+    password = 'WaterAccounting'
+    print(path)
+
+    user = core.Accounts(path, file, password, Type='FTP_WA')
+
+    return user
 
 
 def DownloadData(Dir, Startdate, Enddate, latlim, lonlim, TimeStep, Waitbar):
@@ -167,11 +188,10 @@ def Download_ALEXI_from_WA_FTP(local_filename, DirFile, filename,
     """
 
     # Collect account and FTP information
-    user = core.Accounts(Type='FTP_WA')
+    ftpserver = "ftp.wateraccounting.unesco-ihe.org"
+    user = _get_user()
     username = user['username']
     password = user['password']
-
-    ftpserver = "ftp.wateraccounting.unesco-ihe.org"
 
     # Download data from FTP
     ftp = FTP(ftpserver)

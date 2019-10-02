@@ -18,7 +18,11 @@ Before use this module, set account information in the `Collect/config.yml` file
 
 .. note::
 
-    config.yml is in **"src/wateraccounting/Collect"** module.
+    Create `config.yml` under root folder of the project,
+    based on the `config-example.yml`.
+
+    Run `Collect.credential.encrypt_cfg(path, file, password)`
+    to generate `config.yml-encrypted` file.
 """
 import os
 import sys
