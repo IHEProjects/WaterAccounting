@@ -16,6 +16,13 @@ virtualenv:
 
 ########################################
 # GDAL
+# - GDALVERSION="1.11.5" PROJVERSION="4.8.0"
+# - GDALVERSION="2.0.3"  PROJVERSION="4.9.3"
+# - GDALVERSION="2.1.4"  PROJVERSION="4.9.3"
+# - GDALVERSION="2.2.4"  PROJVERSION="4.9.3"
+# - GDALVERSION="2.3.3"  PROJVERSION="4.9.3"
+# - GDALVERSION="2.4.2"  PROJVERSION="4.9.3"
+# - GDALVERSION="3.0.1"  PROJVERSION="6.1.1"
 ########################################
 env:
   global:
@@ -26,13 +33,6 @@ env:
     - PROJINST=$HOME/gdalinstall
     - PROJBUILD=$HOME/projbuild
   matrix:
-    #- GDALVERSION="1.11.5" PROJVERSION="4.8.0"
-    #- GDALVERSION="2.0.3"  PROJVERSION="4.9.3"
-    #- GDALVERSION="2.1.4"  PROJVERSION="4.9.3"
-    #- GDALVERSION="2.2.4"  PROJVERSION="4.9.3"
-    #- GDALVERSION="2.3.3"  PROJVERSION="4.9.3"
-    #- GDALVERSION="2.4.2"  PROJVERSION="4.9.3"
-    #- GDALVERSION="3.0.1"  PROJVERSION="6.1.1"
     - GDALVERSION="master" PROJVERSION="6.1.1"
 
 matrix:
