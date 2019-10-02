@@ -6,7 +6,9 @@ sudo: false
 language: python
 
 python:
+  - "3.5"
   - "3.6"
+  - "3.7"
 
 virtualenv:
   system_site_packages: false
@@ -29,8 +31,10 @@ env:
     # - GDALVERSION="2.2.4"  PROJVERSION="4.9.3"
     - GDALVERSION="2.3.3"  PROJVERSION="4.9.3"
     - GDALVERSION="2.4.2"  PROJVERSION="4.9.3"
+    - GDALVERSION="3.0.1"  PROJVERSION="6.1.1" DISTRIB="ubuntu" TOX_PYTHON_VERSION="py35" COVERAGE="true"
     - GDALVERSION="3.0.1"  PROJVERSION="6.1.1" DISTRIB="ubuntu" TOX_PYTHON_VERSION="py36" COVERAGE="true"
-    - GDALVERSION="master" PROJVERSION="6.1.1" DISTRIB="ubuntu" TOX_PYTHON_VERSION="py36" COVERAGE="true"
+    - GDALVERSION="3.0.1"  PROJVERSION="6.1.1" DISTRIB="ubuntu" TOX_PYTHON_VERSION="py37" COVERAGE="true"
+    - GDALVERSION="master" PROJVERSION="6.1.1"
 
 matrix:
   fast_finish: true
@@ -42,7 +46,7 @@ matrix:
   allow_failures:
     - env: GDALVERSION="2.3.3"  PROJVERSION="4.9.3"
     - env: GDALVERSION="2.4.2"  PROJVERSION="4.9.3"
-    # - env: GDALVERSION="master" PROJVERSION="6.1.1"
+    - env: GDALVERSION="master" PROJVERSION="6.1.1"
 
 # GDAL
 addons:
