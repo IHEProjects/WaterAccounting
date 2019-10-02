@@ -1,6 +1,6 @@
 .. -*- mode: rst -*-
 
-|Travis|_ |ReadTheDocs|_ |DockerHub|_
+|Travis|_ |ReadTheDocs|_ |DockerHub|_ |PyPI|_
 
 .. |Travis| image:: https://travis-ci.org/IHEProjects/WaterAccounting.svg?branch=master
 .. _Travis: https://travis-ci.org/IHEProjects/WaterAccounting
@@ -10,6 +10,9 @@
 
 .. |DockerHub| image:: https://img.shields.io/docker/cloud/build/quanpan302/ihe_projects_wateraccounting
 .. _DockerHub: https://hub.docker.com/r/quanpan302/ihe_projects_wateraccounting
+
+.. |PyPI| image:: https://img.shields.io/pypi/v/WaterAccounting
+.. _PyPI: https://pypi.org/project/WaterAccounting/
 
 WaterAccounting
 ===============
