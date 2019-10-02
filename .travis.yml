@@ -35,35 +35,28 @@ env:
     #- GDALVERSION="3.0.1"  PROJVERSION="6.1.1"
     - GDALVERSION="master" PROJVERSION="6.1.1"
 
-jobs:
-  include:
-    - if: python = 3.6
-      env: DISTRIB="ubuntu" TOX_PYTHON_VERSION="py36" COVERAGE="true"
-    - if: python = 3.7
-      env: DISTRIB="ubuntu" TOX_PYTHON_VERSION="py37" COVERAGE="true"
-
 matrix:
   fast_finish: true
 
-#  include:
-#    - python: 3.6
-#      env: GDALVERSION="2.3.3"  PROJVERSION="4.9.3" DISTRIB="ubuntu" TOX_PYTHON_VERSION="py36" COVERAGE="true"
-#    - python: 3.6
-#      env: GDALVERSION="2.4.2"  PROJVERSION="4.9.3" DISTRIB="ubuntu" TOX_PYTHON_VERSION="py36" COVERAGE="true"
-#    - python: 3.6
-#      env: GDALVERSION="3.0.1"  PROJVERSION="6.1.1" DISTRIB="ubuntu" TOX_PYTHON_VERSION="py36" COVERAGE="true"
-#
-#    - python: 3.7
-#      env: GDALVERSION="2.3.3"  PROJVERSION="4.9.3" DISTRIB="ubuntu" TOX_PYTHON_VERSION="py37" COVERAGE="true"
-#    - python: 3.7
-#      env: GDALVERSION="2.4.2"  PROJVERSION="4.9.3" DISTRIB="ubuntu" TOX_PYTHON_VERSION="py37" COVERAGE="true"
-#    - python: 3.7
-#      env: GDALVERSION="3.0.1"  PROJVERSION="6.1.1" DISTRIB="ubuntu" TOX_PYTHON_VERSION="py37" COVERAGE="true"
-#
-#    - python: 3.6
-#      env: DISTRIB="conda" PYTHON_VERSION="3.6" COVERAGE="false"
-#    - python: 3.7
-#      env: DISTRIB="conda" PYTHON_VERSION="3.7" COVERAGE="false"
+  include:
+    - python: 3.6
+      env: GDALVERSION="2.3.3"  PROJVERSION="4.9.3" DISTRIB="ubuntu" TOX_PYTHON_VERSION="py36" COVERAGE="true"
+    - python: 3.6
+      env: GDALVERSION="2.4.2"  PROJVERSION="4.9.3" DISTRIB="ubuntu" TOX_PYTHON_VERSION="py36" COVERAGE="true"
+    - python: 3.6
+      env: GDALVERSION="3.0.1"  PROJVERSION="6.1.1" DISTRIB="ubuntu" TOX_PYTHON_VERSION="py36" COVERAGE="true"
+
+    - python: 3.7
+      env: GDALVERSION="2.3.3"  PROJVERSION="4.9.3" DISTRIB="ubuntu" TOX_PYTHON_VERSION="py37" COVERAGE="true"
+    - python: 3.7
+      env: GDALVERSION="2.4.2"  PROJVERSION="4.9.3" DISTRIB="ubuntu" TOX_PYTHON_VERSION="py37" COVERAGE="true"
+    - python: 3.7
+      env: GDALVERSION="3.0.1"  PROJVERSION="6.1.1" DISTRIB="ubuntu" TOX_PYTHON_VERSION="py37" COVERAGE="true"
+
+    - python: 3.6
+      env: DISTRIB="conda" PYTHON_VERSION="3.6" COVERAGE="false"
+    - python: 3.7
+      env: DISTRIB="conda" PYTHON_VERSION="3.7" COVERAGE="false"
 
   # GDAL
   allow_failures:
@@ -73,7 +66,7 @@ matrix:
 addons:
   apt:
     packages:
-    #- libgnutls28-dev
+    - libgnutls28-dev
     - libhdf5-serial-dev
     - libgdal-dev
     - libatlas-dev
