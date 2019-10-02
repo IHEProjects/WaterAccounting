@@ -22,7 +22,7 @@ des
     `<https://nitratine.net/blog/post/encryption-and-decryption-in-python/>`_
 """
 import os
-import sys
+# import sys
 import base64
 from cryptography.fernet import Fernet
 from cryptography.hazmat.backends import default_backend
