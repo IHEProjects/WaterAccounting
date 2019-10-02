@@ -2,15 +2,15 @@
 # Read more under http://docs.travis-ci.com/user/build-configuration/
 # THIS SCRIPT IS SUPPOSED TO BE AN EXAMPLE. MODIFY IT ACCORDING TO YOUR NEEDS!
 
-# sudo: false
-dist: trusty
+sudo: false
+#dist: trusty
 
 language: python
 
-python:
-  - "3.5"
-  - "3.6"
-  - "3.7"
+#python:
+#  - "3.5"
+#  - "3.6"
+#  - "3.7"
 
 virtualenv:
   system_site_packages: false
@@ -27,23 +27,25 @@ env:
     - PROJINST=$HOME/gdalinstall
     - PROJBUILD=$HOME/projbuild
   matrix:
-    # - GDALVERSION="1.11.5" PROJVERSION="4.8.0"
-    # - GDALVERSION="2.0.3"  PROJVERSION="4.9.3"
-    # - GDALVERSION="2.1.4"  PROJVERSION="4.9.3"
-    # - GDALVERSION="2.2.4"  PROJVERSION="4.9.3"
+    #- GDALVERSION="1.11.5" PROJVERSION="4.8.0"
+    #- GDALVERSION="2.0.3"  PROJVERSION="4.9.3"
+    #- GDALVERSION="2.1.4"  PROJVERSION="4.9.3"
+    #- GDALVERSION="2.2.4"  PROJVERSION="4.9.3"
     - GDALVERSION="2.3.3"  PROJVERSION="4.9.3"
     - GDALVERSION="2.4.2"  PROJVERSION="4.9.3"
-    - GDALVERSION="3.0.1"  PROJVERSION="6.1.1" DISTRIB="ubuntu" TOX_PYTHON_VERSION="py35" COVERAGE="true"
-    - GDALVERSION="3.0.1"  PROJVERSION="6.1.1" DISTRIB="ubuntu" TOX_PYTHON_VERSION="py36" COVERAGE="true"
-    - GDALVERSION="3.0.1"  PROJVERSION="6.1.1" DISTRIB="ubuntu" TOX_PYTHON_VERSION="py37" COVERAGE="true"
+    - GDALVERSION="3.0.1"  PROJVERSION="6.1.1"
     - GDALVERSION="master" PROJVERSION="6.1.1"
 
 matrix:
   fast_finish: true
-  # include:
-    # - python: 3.6
-    #   env: DISTRIB="ubuntu" TOX_PYTHON_VERSION="py36" COVERAGE="true"
-    # - env: DISTRIB="conda" PYTHON_VERSION="3.6" COVERAGE="false"
+  include:
+    - python: 3.5
+      env: DISTRIB="ubuntu" TOX_PYTHON_VERSION="py35" COVERAGE="true"
+    - python: 3.6
+      env: DISTRIB="ubuntu" TOX_PYTHON_VERSION="py36" COVERAGE="true"
+    - python: 3.7
+      env: DISTRIB="ubuntu" TOX_PYTHON_VERSION="py37" COVERAGE="true"
+    #- env: DISTRIB="conda" PYTHON_VERSION="3.6" COVERAGE="false"
   # GDAL
   allow_failures:
     - env: GDALVERSION="2.3.3"  PROJVERSION="4.9.3"
@@ -54,7 +56,7 @@ matrix:
 addons:
   apt:
     packages:
-    # - libgnutls28-dev
+    #- libgnutls28-dev
     - libhdf5-serial-dev
     - libgdal-dev
     - libatlas-dev
@@ -72,9 +74,9 @@ before_install:
   - export GDAL_DATA=$GDALINST/gdal-$GDALVERSION/share/gdal
   - export PROJ_LIB=$GDALINST/gdal-$GDALVERSION/share/proj
 
-# install:
-  # - source tests/travis_install.sh
-  # - pip install -r requirements.txt
+#install:
+  #- source tests/travis_install.sh
+  #- pip install -r requirements.txt
   # ^  DEPRECATION WARNING:
   # The automatic creation of a `requirements.txt` file is deprecated.
   # See `Dependency Management` in the docs for other options.
