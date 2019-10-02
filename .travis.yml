@@ -2,7 +2,9 @@
 # Read more under http://docs.travis-ci.com/user/build-configuration/
 # THIS SCRIPT IS SUPPOSED TO BE AN EXAMPLE. MODIFY IT ACCORDING TO YOUR NEEDS!
 
-sudo: false
+# sudo: false
+dist: trusty
+
 language: python
 
 python:
@@ -52,7 +54,7 @@ matrix:
 addons:
   apt:
     packages:
-    - libgnutls28-dev
+    # - libgnutls28-dev
     - libhdf5-serial-dev
     - libgdal-dev
     - libatlas-dev
