@@ -151,8 +151,8 @@ def DownloadData(Dir, Startdate, Enddate, latlim, lonlim, TimeStep, Waitbar):
     if Waitbar == 1:
         amount = 0
         collect.WaitBar(amount, total_amount,
-                     prefix='Progress:', suffix='Complete',
-                     length=50)
+                        prefix='Progress:', suffix='Complete',
+                        length=50)
 
     if TimeStep == 'weekly':
         ALEXI_weekly(Date, Enddate, output_folder, latlim, lonlim, Year, Waitbar,
@@ -264,8 +264,8 @@ def ALEXI_daily(Dates, output_folder, latlim, lonlim, Waitbar, total_amount, Tim
         if Waitbar == 1:
             amount += 1
             collect.WaitBar(amount, total_amount,
-                         prefix='Progress:', suffix='Complete',
-                         length=50)
+                            prefix='Progress:', suffix='Complete',
+                            length=50)
 
     os.chdir(output_folder)
     re = glob.glob("*.dat")
