@@ -26,7 +26,7 @@ The data is available between ``2003-01-01 till 2014-12-31``.
 """
 # General modules
 import os
-import sys
+# import sys
 import glob
 import math
 import datetime
@@ -105,7 +105,7 @@ def DownloadData(Dir, Startdate, Enddate, latlim, lonlim, TimeStep, Waitbar):
     # Make a panda timestamp of the date
     try:
         Enddate = pd.Timestamp(Enddate)
-    except:
+    except BaseException:
         Enddate = Enddate
 
     if TimeStep == 'weekly':
@@ -196,16 +196,16 @@ def Download_ALEXI_from_WA_FTP(local_filename, DirFile, filename,
     # Download data from FTP
     ftp = FTP(ftpserver)
     ftp.login(username, password)
-    if TimeStep is "weekly":
+    if TimeStep == "weekly":
         directory = "/WaterAccounting/Data_Satellite/Evaporation/ALEXI/World/"
-    if TimeStep is "daily":
+    if TimeStep == "daily":
         directory = "/WaterAccounting/Data_Satellite/Evaporation/ALEXI/World_05182018/"
     ftp.cwd(directory)
     lf = open(local_filename, "wb")
     ftp.retrbinary("RETR " + filename, lf.write)
     lf.close()
 
-    if TimeStep is "daily":
+    if TimeStep == "daily":
         collect.Extract_Data_gz(local_filename, os.path.splitext(local_filename)[0])
 
         raw_data = np.fromfile(os.path.splitext(local_filename)[0], dtype="<f4")
@@ -214,7 +214,7 @@ def Download_ALEXI_from_WA_FTP(local_filename, DirFile, filename,
         data = dataset[yID[0]:yID[1], xID[0]:xID[1]] / 2.45  # mm/d
         data[data < 0] = -9999
 
-    if TimeStep is "weekly":
+    if TimeStep == "weekly":
         # Open global ALEXI data
         dataset = collect.Open_tiff_array(local_filename)
 
@@ -256,8 +256,9 @@ def ALEXI_daily(Dates, output_folder, latlim, lonlim, Waitbar, total_amount, Tim
                 Download_ALEXI_from_WA_FTP(local_filename, DirFile, filename, lonlim,
                                            latlim, yID, xID, TimeStep)
             except BaseException as err:
-                print("Was not able to download file with date %s" % Date)
                 print(err)
+            else:
+                print("Was not able to download file with date %s" % Date)
 
         # Adjust waitbar
         if Waitbar == 1:
@@ -309,7 +310,9 @@ def ALEXI_weekly(Date, Enddate, output_folder, latlim, lonlim, Year, Waitbar,
             try:
                 Download_ALEXI_from_WA_FTP(local_filename, DirFile, filename, lonlim,
                                            latlim, yID, xID, TimeStep)
-            except:
+            except BaseException as err:
+                print(err)
+            else:
                 print("Was not able to download file with date %s" % Date)
 
         # Current DOY

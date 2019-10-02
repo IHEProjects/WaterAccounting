@@ -136,14 +136,14 @@ def Open_tiff_array(file='', band=''):
     """
     Data = np.ndarray
 
-    if band is '':
+    if band == '':
         band = 1
 
     f = gdal.Open(file)
     if f is not None:
         try:
             Data = f.GetRasterBand(band).ReadAsArray()
-        except AttributeError as err:
+        except AttributeError:
             raise AttributeError('Band {band} not found.'.format(band=band))
     else:
         raise IOError('{} not found.'.format(file))
@@ -230,12 +230,16 @@ def Save_as_tiff(name='', data='', geo='', projection=''):
             else:
                 try:
                     srse.ImportFromEPSG(int(projection))
-                except:
+                except BaseException as err:
+                    print(err)
+                else:
                     srse.ImportFromWkt(projection)
-        except:
+        except BaseException:
             try:
                 srse.ImportFromEPSG(int(projection))
-            except:
+            except BaseException as err:
+                print(err)
+            else:
                 srse.ImportFromWkt(projection)
 
     dst_ds.SetProjection(srse.ExportToWkt())
