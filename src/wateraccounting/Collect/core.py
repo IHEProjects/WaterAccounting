@@ -24,16 +24,17 @@ Before use this module, set account information in the `Collect/config.yml` file
 
     TODO, 20190931, QPan, core.py
 
-    1. Create config.yml contains
+    1. cryptography config.yml file
+    2. Create config.yml contains
         a. Portal name
         b. Portal url
         c. Portal data name, directory
         d. Portal data range, resolution
         e. Portal data file name template on ftp
         f. Portal data file name template on local
-    2. Add exception to check data meta information
-    3. Estimate data size and tiff location to decided download or not
-    4. Add unit test, and test datasets under "tests/data"
+    3. Add exception to check data meta information
+    4. Estimate data size and tiff location to decided download or not
+    5. Add unit test, and test datasets under "tests/data"
 """
 # General modules
 import os
