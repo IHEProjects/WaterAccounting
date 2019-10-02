@@ -11,10 +11,10 @@ Subpackages
 Submodules
 ----------
 
-wateraccounting.Collect.core module
------------------------------------
+wateraccounting.Collect.collect module
+--------------------------------------
 
-.. automodule:: wateraccounting.Collect.core
+.. automodule:: wateraccounting.Collect.collect
     :members:
     :undoc-members:
     :show-inheritance:

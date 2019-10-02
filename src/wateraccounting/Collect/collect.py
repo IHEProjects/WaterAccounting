@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-**core**
+**collect**
 
 `Restrictions`
 
@@ -14,7 +14,7 @@ Before use this module, set account information in the `Collect/config.yml` file
 **Examples:**
 ::
 
-    from wateraccounting.Collect import core
+    from wateraccounting.Collect import collect
 
 .. note::
 
@@ -65,7 +65,7 @@ def Accounts(path='', file='config.yml', password='WaterAccounting', Type=None):
     :Example:
 
         >>> import os
-        >>> from wateraccounting.Collect.core import Accounts
+        >>> from wateraccounting.Collect.collect import Accounts
         >>> path = os.path.join(os.getcwd(), 'tests', 'data')
         >>> file = 'config-example.yml-encrypted'
         >>> password = 'WaterAccounting'
@@ -114,7 +114,7 @@ def Open_tiff_array(file='', band=''):
     :Example:
 
         >>> import os
-        >>> from wateraccounting.Collect.core import Open_tiff_array
+        >>> from wateraccounting.Collect.collect import Open_tiff_array
         >>> path = os.path.join(os.getcwd(), 'tests', 'data', 'BigTIFF')
         >>> file = os.path.join(path, 'Classic.tif')
         >>> data = Open_tiff_array(file, 1)
@@ -162,7 +162,7 @@ def Extract_Data_gz(file, outfile):
 
     :Example:
 
-        >>> from wateraccounting.Collect.core import Extract_Data_gz
+        >>> from wateraccounting.Collect.collect import Extract_Data_gz
     """
 
     with gzip.GzipFile(file, 'rb') as zf:
@@ -188,8 +188,8 @@ def Save_as_tiff(name='', data='', geo='', projection=''):
 
     :Example:
 
-        >>> from wateraccounting.Collect.core import Open_tiff_array
-        >>> from wateraccounting.Collect.core import Save_as_tiff
+        >>> from wateraccounting.Collect.collect import Open_tiff_array
+        >>> from wateraccounting.Collect.collect import Save_as_tiff
         >>> path = os.path.join(os.getcwd(), 'tests', 'data', 'BigTIFF')
         >>> file = os.path.join(path, 'Classic.tif')
         >>> test = os.path.join(path, 'test.tif')

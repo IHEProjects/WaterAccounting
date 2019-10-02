@@ -35,7 +35,7 @@ import pandas as pd
 from ftplib import FTP
 
 # Water Accounting Modules
-import wateraccounting.Collect.core as core
+import wateraccounting.Collect.collect as collect
 
 
 # Global Variables
@@ -53,7 +53,7 @@ def _get_user():
     password = 'WaterAccounting'
     print(path)
 
-    user = core.Accounts(path, file, password, Type='FTP_WA')
+    user = collect.Accounts(path, file, password, Type='FTP_WA')
 
     return user
 
@@ -150,7 +150,7 @@ def DownloadData(Dir, Startdate, Enddate, latlim, lonlim, TimeStep, Waitbar):
     total_amount = len(Dates)
     if Waitbar == 1:
         amount = 0
-        core.WaitBar(amount, total_amount,
+        collect.WaitBar(amount, total_amount,
                      prefix='Progress:', suffix='Complete',
                      length=50)
 
@@ -206,7 +206,7 @@ def Download_ALEXI_from_WA_FTP(local_filename, DirFile, filename,
     lf.close()
 
     if TimeStep is "daily":
-        core.Extract_Data_gz(local_filename, os.path.splitext(local_filename)[0])
+        collect.Extract_Data_gz(local_filename, os.path.splitext(local_filename)[0])
 
         raw_data = np.fromfile(os.path.splitext(local_filename)[0], dtype="<f4")
         dataset = np.flipud(np.resize(raw_data, [3000, 7200]))
@@ -216,7 +216,7 @@ def Download_ALEXI_from_WA_FTP(local_filename, DirFile, filename,
 
     if TimeStep is "weekly":
         # Open global ALEXI data
-        dataset = core.Open_tiff_array(local_filename)
+        dataset = collect.Open_tiff_array(local_filename)
 
         # Clip extend out of world data
         data = dataset[yID[0]:yID[1], xID[0]:xID[1]]
@@ -224,7 +224,7 @@ def Download_ALEXI_from_WA_FTP(local_filename, DirFile, filename,
 
     # make geotiff file
     geo = [lonlim[0], 0.05, 0, latlim[1], 0, -0.05]
-    core.Save_as_tiff(name=DirFile, data=data, geo=geo, projection="WGS84")
+    collect.Save_as_tiff(name=DirFile, data=data, geo=geo, projection="WGS84")
     return
 
 
@@ -262,7 +262,7 @@ def ALEXI_daily(Dates, output_folder, latlim, lonlim, Waitbar, total_amount, Tim
         # Adjust waitbar
         if Waitbar == 1:
             amount += 1
-            core.WaitBar(amount, total_amount,
+            collect.WaitBar(amount, total_amount,
                          prefix='Progress:', suffix='Complete',
                          length=50)
 

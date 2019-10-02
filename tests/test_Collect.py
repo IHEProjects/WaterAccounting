@@ -7,7 +7,7 @@ import numpy as np
 import pytest
 
 import wateraccounting.Collect.credential as credential
-import wateraccounting.Collect.core as core
+import wateraccounting.Collect.collect as collect
 import wateraccounting.Collect.ALEXI as ALEXI
 
 __author__ = "Quan Pan"
@@ -39,40 +39,40 @@ def test_credential():
     assert type(conf) == str
 
 
-def test_core_Accounts():
+def test_collect_Accounts():
     path = __path_data
     file = 'config-example.yml-encrypted'
     password = 'WaterAccounting'
 
-    assert core.Accounts(path, file, password, 'FTP_WA_GUESS') == \
-           {'username': 'wateraccountingguest',
-            'password': 'W@t3r@ccounting'}
+    assert collect.Accounts(path, file, password, 'FTP_WA_GUESS') == {
+        'username': 'wateraccountingguest',
+        'password': 'W@t3r@ccounting'}
 
     with pytest.raises(KeyError, match=r".* not .*"):
-        core.Accounts(path, file, password, 'test')
+        collect.Accounts(path, file, password, 'test')
 
 
-def test_core_Open_tiff_array():
+def test_collect_Open_tiff_array():
     path = __path_data
     file = os.path.join(path, 'BigTIFF', 'Classic.tif')
-    data = core.Open_tiff_array(file, 1)
+    data = collect.Open_tiff_array(file, 1)
 
     assert type(data) == np.ndarray
     assert data.shape == (64, 64)
 
     with pytest.raises(AttributeError, match=r".* not .*"):
-        core.Open_tiff_array(file, 99)
+        collect.Open_tiff_array(file, 99)
 
 
-def test_core_Save_as_tiff():
+def test_collect_Save_as_tiff():
     path = __path_data
 
     file_in = os.path.join(path, 'BigTIFF', 'Classic.tif')
-    data = core.Open_tiff_array(file_in, 1)
+    data = collect.Open_tiff_array(file_in, 1)
 
     file_out = os.path.join(path, 'BigTIFF', 'test.tif')
-    core.Save_as_tiff(file_out, data, [0, 1, 0, 0, 1, 0], "WGS84")
-    data = core.Open_tiff_array(file_out, 1)
+    collect.Save_as_tiff(file_out, data, [0, 1, 0, 0, 1, 0], "WGS84")
+    data = collect.Open_tiff_array(file_out, 1)
 
     assert type(data) == np.ndarray
     assert data.shape == (64, 64)
@@ -83,5 +83,6 @@ def test_ALEXI():
 
     ALEXI.DataAccess.DownloadData(Dir=os.path.join(__path_data, 'download'),
                                   Startdate='2005-01-01', Enddate='2005-02-01',
-                                  latlim=[50, 54], lonlim=[3, 7], TimeStep='daily',
+                                  latlim=[50, 54], lonlim=[3, 7],
+                                  TimeStep='daily',
                                   Waitbar=1)
