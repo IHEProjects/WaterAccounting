@@ -24,11 +24,12 @@ cftime==1.0.3.4
 Click==7.0
 click-plugins==1.1.1
 cryptography==2.6.1
-dask==2.4.0
-dask-glm==0.2.0
-dask-ml==1.0.0
-dask-tensorflow==0.0.2
-dask-xgboost==0.1.7
+"dask[complete]"
+# dask==2.4.0
+# dask-glm==0.2.0
+# dask-ml==1.0.0
+# dask-tensorflow==0.0.2
+# dask-xgboost==0.1.7
 jupyterlab==1.1.4
 netCDF4==1.5.2
 numba==0.45.1

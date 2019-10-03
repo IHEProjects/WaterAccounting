@@ -75,6 +75,7 @@ if [ "$GDALVERSION" = "master" ]; then
         cd swig/python
         python setup.py build
         python setup.py install
+        python setup.py bdist_egg
     fi
 
 else
@@ -116,6 +117,7 @@ else
         cd swig/python
         python setup.py build
         python setup.py install
+        python setup.py bdist_egg
     fi
 fi
 
