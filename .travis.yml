@@ -83,23 +83,35 @@ before_install:
 
   # Export PYTHON_VERSION, TOX_PYTHON_VERSION
   - echo "$TRAVIS_PYTHON_VERSION";
-    if [ "$TRAVIS_PYTHON_VERSION" == "3.6" ]; then
-      export PYTHON_VERSION="3.6";
-      export TOX_PYTHON_VERSION="py36";
-    elif [ "$TRAVIS_PYTHON_VERSION" == "3.7" ]; then
-      export PYTHON_VERSION="3.7";
-      export TOX_PYTHON_VERSION="py37";
-    else
-      echo \"Unknown TRAVIS_PYTHON_VERSION\";
-      exit 1;
-    fi
+    export PYTHON_VERSION="$TRAVIS_PYTHON_VERSION";
+    case "$TRAVIS_PYTHON_VERSION" in
+      3.5)
+        export TOX_PYTHON_VERSION="py35"
+        ;;
+      3.6)
+        export TOX_PYTHON_VERSION="py36"
+        ;;
+      3.7)
+        export TOX_PYTHON_VERSION="py37"
+        ;;
+      *)
+        echo "Unknown TRAVIS_PYTHON_VERSION $TRAVIS_PYTHON_VERSION"
+        exit 1
+        ;;
+    esac
   # Export COVERAGE
   - echo "$DISTRIB";
-    if [ "$DISTRIB" == "conda" ]; then
-      export COVERAGE="false";
-    else
-      export COVERAGE="true";
-    fi
+    case "$DISTRIB" in
+      ubuntu)
+        export COVERAGE="true"
+        ;;
+      conda)
+        export COVERAGE="false"
+        ;;
+      *)
+        export COVERAGE="false"
+        ;;
+    esac
   # Install pip and wheel
   - python -m pip install -U pip
   - python -m pip install wheel
@@ -133,6 +145,8 @@ install:
 
   - "GDAL_CONFIG=$GDALINST/gdal-$GDALVERSION/bin/gdal-config python -m pip install --upgrade --force-reinstall --no-use-pep517 -e .[test,plot]"
   - "python -m pip install coveralls>=1.1"
+  # Install GDAL python binding from PyPI
+  - "python -m pip install GDAL==$GDALVERSION"
   - python -m pip list
 
 before_script:
