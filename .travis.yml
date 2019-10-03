@@ -85,12 +85,15 @@ before_install:
   - echo "$TRAVIS_PYTHON_VERSION";
     case "$TRAVIS_PYTHON_VERSION" in
       3.5)
+        export PYTHON_VERSION="3.5"
         export TOX_PYTHON_VERSION="py35"
         ;;
       3.6)
+        export PYTHON_VERSION="3.6"
         export TOX_PYTHON_VERSION="py36"
         ;;
       3.7)
+        export PYTHON_VERSION="3.7"
         export TOX_PYTHON_VERSION="py37"
         ;;
       *)
@@ -98,7 +101,6 @@ before_install:
         exit 1
         ;;
     esac
-    export PYTHON_VERSION="$TRAVIS_PYTHON_VERSION";
   # Export COVERAGE
   - echo "$DISTRIB";
     case "$DISTRIB" in

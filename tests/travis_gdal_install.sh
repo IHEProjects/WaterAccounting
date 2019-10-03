@@ -71,6 +71,7 @@ if [ "$GDALVERSION" = "master" ]; then
         make -s -j 2
         make install
 
+        which python
         cd swig/python
         python setup.py build
         python setup.py install
@@ -111,6 +112,7 @@ else
         make -s -j 2
         make install
 
+        which python
         cd swig/python
         python setup.py build
         python setup.py install
