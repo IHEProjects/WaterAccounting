@@ -26,8 +26,11 @@ virtualenv:
 ########################################
 env:
   global:
+    - DISTRIB="ubuntu"
+
     - PIP_WHEEL_DIR=$HOME/.cache/pip/wheels
     - PIP_FIND_LINKS=file://$HOME/.cache/pip/wheels
+
     - GDALINST=$HOME/gdalinstall
     - GDALBUILD=$HOME/gdalbuild
     - PROJINST=$HOME/gdalinstall
@@ -39,24 +42,8 @@ matrix:
   fast_finish: true
 
   include:
-    - python: 3.6
-      env: GDALVERSION="2.3.3"  PROJVERSION="4.9.3" DISTRIB="ubuntu" TOX_PYTHON_VERSION="py36" COVERAGE="true"
-    - python: 3.6
-      env: GDALVERSION="2.4.2"  PROJVERSION="4.9.3" DISTRIB="ubuntu" TOX_PYTHON_VERSION="py36" COVERAGE="true"
-    - python: 3.6
-      env: GDALVERSION="3.0.1"  PROJVERSION="6.1.1" DISTRIB="ubuntu" TOX_PYTHON_VERSION="py36" COVERAGE="true"
-
-    - python: 3.7
-      env: GDALVERSION="2.3.3"  PROJVERSION="4.9.3" DISTRIB="ubuntu" TOX_PYTHON_VERSION="py37" COVERAGE="true"
-    - python: 3.7
-      env: GDALVERSION="2.4.2"  PROJVERSION="4.9.3" DISTRIB="ubuntu" TOX_PYTHON_VERSION="py37" COVERAGE="true"
-    - python: 3.7
-      env: GDALVERSION="3.0.1"  PROJVERSION="6.1.1" DISTRIB="ubuntu" TOX_PYTHON_VERSION="py37" COVERAGE="true"
-
-    - python: 3.6
-      env: DISTRIB="conda" PYTHON_VERSION="3.6" COVERAGE="false"
-    - python: 3.7
-      env: DISTRIB="conda" PYTHON_VERSION="3.7" COVERAGE="false"
+    - env: PYTHON_VERSION="3.6" DISTRIB="conda" GDALVERSION="3.0.1"  PROJVERSION="6.1.1"
+    - env: PYTHON_VERSION="3.7" DISTRIB="conda" GDALVERSION="3.0.1"  PROJVERSION="6.1.1"
 
   # GDAL
   allow_failures:
@@ -94,8 +81,12 @@ before_install:
 # GDAL
 install:
   - "which python"
+  - "if [ \"$PYTHON_VERSION\" == \"3.6\" ]; then export TOX_PYTHON_VERSION=\"py36\"; elif [ \"$PYTHON_VERSION\" == \"3.7\" ]; then export TOX_PYTHON_VERSION=\"py37\"; else echo \"Unknown PYTHON_VERSION\"; exit 1; fi"
+  - "if [ \"$DISTRIB\" == \"conda\" ]; then export COVERAGE=\"false\"; else export COVERAGE=\"true\"; fi"
   - "if [ \"$GDALVERSION\" == \"master\" -o $(gdal-config --version) == \"$GDALVERSION\" ]; then echo \"Using gdal $GDALVERSION\"; else echo \"NOT using gdal $GDALVERSION as expected; aborting\"; exit 1; fi"
   #- "python -m pip wheel -r requirements-dev.txt"
+  # ^  NOTE:
+  # To use wheel install, can speed up the installation.
   - "python -m pip install -r requirements-dev.txt"
   - "GDAL_CONFIG=$GDALINST/gdal-$GDALVERSION/bin/gdal-config python -m pip install --upgrade --force-reinstall --no-use-pep517 -e .[test,plot]"
   - "python -m pip list"
