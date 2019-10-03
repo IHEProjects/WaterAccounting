@@ -10,7 +10,7 @@ language: python
 python:
   - "2.7"
   # ^ DEPRECATION WARNING:
-  # Not support in 2020.
+  # Will not support in 2020.
   - "3.5"
   - "3.6"
   - "3.7"
@@ -82,6 +82,10 @@ before_install:
   # Export PYTHON_VERSION, TOX_PYTHON_VERSION
   - echo "$TRAVIS_PYTHON_VERSION";
     case "$TRAVIS_PYTHON_VERSION" in
+      2.7)
+        export PYTHON_VERSION="3.5"
+        export TOX_PYTHON_VERSION="py35"
+        ;;
       3.5)
         export PYTHON_VERSION="3.5"
         export TOX_PYTHON_VERSION="py35"
