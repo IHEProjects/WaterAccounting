@@ -74,7 +74,8 @@ before_install:
   # Export PYTHON_VERSION
   - export PYTHON_VERSION=`python -c 'import platform; major, minor, patch = platform.python_version_tuple(); print("{}.{}".format(major,minor))'`
   # Check PYTHON_VERSION
-  - if [ "$PYTHON_VERSION" == "3.6" ]; then
+  - echo "$PYTHON_VERSION";
+    if [ "$PYTHON_VERSION" == "3.6" ]; then
       export TOX_PYTHON_VERSION=py36;
     elif [ "$PYTHON_VERSION" == "3.7" ]; then
       export TOX_PYTHON_VERSION=py37;
@@ -83,7 +84,8 @@ before_install:
       exit 1;
     fi
   # Check $DISTRIB
-  - if [ "$DISTRIB" == "conda" ]; then
+  - echo "$DISTRIB";
+    if [ "$DISTRIB" == "conda" ]; then
       export COVERAGE="false";
     else
       export COVERAGE="true";
