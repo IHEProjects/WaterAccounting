@@ -3,7 +3,7 @@
 # THIS SCRIPT IS SUPPOSED TO BE AN EXAMPLE. MODIFY IT ACCORDING TO YOUR NEEDS!
 
 #sudo: false
-dist: trusty
+#dist: trusty
 
 language: python
 
@@ -15,8 +15,8 @@ python:
   - "3.6"
   - "3.7"
 
-virtualenv:
-  system_site_packages: true
+#virtualenv:
+#  system_site_packages: false
 
 #################################################
 # GDAL                                          #
@@ -33,6 +33,8 @@ virtualenv:
 #################################################
 env:
   global:
+    - DISTRIB="ubuntu"
+
     - PIP_WHEEL_DIR=$HOME/.cache/pip/wheels
     - PIP_FIND_LINKS=file://$HOME/.cache/pip/wheels
 
@@ -106,6 +108,9 @@ before_install:
   # Export COVERAGE
   - echo "$DISTRIB";
     case "$DISTRIB" in
+      ubuntu)
+        export COVERAGE="true"
+        ;;
       conda)
         export COVERAGE="false"
         ;;
