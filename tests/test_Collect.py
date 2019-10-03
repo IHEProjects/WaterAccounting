@@ -84,7 +84,7 @@ def test_ALEXI():
     timestep = 'daily'
     assert timestep == ALEXI.DataAccess.DownloadData(
         Dir=os.path.join(__path_data, 'download'),
-        Startdate='2005-01-01', Enddate='2005-02-01',
+        Startdate='2005-02-01', Enddate='2005-03-01',
         latlim=[50, 54], lonlim=[3, 7],
         TimeStep=timestep,
         Waitbar=1)
@@ -92,7 +92,7 @@ def test_ALEXI():
     timestep = 'weekly'
     assert timestep == ALEXI.DataAccess.DownloadData(
         Dir=os.path.join(__path_data, 'download'),
-        Startdate='2005-01-01', Enddate='2005-02-01',
+        Startdate='2005-02-01', Enddate='2005-03-01',
         latlim=[50, 54], lonlim=[3, 7],
         TimeStep=timestep,
         Waitbar=1)

@@ -24,7 +24,6 @@ for the period of ``1 January - 7 January``.
     ALEXI.weekly(Dir='C:/Temp/', Startdate='2003-12-01', Enddate='2004-01-20',
                latlim=[-10, 30], lonlim=[-20, -10])
 """
-
 from .daily import main as daily
 from .weekly import main as weekly
 from .monthly import main as monthly

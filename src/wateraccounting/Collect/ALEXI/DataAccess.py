@@ -318,9 +318,7 @@ def ALEXI_weekly(Date, Enddate, output_folder, latlim, lonlim, Year, Waitbar,
             try:
                 Download_ALEXI_from_WA_FTP(local_filename, DirFile, filename, lonlim,
                                            latlim, yID, xID, TimeStep)
-            except BaseException as err:
-                print(err)
-            else:
+            except BaseException:
                 print("Was not able to download file with date %s" % Date)
 
         # Current DOY
@@ -340,10 +338,10 @@ def ALEXI_weekly(Date, Enddate, output_folder, latlim, lonlim, Year, Waitbar,
 
         # Adjust waitbar
         if Waitbar == 1:
-            import wateraccounting.Functions.Start.WaitbarConsole as WaitbarConsole
             amount += 1
-            WaitbarConsole.printWaitBar(amount, total_amount, prefix='Progress:',
-                                        suffix='Complete', length=50)
+            collect.WaitBar(amount, total_amount,
+                            prefix='Progress:', suffix='Complete',
+                            length=50)
 
         # Check if this file must be downloaded
         Date = pd.Timestamp(Date)
