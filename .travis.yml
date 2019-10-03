@@ -49,9 +49,9 @@ matrix:
 
   include:
     - python: 3.6
-      env: PYTHON_VERSION="3.6" DISTRIB="conda" GDALVERSION="3.0.1"  PROJVERSION="6.1.1"
+      env: DISTRIB="conda" GDALVERSION="3.0.1"  PROJVERSION="6.1.1"
     - python: 3.7
-      env: PYTHON_VERSION="3.7" DISTRIB="conda" GDALVERSION="3.0.1"  PROJVERSION="6.1.1"
+      env: DISTRIB="conda" GDALVERSION="3.0.1"  PROJVERSION="6.1.1"
 
   # GDAL
   allow_failures:
@@ -71,10 +71,10 @@ addons:
 # GDAL
 before_install:
   - which python
-  - export PYTHON_VERSION=`python -c 'import sys; major, minor, patch = platform.python_version_tuple(); print(major.minor)'`
-  - if [ "${PYTHON_VERSION}" == "3.6" ]; then
+  - export PYTHON_VERSION=`python -c 'import platform; major, minor, patch = platform.python_version_tuple(); print(major.minor)'`
+  - if [ "$PYTHON_VERSION" == "3.6" ]; then
       export TOX_PYTHON_VERSION=py36;
-    elif [ "{$PYTHON_VERSION}" == "3.7" ]; then
+    elif [ "$PYTHON_VERSION" == "3.7" ]; then
       export TOX_PYTHON_VERSION=py37;
     else
       echo \"Unknown PYTHON_VERSION\";
