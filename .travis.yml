@@ -83,7 +83,6 @@ before_install:
 
   # Export PYTHON_VERSION, TOX_PYTHON_VERSION
   - echo "$TRAVIS_PYTHON_VERSION";
-    export PYTHON_VERSION="$TRAVIS_PYTHON_VERSION";
     case "$TRAVIS_PYTHON_VERSION" in
       3.5)
         export TOX_PYTHON_VERSION="py35"
@@ -99,6 +98,7 @@ before_install:
         exit 1
         ;;
     esac
+    export PYTHON_VERSION="$TRAVIS_PYTHON_VERSION";
   # Export COVERAGE
   - echo "$DISTRIB";
     case "$DISTRIB" in
@@ -146,7 +146,7 @@ install:
   - "GDAL_CONFIG=$GDALINST/gdal-$GDALVERSION/bin/gdal-config python -m pip install --upgrade --force-reinstall --no-use-pep517 -e .[test,plot]"
   - "python -m pip install coveralls>=1.1"
   # Install GDAL python binding from PyPI
-  - "python -m pip install GDAL==$GDALVERSION"
+  #- "python -m pip install GDAL==$GDALVERSION"
   - python -m pip list
 
 before_script:

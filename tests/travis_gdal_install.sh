@@ -70,6 +70,10 @@ if [ "$GDALVERSION" = "master" ]; then
         ./configure --prefix=$GDALINST/gdal-$GDALVERSION $GDALOPTS $PROJOPT
         make -s -j 2
         make install
+
+        cd swig/python
+        python setup.py build
+        python setup.py install
     fi
 
 else
@@ -106,6 +110,10 @@ else
         ./configure --prefix=$GDALINST/gdal-$GDALVERSION $GDALOPTS $PROJOPT
         make -s -j 2
         make install
+
+        cd swig/python
+        python setup.py build
+        python setup.py install
     fi
 fi
 
