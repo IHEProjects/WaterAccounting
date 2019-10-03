@@ -8,6 +8,10 @@ sudo: false
 language: python
 
 python:
+  #- "2.7"
+  # ^ DEPRECATION WARNING:
+  # Not support in 2020.
+  - "3.5"
   - "3.6"
   - "3.7"
 
@@ -71,10 +75,14 @@ addons:
 # GDAL
 before_install:
   - which python
+  #- echo "$TRAVIS_PYTHON_VERSION";
+  #- echo "$PYTHON_VERSION";
+
   # Export PYTHON_VERSION
   #- export PYTHON_VERSION=`python -c 'import platform; major, minor, patch = platform.python_version_tuple(); print("{}.{}".format(major,minor))'`
-  # Check PYTHON_VERSION
-  - echo "$TRAVIS_PYTHON_VERSION ";
+
+  # Export PYTHON_VERSION, TOX_PYTHON_VERSION
+  - echo "$TRAVIS_PYTHON_VERSION";
     if [ "$TRAVIS_PYTHON_VERSION" == "3.6" ]; then
       export PYTHON_VERSION="3.6";
       export TOX_PYTHON_VERSION="py36";
@@ -85,7 +93,7 @@ before_install:
       echo \"Unknown TRAVIS_PYTHON_VERSION\";
       exit 1;
     fi
-  # Check $DISTRIB
+  # Export COVERAGE
   - echo "$DISTRIB";
     if [ "$DISTRIB" == "conda" ]; then
       export COVERAGE="false";
@@ -95,35 +103,37 @@ before_install:
   # Install pip and wheel
   - python -m pip install -U pip
   - python -m pip install wheel
-  # Export
+  # Export PATH, LD_LIBRARY_PATH for GDAL
   - export PATH=$GDALINST/gdal-$GDALVERSION/bin:$PATH
   - export LD_LIBRARY_PATH=$GDALINST/gdal-$GDALVERSION/lib:$LD_LIBRARY_PATH
   # Install test tools
   - . ./tests/travis_proj_install.sh
-  # Install GDAL version
+  # Install GDAL
   - travis_wait 20 . ./tests/travis_gdal_install.sh
-  # Export GDAL
+  # Export GDAL_DATA, PROJ_LIB
   - export GDAL_DATA=$GDALINST/gdal-$GDALVERSION/share/gdal
   - export PROJ_LIB=$GDALINST/gdal-$GDALVERSION/share/proj
 
+# PyScaffold
 #install:
   #- source tests/travis_install.sh
   #- pip install -r requirements.txt
-  # ^  DEPRECATION WARNING:
-  # The automatic creation of a `requirements.txt` file is deprecated.
-  # See `Dependency Management` in the docs for other options.
+  ## ^  DEPRECATION WARNING:
+  ## The automatic creation of a `requirements.txt` file is deprecated.
+  ## See `Dependency Management` in the docs for other options.
 
 # GDAL
 install:
   - "if [ \"$GDALVERSION\" == \"master\" -o $(gdal-config --version) == \"$GDALVERSION\" ]; then echo \"Using gdal $GDALVERSION\"; else echo \"NOT using gdal $GDALVERSION as expected; aborting\"; exit 1; fi"
 
+  - python -m pip wheel -r requirements-dev.txt
+  # ^ NOTE:
   # To use wheel install, can speed up the installation.
-  - "python -m pip wheel -r requirements-dev.txt"
-  - "python -m pip install -r requirements-dev.txt"
+  - python -m pip install -r requirements-dev.txt
 
   - "GDAL_CONFIG=$GDALINST/gdal-$GDALVERSION/bin/gdal-config python -m pip install --upgrade --force-reinstall --no-use-pep517 -e .[test,plot]"
   - "python -m pip install coveralls>=1.1"
-  - "python -m pip list"
+  - python -m pip list
 
 before_script:
   - git config --global user.email "quanpan302@hotmail.com"

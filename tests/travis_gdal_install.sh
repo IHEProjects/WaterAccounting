@@ -3,43 +3,42 @@
 # originally contributed by @rbuffat to Toblerity/Fiona
 set -e
 
-GDALOPTS="  --with-geos \
-            --with-expat \
-            --without-libtool \
-            --with-libz=internal \
-            --with-libtiff=internal \
-            --with-geotiff=internal \
-            --without-gif \
-            --without-pg \
-            --without-grass \
-            --without-libgrass \
+GDALOPTS="  --without-bsb \
             --without-cfitsio \
-            --without-pcraster \
-            --with-netcdf \
-            --with-png=internal \
-            --with-jpeg=internal \
-            --without-gif \
-            --without-ogdi \
+            --with-curl \
+            --without-ecw \
+            --with-expat \
             --without-fme \
+            --without-gif \
+            --with-geos \
+            --with-geotiff=internal \
+            --without-grass \
+            --without-grib \
             --without-hdf4 \
             --with-hdf5 \
-            --without-jasper \
-            --without-ecw \
-            --without-kakadu \
-            --without-mrsid \
-            --without-jp2mrsid \
-            --without-bsb \
-            --without-grib \
-            --without-mysql \
             --without-ingres \
-            --without-xerces \
-            --without-odbc \
-            --with-curl \
-            --without-sqlite3 \
             --without-idb \
-            --without-sde \
+            --without-jasper \
+            --without-jp2mrsid \
+            --with-jpeg=internal \
+            --without-kakadu \
+            --without-libgrass \
+            --with-libtiff=internal \
+            --without-libtool \
+            --with-libz=internal \
+            --without-mrsid \
+            --without-mysql \
+            --with-netcdf \
+            --without-odbc \
+            --without-ogdi \
+            --without-pcraster \
             --without-perl \
-            --without-python"
+            --without-pg \
+            --with-png=internal \
+            --with-python \
+            --without-sde \
+            --without-sqlite3 \
+            --without-xerces"
 
 # Create build dir if not exists
 if [ ! -d "$GDALBUILD" ]; then
@@ -109,6 +108,9 @@ else
         make install
     fi
 fi
+
+# Test gdal
+gdalinfo --version
 
 # change back to travis build dir
 cd $TRAVIS_BUILD_DIR
