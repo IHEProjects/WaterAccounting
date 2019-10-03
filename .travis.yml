@@ -14,16 +14,19 @@ python:
 virtualenv:
   system_site_packages: false
 
-########################################
-# GDAL
-# - GDALVERSION="1.11.5" PROJVERSION="4.8.0"
-# - GDALVERSION="2.0.3"  PROJVERSION="4.9.3"
-# - GDALVERSION="2.1.4"  PROJVERSION="4.9.3"
-# - GDALVERSION="2.2.4"  PROJVERSION="4.9.3"
-# - GDALVERSION="2.3.3"  PROJVERSION="4.9.3"
-# - GDALVERSION="2.4.2"  PROJVERSION="4.9.3"
-# - GDALVERSION="3.0.1"  PROJVERSION="6.1.1"
-########################################
+#################################################
+# GDAL                                          #
+# ============================================= #
+#    - GDALVERSION="1.11.5" PROJVERSION="4.8.0" #
+#    - GDALVERSION="2.0.3"  PROJVERSION="4.9.3" #
+#    - GDALVERSION="2.1.4"  PROJVERSION="4.9.3" #
+#    - GDALVERSION="2.2.4"  PROJVERSION="4.9.3" #
+#    - GDALVERSION="2.3.3"  PROJVERSION="4.9.3" #
+#    - GDALVERSION="2.4.2"  PROJVERSION="4.9.3" #
+#    - GDALVERSION="3.0.1"  PROJVERSION="6.1.1" #
+#                                               #
+#    - GDALVERSION="master" PROJVERSION="6.1.1" #
+#################################################
 env:
   global:
     - DISTRIB="ubuntu"
@@ -36,6 +39,9 @@ env:
     - PROJINST=$HOME/gdalinstall
     - PROJBUILD=$HOME/projbuild
   matrix:
+    - GDALVERSION="2.3.3"  PROJVERSION="4.9.3"
+    - GDALVERSION="2.4.2"  PROJVERSION="4.9.3"
+    - GDALVERSION="3.0.1"  PROJVERSION="6.1.1"
     - GDALVERSION="master" PROJVERSION="6.1.1"
 
 matrix:
@@ -62,12 +68,19 @@ addons:
 
 # GDAL
 before_install:
+  - "which python"
+  - "if [ \"$PYTHON_VERSION\" == \"3.6\" ]; then export TOX_PYTHON_VERSION=\"py36\"; elif [ \"$PYTHON_VERSION\" == \"3.7\" ]; then export TOX_PYTHON_VERSION=\"py37\"; else echo \"Unknown PYTHON_VERSION\"; exit 1; fi"
+  - "if [ \"$DISTRIB\" == \"conda\" ]; then export COVERAGE=\"false\"; else export COVERAGE=\"true\"; fi"
+
   - python -m pip install -U pip
   - python -m pip install wheel
+
   - export PATH=$GDALINST/gdal-$GDALVERSION/bin:$PATH
   - export LD_LIBRARY_PATH=$GDALINST/gdal-$GDALVERSION/lib:$LD_LIBRARY_PATH
+
   - . ./tests/travis_proj_install.sh
   - travis_wait 20 . ./tests/travis_gdal_install.sh
+
   - export GDAL_DATA=$GDALINST/gdal-$GDALVERSION/share/gdal
   - export PROJ_LIB=$GDALINST/gdal-$GDALVERSION/share/proj
 
@@ -80,14 +93,13 @@ before_install:
 
 # GDAL
 install:
-  - "which python"
-  - "if [ \"$PYTHON_VERSION\" == \"3.6\" ]; then export TOX_PYTHON_VERSION=\"py36\"; elif [ \"$PYTHON_VERSION\" == \"3.7\" ]; then export TOX_PYTHON_VERSION=\"py37\"; else echo \"Unknown PYTHON_VERSION\"; exit 1; fi"
-  - "if [ \"$DISTRIB\" == \"conda\" ]; then export COVERAGE=\"false\"; else export COVERAGE=\"true\"; fi"
   - "if [ \"$GDALVERSION\" == \"master\" -o $(gdal-config --version) == \"$GDALVERSION\" ]; then echo \"Using gdal $GDALVERSION\"; else echo \"NOT using gdal $GDALVERSION as expected; aborting\"; exit 1; fi"
+
   #- "python -m pip wheel -r requirements-dev.txt"
   # ^  NOTE:
   # To use wheel install, can speed up the installation.
   - "python -m pip install -r requirements-dev.txt"
+
   - "GDAL_CONFIG=$GDALINST/gdal-$GDALVERSION/bin/gdal-config python -m pip install --upgrade --force-reinstall --no-use-pep517 -e .[test,plot]"
   - "python -m pip list"
 
