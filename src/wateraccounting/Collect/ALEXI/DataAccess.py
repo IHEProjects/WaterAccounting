@@ -71,9 +71,12 @@ def DownloadData(Dir, Startdate, Enddate, latlim, lonlim, TimeStep, Waitbar):
       Enddate (str): 'yyyy-mm-dd'.
       latlim (list): [ymin, ymax] (values must be between -60 and 70).
       lonlim (list): [xmin, xmax] (values must be between -180 and 180).
-      TimeStep (str): 'daily' or 'weekly'  (by using here monthly,
+      TimeStep (str): 'daily' or 'weekly' (by using here monthly,
         an older dataset will be used).
       Waitbar (bool): Waitbar.
+
+    Returns:
+      str: TimeStep, 'daily' or 'weekly'.
 
     :Example:
 
@@ -155,12 +158,19 @@ def DownloadData(Dir, Startdate, Enddate, latlim, lonlim, TimeStep, Waitbar):
                         length=50)
 
     if TimeStep == 'weekly':
-        ALEXI_weekly(Date, Enddate, output_folder, latlim, lonlim, Year, Waitbar,
+        ALEXI_weekly(Date, Enddate,
+                     output_folder, latlim, lonlim,
+                     Year,
+                     Waitbar,
                      total_amount, TimeStep)
+        return 'weekly'
 
     if TimeStep == 'daily':
-        ALEXI_daily(Dates, output_folder, latlim, lonlim, Waitbar, total_amount,
-                    TimeStep)
+        ALEXI_daily(Dates,
+                    output_folder, latlim, lonlim,
+                    Waitbar,
+                    total_amount, TimeStep)
+        return 'daily'
 
 
 def Download_ALEXI_from_WA_FTP(local_filename, DirFile, filename,
@@ -255,9 +265,7 @@ def ALEXI_daily(Dates, output_folder, latlim, lonlim, Waitbar, total_amount, Tim
             try:
                 Download_ALEXI_from_WA_FTP(local_filename, DirFile, filename, lonlim,
                                            latlim, yID, xID, TimeStep)
-            except BaseException as err:
-                print(err)
-            else:
+            except BaseException:
                 print("Was not able to download file with date %s" % Date)
 
         # Adjust waitbar

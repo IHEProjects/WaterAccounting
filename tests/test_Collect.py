@@ -79,10 +79,20 @@ def test_collect_Save_as_tiff():
 
 
 def test_ALEXI():
-    assert ALEXI.__version__ == '0.1'
+    # assert ALEXI.__version__ == '0.1'
 
-    ALEXI.DataAccess.DownloadData(Dir=os.path.join(__path_data, 'download'),
-                                  Startdate='2005-01-01', Enddate='2005-02-01',
-                                  latlim=[50, 54], lonlim=[3, 7],
-                                  TimeStep='daily',
-                                  Waitbar=1)
+    timestep = 'daily'
+    assert timestep == ALEXI.DataAccess.DownloadData(
+        Dir=os.path.join(__path_data, 'download'),
+        Startdate='2005-01-01', Enddate='2005-02-01',
+        latlim=[50, 54], lonlim=[3, 7],
+        TimeStep=timestep,
+        Waitbar=1)
+
+    timestep = 'weekly'
+    assert timestep == ALEXI.DataAccess.DownloadData(
+        Dir=os.path.join(__path_data, 'download'),
+        Startdate='2005-01-01', Enddate='2005-02-01',
+        latlim=[50, 54], lonlim=[3, 7],
+        TimeStep=timestep,
+        Waitbar=1)

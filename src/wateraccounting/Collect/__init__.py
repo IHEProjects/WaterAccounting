@@ -35,4 +35,13 @@ Get user account and password, from your ``config.yml`` file.
     5. Add unit test, and test datasets under "tests/data"
     6. read `__version__` from setup.py (git tag)
 """
-__version__ = '0.0.1'
+from pkg_resources import get_distribution, DistributionNotFound
+
+try:
+    # Change here if project is renamed and does not equal the package name
+    dist_name = 'WaterAccounting'
+    __version__ = get_distribution(dist_name).version
+except DistributionNotFound:
+    __version__ = 'unknown'
+finally:
+    del get_distribution, DistributionNotFound
