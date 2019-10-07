@@ -60,6 +60,7 @@ matrix:
   # GDAL
   allow_failures:
     - env: GDALVERSION="master" PROJVERSION="6.1.1"
+    - env: DISTRIB="conda" GDALVERSION="3.0.1"  PROJVERSION="6.1.1"
 
 # GDAL
 addons:
