@@ -149,10 +149,7 @@ install:
   # To use wheel install, can speed up the installation.
   - python -m pip install -r requirements-dev.txt
 
-  #- "GDAL_CONFIG=$GDALINST/gdal-$GDALVERSION/bin/gdal-config python -m pip install --upgrade --force-reinstall --no-use-pep517 -e .[test,plot]"
   - "GDAL_CONFIG=$GDALINST/gdal-$GDALVERSION/bin/gdal-config python -m pip install --upgrade --force-reinstall --no-use-pep517 -e ."
-  # Install GDAL python binding from PyPI
-  #- "python -m pip install GDAL==$GDALVERSION"
   - python -m pip list
 
 before_script:
@@ -162,7 +159,8 @@ before_script:
 script:
   - python -c 'import numpy;print(numpy.__version__);'
   - python setup.py develop
-  - tox
+  #- tox
+  - python setup.py test
   - |
     if [[ "$COVERAGE" == "true" ]]; then
       pre-commit install
