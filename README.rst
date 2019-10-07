@@ -1,6 +1,9 @@
 .. -*- mode: rst -*-
 
-|Travis|_ |ReadTheDocs|_ |DockerHub|_ |PyPI|_
+|CoverAlls|_ |Travis|_ |ReadTheDocs|_ |DockerHub|_ |PyPI|_
+
+.. |CoverAlls| image:: https://coveralls.io/repos/github/IHEProjects/WaterAccounting/badge.svg?branch=master
+.. _CoverAlls: https://coveralls.io/github/IHEProjects/WaterAccounting?branch=master
 
 .. |Travis| image:: https://travis-ci.org/IHEProjects/WaterAccounting.svg?branch=master
 .. _Travis: https://travis-ci.org/IHEProjects/WaterAccounting
