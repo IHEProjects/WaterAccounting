@@ -177,8 +177,10 @@ after_script:
   - travis-cleanup
 
 cache:
-  pip: true
   directories:
+    - $GDALBUILD
     - $GDALINST
+    - $PROJBUILD
+    - $PROJINST
     - $HOME/.cache/pip
     - $HOME/miniconda

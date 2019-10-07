@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-**DataAccess**
+**ALEXI.DataAccess**
 
 `Restrictions`
 
@@ -17,12 +17,11 @@ The data is available between ``2003-01-01 till 2014-12-31``.
 **Examples:**
 ::
 
-    from wateraccounting.Collect import ALEXI
-    ALEXI.DataAccess.DownloadData(Dir=os.path.join(__dir_data, 'download'),
-                                  Startdate='2005-01-01', Enddate='2005-02-01',
-                                  latlim=[50, 54], lonlim=[3, 7], TimeStep='daily',
-                                  Waitbar=1)
-
+    from wateraccounting.Collect.ALEXI.DataAccess import ALEXI
+    ALEXI.DownloadData(Dir=os.path.join(__dir_data, 'download'),
+                       Startdate='2005-01-01', Enddate='2005-02-01',
+                       latlim=[50, 54], lonlim=[3, 7], TimeStep='daily',
+                       Waitbar=1)
 """
 # General modules
 import os
@@ -30,9 +29,10 @@ import os
 import glob
 import math
 import datetime
+from ftplib import FTP
+
 import numpy as np
 import pandas as pd
-from ftplib import FTP
 
 # Water Accounting Modules
 import wateraccounting.Collect.collect as collect
@@ -43,7 +43,7 @@ import wateraccounting.Collect.collect as collect
 
 
 def _get_user():
-    """Get user information from `config.yml-encrypted`
+    """Get user information from ``config.yml-encrypted``
 
     Returns:
       dict: {'username': '', 'password': ''}.
@@ -196,7 +196,6 @@ def Download_ALEXI_from_WA_FTP(local_filename, DirFile, filename,
         >>> print('Example')
         Example
     """
-
     # Collect account and FTP information
     ftpserver = "ftp.wateraccounting.unesco-ihe.org"
     user = _get_user()

@@ -1,9 +1,16 @@
 # -*- coding: utf-8 -*-
+"""
+Created on Mon Aug 28 07:54:17 2017
+
+@author: tih
+"""
 import sys
 from wateraccounting.Collect.ALEXI.DataAccess import DownloadData
 
 
-def main(Dir, Startdate='', Enddate='', latlim=[-60, 70], lonlim=[-180, 180],
+def main(Dir,
+         Startdate='', Enddate='',
+         latlim=[-60, 70], lonlim=[-180, 180],
          Waitbar=1):
     """
     This function downloads daily ALEXI data
@@ -17,7 +24,9 @@ def main(Dir, Startdate='', Enddate='', latlim=[-60, 70], lonlim=[-180, 180],
     """
     print(
         '\nDownload daily ALEXI evapotranspiration data for the period %s till %s' % (
-            Startdate, Enddate))
+            Startdate, Enddate
+        )
+    )
 
     TimeStep = 'daily'
 

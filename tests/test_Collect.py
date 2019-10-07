@@ -8,7 +8,7 @@ import pytest
 
 import wateraccounting.Collect.credential as credential
 import wateraccounting.Collect.collect as collect
-import wateraccounting.Collect.ALEXI as ALEXI
+import wateraccounting.Collect.ALEXI.DataAccess as ALEXI
 
 __author__ = "Quan Pan"
 __copyright__ = "Quan Pan"
@@ -82,7 +82,7 @@ def test_ALEXI():
     # assert ALEXI.__version__ == '0.1'
 
     timestep = 'daily'
-    assert timestep == ALEXI.DataAccess.DownloadData(
+    assert timestep == ALEXI.DownloadData(
         Dir=os.path.join(__path_data, 'download'),
         Startdate='2005-02-01', Enddate='2005-03-01',
         latlim=[50, 54], lonlim=[3, 7],
@@ -90,7 +90,7 @@ def test_ALEXI():
         Waitbar=1)
 
     timestep = 'weekly'
-    assert timestep == ALEXI.DataAccess.DownloadData(
+    assert timestep == ALEXI.DownloadData(
         Dir=os.path.join(__path_data, 'download'),
         Startdate='2005-02-01', Enddate='2005-03-01',
         latlim=[50, 54], lonlim=[3, 7],

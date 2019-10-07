@@ -5,13 +5,15 @@ Created on Mon Aug 28 07:54:17 2017
 @author: tih
 """
 import sys
-from wateraccounting.Collect.ALEXI.DataAccess import DownloadData
+from wateraccounting.Collect.ASCAT.DataAccess import DownloadData
 
 
-def main(Dir, Startdate='', Enddate='', latlim=[-60, 70], lonlim=[-180, 180],
+def main(Dir,
+         Startdate='', Enddate='',
+         latlim=[-60, 70], lonlim=[-180, 180],
          Waitbar=1):
     """
-    This function downloads weekly ALEXI data
+    This function downloads daily ASCAT data
 
     Keyword arguments:
     Dir -- 'C:/file/to/path/'
@@ -21,13 +23,15 @@ def main(Dir, Startdate='', Enddate='', latlim=[-60, 70], lonlim=[-180, 180],
     lonlim -- [xmin, xmax] (values must be between -180 and 180)
     """
     print(
-        '\nDownload weekly ALEXI evapotranspiration data for the period %s till %s' % (
-            Startdate, Enddate))
+        '\nDownload daily ASCAT SWI data for the period %s till %s' % (
+            Startdate, Enddate
+        )
+    )
 
-    TimeStep = 'weekly'
+    # TimeStep = 'daily'
 
     # Download data
-    DownloadData(Dir, Startdate, Enddate, latlim, lonlim, TimeStep, Waitbar)
+    DownloadData(Dir, Startdate, Enddate, latlim, lonlim, Waitbar)
 
 
 if __name__ == '__main__':

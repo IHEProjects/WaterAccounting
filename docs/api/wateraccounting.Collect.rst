@@ -7,6 +7,7 @@ Subpackages
 .. toctree::
 
     wateraccounting.Collect.ALEXI
+    wateraccounting.Collect.ASCAT
 
 Submodules
 ----------
