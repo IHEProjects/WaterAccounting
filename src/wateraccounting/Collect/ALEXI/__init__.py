@@ -9,14 +9,16 @@ permission of the WA+ team due data restriction of the ALEXI developers.
 
 `Description`
 
-This package downloads ALEXI data from ``ftp.wateraccounting.unesco-ihe.org``.
+This package downloads ALEXI data from
+``ftp.wateraccounting.unesco-ihe.org``.
+
 Use the ALEXI.daily function to download
 and create weekly ALEXI images in Gtiff format.
 
 The data is available between ``2003-01-01 till 2015-12-31``.
 
 The output file with the name ``2003.01.01`` contains
-the total evaporation in ``mm`` for the period of ``1 January - 7 January``.
+the **total evaporation** in ``mm`` for the period of ``1 January - 7 January``.
 
 **Examples:**
 ::

@@ -39,7 +39,7 @@ Collect
 +------------+------------------------------------------+
 | MSWEP      | https://www.wateraccounting.org/         |
 +------------+------------------------------------------+
-| Copernicus | https://land.copernicus.vgt.vito.be/PDF/ |
+| Copernicus | https://land.copernicus.vgt.vito.be/     |
 +------------+------------------------------------------+
 | VITO       | https://www.vito-eodata.be/PDF/datapool/ |
 +------------+------------------------------------------+

@@ -2,17 +2,14 @@
 """
 **ALEXI.DataAccess**
 
-`Restrictions`
+This script collects ALEXI data from the UN-IHE FTP server.
 
-The data and this python file may not be distributed to others without
-permission of the WA+ team due data restriction of the ALEXI developers.
+The data has a monthly temporal resolution
+and a spatial resolution of ``0.05`` degree.
 
-`Description`
-
-This script collects ALEXI data from the UNESCO-IHE FTP server.
-The data has a monthly temporal resolution and a spatial resolution of ``0.05`` degree.
 The resulting tiff files are in the ``WGS84`` projection.
-The data is available between ``2003-01-01 till 2014-12-31``.
+
+The data is available between ``2003-01-01`` till ``2014-12-31``.
 
 **Examples:**
 ::

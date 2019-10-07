@@ -2,16 +2,13 @@
 """
 **ASCAT.DataAccess**
 
-`Restrictions`
-
-The data and this python file may not be distributed to others without
-permission of the WA+ team due data restriction of the ALEXI developers.
-
-`Description`
-
 This script collects ASCAT data from the VITO server.
-The data has a daily temporal resolution and a spatial resolution of ``0.25`` degree.
+
+The data has a daily temporal resolution
+and a spatial resolution of ``0.25`` degree.
+
 The resulting tiff files are in the ``WGS84`` projection.
+
 The data is available between ``2007-01-01`` till ``present``.
 
 **Examples:**
@@ -99,7 +96,7 @@ def DownloadData(Dir, Startdate, Enddate, latlim, lonlim, Waitbar):
     # Make a panda timestamp of the date
     try:
         Enddate = pd.Timestamp(Enddate)
-    except:
+    except BaseException:
         Enddate = Enddate
 
     # amount of Dates weekly
@@ -176,7 +173,8 @@ def Download_ASCAT_from_VITO(End_filename, output_folder_temp, Date, yID, xID):
     # Collect account and FTP information
     Link = "https://land.copernicus.vgt.vito.be/PDF/datapool" \
            "/Vegetation/Soil_Water/SWI_V3" \
-           "/%s/%s/%s/%s/%s"
+           "/%s/%s/%s" \
+           "/%s/%s"
     user = _get_user()
     username = user['username']
     password = user['password']
@@ -201,7 +199,7 @@ def Download_ASCAT_from_VITO(End_filename, output_folder_temp, Date, yID, xID):
     # Download the ASCAT data
     try:
         y = requests.get(URL, auth=HTTPBasicAuth(username, password))
-    except:
+    except BaseException:
         from requests.packages.urllib3.exceptions import InsecureRequestWarning
         requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
 
