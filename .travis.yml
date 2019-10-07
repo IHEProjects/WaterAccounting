@@ -180,4 +180,5 @@ cache:
   pip: true
   directories:
     - $GDALINST
+    - $HOME/.cache/pip
     - $HOME/miniconda
