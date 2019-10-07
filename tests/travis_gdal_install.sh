@@ -71,11 +71,11 @@ if [ "$GDALVERSION" = "master" ]; then
         make -s -j 2
         make install
 
-        which python
-        cd swig/python
-        python setup.py build
-        python setup.py install
-        python setup.py bdist_egg
+        # which python
+        # cd swig/python
+        # python setup.py build
+        # python setup.py install
+        # python setup.py bdist_egg
     fi
 
 else
@@ -113,16 +113,19 @@ else
         make -s -j 2
         make install
 
-        which python
-        cd swig/python
-        python setup.py build
-        python setup.py install
-        python setup.py bdist_egg
+        # which python
+        # cd swig/python
+        # python setup.py build
+        # python setup.py install
+        # python setup.py bdist_egg
     fi
 fi
 
 # Test gdal
+echo "=========="
 gdalinfo --version
+ls $GDALINST
+echo "=========="
 
 # change back to travis build dir
 cd $TRAVIS_BUILD_DIR
