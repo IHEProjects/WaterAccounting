@@ -160,8 +160,10 @@ before_script:
 script:
   - python -c 'import numpy;print(numpy.__version__);'
   - python setup.py develop
+
   #- tox
   - python setup.py test
+
   - |
     if [[ "$COVERAGE" == "true" ]]; then
       pre-commit install
