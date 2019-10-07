@@ -22,7 +22,6 @@ The data is available between ``2007-01-01`` till ``present``.
 """
 # General modules
 import os
-import sys
 import shutil
 import requests
 from requests.auth import HTTPBasicAuth
