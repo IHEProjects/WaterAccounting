@@ -22,6 +22,7 @@ The data is available between ``2007-01-01`` till ``present``.
 """
 # General modules
 import os
+import sys
 import shutil
 import requests
 from requests.auth import HTTPBasicAuth
@@ -45,17 +46,18 @@ def _get_user():
     Returns:
       dict: {'username': '', 'password': ''}.
     """
-    path = os.getcwd()
+    path = os.path.abspath(os.path.join(os.path.dirname(__file__),
+                                        '..', '..', '..', '..'))
     file = 'config.yml-encrypted'
     password = 'WaterAccounting'
-    print(path)
 
     user = collect.Accounts(path, file, password, Type='Copernicus')
+    # print(path, user)
 
     return user
 
 
-def DownloadData(Dir, Startdate, Enddate, latlim, lonlim, Waitbar):
+def DownloadData(Dir, Startdate, Enddate, latlim, lonlim, TimeStep, Waitbar):
     """Downloads ASCAT SWI data
 
     This scripts downloads ASCAT SWI data from the VITO server.
@@ -67,6 +69,8 @@ def DownloadData(Dir, Startdate, Enddate, latlim, lonlim, Waitbar):
       Enddate (str): 'yyyy-mm-dd'.
       latlim (list): [ymin, ymax] (values must be between -60 and 70).
       lonlim (list): [xmin, xmax] (values must be between -180 and 180).
+      TimeStep (str): 'daily' or 'weekly' (by using here monthly,
+        an older dataset will be used).
       Waitbar (bool): Waitbar.
 
     :Example:
@@ -107,7 +111,7 @@ def DownloadData(Dir, Startdate, Enddate, latlim, lonlim, Waitbar):
     if Waitbar == 1:
         amount = 0
         collect.WaitBar(amount, total_amount,
-                        prefix='Progress:', suffix='Complete',
+                        prefix='ASCAT:', suffix='Complete',
                         length=50)
 
     # Define directory and create it if not exists
@@ -145,22 +149,25 @@ def DownloadData(Dir, Startdate, Enddate, latlim, lonlim, Waitbar):
                 collect.Save_as_tiff(name=End_filename, data=data,
                                      geo=geo, projection="WGS84")
             except BaseException:
-                print("Was not able to download file with date %s" % Date)
+                print("\nWas not able to download file with date %s" % Date)
 
         # Adjust waitbar
         if Waitbar == 1:
             amount += 1
             collect.WaitBar(amount, total_amount,
-                            prefix='Progress:', suffix='Complete',
+                            prefix='ASCAT:', suffix='Complete',
                             length=50)
 
     # remove the temporary folder
-    shutil.rmtree(output_folder_temp)
+    # shutil.rmtree(output_folder_temp)
+
+    return 'daily'
 
 
 def Download_ASCAT_from_VITO(End_filename, output_folder_temp, Date, yID, xID):
-    """
-    This function retrieves ALEXI data for a given date from the
+    """Retrieves ASCAT data
+
+    This function retrieves ASCAT data for a given date from the
     ftp.wateraccounting.unesco-ihe.org server.
 
     Restrictions:

@@ -8,14 +8,16 @@ import pytest
 
 import wateraccounting.Collect.credential as credential
 import wateraccounting.Collect.collect as collect
+
 import wateraccounting.Collect.ALEXI.DataAccess as ALEXI
+import wateraccounting.Collect.ASCAT.DataAccess as ASCAT
 
 __author__ = "Quan Pan"
 __copyright__ = "Quan Pan"
 __license__ = "apache"
 
-__path = os.path.join(os.path.dirname(os.path.realpath(__file__)))
-__path_data = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'data')
+__path = os.path.dirname(os.path.realpath(__file__))
+__path_data = os.path.join(__path, 'data')
 
 
 # import wateraccounting.Collect as Collect
@@ -33,6 +35,7 @@ def test_credential():
     key2 = credential.encrypt_cfg(path, file_org, password)
     conf = credential.decrypt_cfg(path, file_enc, password)
 
+    key = credential.encrypt_cfg('', 'config.yml', 'WaterAccounting')
     assert len(key1) == 44
     assert len(key2) == 44
     assert key1.decode('utf8') == key2.decode('utf8')
@@ -80,19 +83,47 @@ def test_collect_Save_as_tiff():
 
 def test_ALEXI():
     # assert ALEXI.__version__ == '0.1'
+    path = os.path.join(__path_data, 'download')
 
     timestep = 'daily'
-    assert timestep == ALEXI.DownloadData(
-        Dir=os.path.join(__path_data, 'download'),
-        Startdate='2005-02-01', Enddate='2005-03-01',
+    ALEXI.DownloadData(
+        Dir=path,
+        Startdate='2007-02-01', Enddate='2007-03-01',
         latlim=[50, 54], lonlim=[3, 7],
         TimeStep=timestep,
         Waitbar=1)
+    nfiles = len(os.listdir(os.path.join(
+        __path_data, 'download',
+        'Evaporation', 'ALEXI', 'Daily')))
+    print(nfiles)
+    assert nfiles > 0
 
     timestep = 'weekly'
-    assert timestep == ALEXI.DownloadData(
-        Dir=os.path.join(__path_data, 'download'),
-        Startdate='2005-02-01', Enddate='2005-03-01',
+    ALEXI.DownloadData(
+        Dir=path,
+        Startdate='2007-02-01', Enddate='2007-03-01',
         latlim=[50, 54], lonlim=[3, 7],
         TimeStep=timestep,
         Waitbar=1)
+    nfiles = len(os.listdir(os.path.join(
+        path,
+        'Evaporation', 'ALEXI', 'Weekly')))
+    print(nfiles)
+    assert nfiles > 0
+
+
+def test_ASCAT():
+    # assert ASCAT.__version__ == '0.1'
+    path = os.path.join(__path_data, 'download')
+
+    ASCAT.DownloadData(
+        Dir=path,
+        Startdate='2007-02-01', Enddate='2007-03-01',
+        latlim=[50, 54], lonlim=[3, 7],
+        TimeStep='daily',
+        Waitbar=1)
+    nfiles = len(os.listdir(os.path.join(
+        path,
+        'SWI', 'ASCAT', 'Daily')))
+    print(nfiles)
+    assert nfiles > 0

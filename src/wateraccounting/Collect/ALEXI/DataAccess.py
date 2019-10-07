@@ -45,12 +45,13 @@ def _get_user():
     Returns:
       dict: {'username': '', 'password': ''}.
     """
-    path = os.getcwd()
+    path = os.path.abspath(os.path.join(os.path.dirname(__file__),
+                                        '..', '..', '..', '..'))
     file = 'config.yml-encrypted'
     password = 'WaterAccounting'
-    print(path)
 
     user = collect.Accounts(path, file, password, Type='FTP_WA')
+    # print(path, user)
 
     return user
 
@@ -151,7 +152,7 @@ def DownloadData(Dir, Startdate, Enddate, latlim, lonlim, TimeStep, Waitbar):
     if Waitbar == 1:
         amount = 0
         collect.WaitBar(amount, total_amount,
-                        prefix='Progress:', suffix='Complete',
+                        prefix='ALEXI:', suffix='Complete',
                         length=50)
 
     if TimeStep == 'weekly':
@@ -262,13 +263,13 @@ def ALEXI_daily(Dates, output_folder, latlim, lonlim, Waitbar, total_amount, Tim
                 Download_ALEXI_from_WA_FTP(local_filename, DirFile, filename, lonlim,
                                            latlim, yID, xID, TimeStep)
             except BaseException:
-                print("Was not able to download file with date %s" % Date)
+                print("\nWas not able to download file with date %s" % Date)
 
         # Adjust waitbar
         if Waitbar == 1:
             amount += 1
             collect.WaitBar(amount, total_amount,
-                            prefix='Progress:', suffix='Complete',
+                            prefix='ALEXI:', suffix='Complete',
                             length=50)
 
     os.chdir(output_folder)
@@ -315,7 +316,7 @@ def ALEXI_weekly(Date, Enddate, output_folder, latlim, lonlim, Year, Waitbar,
                 Download_ALEXI_from_WA_FTP(local_filename, DirFile, filename, lonlim,
                                            latlim, yID, xID, TimeStep)
             except BaseException:
-                print("Was not able to download file with date %s" % Date)
+                print("\nWas not able to download file with date %s" % Date)
 
         # Current DOY
         DOY = datetime.datetime.strptime(Datename,
@@ -336,7 +337,7 @@ def ALEXI_weekly(Date, Enddate, output_folder, latlim, lonlim, Year, Waitbar,
         if Waitbar == 1:
             amount += 1
             collect.WaitBar(amount, total_amount,
-                            prefix='Progress:', suffix='Complete',
+                            prefix='ALEXI:', suffix='Complete',
                             length=50)
 
         # Check if this file must be downloaded
