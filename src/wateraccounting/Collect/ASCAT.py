@@ -6,7 +6,7 @@
 `Restrictions`
 
 The data and this python file may not be distributed to others without
-permission of the WA+ team due data restriction of the ALEXI developers.
+permission of the WA+ team due data restriction of the ASCAT developers.
 
 `Description`
 
@@ -46,25 +46,6 @@ from . import collect
 
 # Global Variables
 # this = sys.modules[__name__]
-
-
-def _get_user():
-    """Get user information from ``config.yml-encrypted``
-
-    Returns:
-      dict: {'username': '', 'password': ''}.
-    """
-    path = os.path.abspath(
-        os.path.join(
-            os.path.dirname(__file__),
-            '..', '..', '..'))
-    file = 'config.yml-encrypted'
-    password = 'WaterAccounting'
-
-    user = collect.Accounts(path, file, password, Type='Copernicus')
-    # print(path, user)
-
-    return user
 
 
 def DownloadData(Dir, Startdate, Enddate, latlim, lonlim, TimeStep, Waitbar):
@@ -192,7 +173,7 @@ def Download_ASCAT_from_VITO(End_filename, output_folder_temp, Date, yID, xID):
            "/Vegetation/Soil_Water/SWI_V3" \
            "/%s/%s/%s" \
            "/%s/%s"
-    user = _get_user()
+    user = collect.get_user('Copernicus')
     username = user['username']
     password = user['password']
 

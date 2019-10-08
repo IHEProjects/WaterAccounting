@@ -1,0 +1,12 @@
+# level:
+#   1:
+#   2:
+
+message:
+  202:
+    msg: 'OK'
+    level: 1
+
+  404:
+    msg: 'Not Found'
+    level: 1

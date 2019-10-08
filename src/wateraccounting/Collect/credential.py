@@ -22,7 +22,6 @@ des
     `<https://nitratine.net/blog/post/encryption-and-decryption-in-python/>`_
 """
 import os
-# import sys
 import base64
 from cryptography.fernet import Fernet
 from cryptography.hazmat.backends import default_backend
@@ -30,121 +29,135 @@ from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 
 
-# Global Variables
-# this = sys.modules[__name__]
+class Credential:
+    """This Credential class
 
-
-def get_key(password='WaterAccounting'):
-    """Getting a key
-
-    This function fun.
-
-    Args:
-      password (str): Default value is "WaterAccounting".
-
-    Returns:
-      bytes: A URL-safe base64-encoded 32-byte key.
-      This must be kept secret.
-      Anyone with this key is able to create and read messages.
-
-    :Example:
-
-        >>> from wateraccounting.Collect.credential import get_key
-        >>> password = 'WaterAccounting'
-        >>> key = get_key(password)
-        >>> key.decode('utf8')
-        '3aQ3mbD6IV7SHJlQKgkQm4V92jEBuizVFxh-oFm79XQ='
+    Description
     """
-    # from cryptography.fernet import Fernet
-    # key = Fernet.generate_key()
+    __path = ''
+    __password = 'WaterAccounting'
 
-    pwd = password.encode()  # Convert to type bytes
-    slt = b'WaterAccounting_'
-    kdf = PBKDF2HMAC(
-        algorithm=hashes.SHA256(),
-        length=32,
-        salt=slt,
-        iterations=100000,
-        backend=default_backend()
-    )
-    key = base64.urlsafe_b64encode(kdf.derive(pwd))
+    __user_cfg = 'config.yml'
+    __user_act = 'wateraccountingguest'
+    __user_pwd = 'W@t3r@ccounting'
+    __user_key = ''
 
-    return key
+    def __init__(self,
+                 path='', file='config.yml',
+                 password='WaterAccounting'):
+        if path != '':
+            self.__path = path
+        else:
+            self.__path = os.path.dirname(__file__)
 
+        if path != '' and file != '':
+            self.__user_cfg = os.path.join(path, file)
 
-def encrypt_cfg(path='', file='config.yml', password='WaterAccounting'):
-    """Getting a key
+        if password != '':
+            self.__password = password
 
-    This function encrypt config.yml file.
+    def get_key(self):
+        """Getting a key
 
-    Args:
-      path (str): Directory to config.yml.
-      file (str): File name of config.yml.
-      password (str): Default value is "WaterAccounting".
+        This function fun.
 
-    Returns:
-      bytes: A URL-safe base64-encoded 32-byte key.
-      This must be kept secret.
-      Anyone with this key is able to create and read messages.
+        Returns:
+          bytes: A URL-safe base64-encoded 32-byte key.
+          This must be kept secret.
+          Anyone with this key is able to create and read messages.
 
-    :Example:
+        :Example:
 
-        >>> import os
-        >>> from wateraccounting.Collect.credential import encrypt_cfg
-        >>> path = os.path.join(os.getcwd(), 'tests', 'data')
-        >>> file = 'config-test.yml'
-        >>> password = 'WaterAccounting'
-        >>> key = encrypt_cfg(path, file, password)
-        >>> key.decode('utf8')
-        '3aQ3mbD6IV7SHJlQKgkQm4V92jEBuizVFxh-oFm79XQ='
-    """
-    file_in = os.path.join(path, file)
-    file_out = '{fn}-encrypted'.format(fn=file_in)
-    key = get_key(password)
+            >>> from wateraccounting.Collect.credential import Credential
+            >>> password = 'WaterAccounting'
+            >>> auth = Credential(password)
+            >>> key = auth.get_key()
+            >>> key.decode('utf8')
+            '3aQ3mbD6IV7SHJlQKgkQm4V92jEBuizVFxh-oFm79XQ='
+        """
+        # from cryptography.fernet import Fernet
+        # key = Fernet.generate_key()
 
-    with open(file_in, 'rb') as f:
-        data = f.read()
+        pwd = self.__password.encode()  # Convert to type bytes
+        slt = b'WaterAccounting_'
+        kdf = PBKDF2HMAC(
+            algorithm=hashes.SHA256(),
+            length=32,
+            salt=slt,
+            iterations=100000,
+            backend=default_backend()
+        )
+        self.__user_key = base64.urlsafe_b64encode(kdf.derive(pwd))
 
-    fernet = Fernet(key)
-    encrypted = fernet.encrypt(data)
+        return self.__user_key
 
-    with open(file_out, 'wb') as f:
-        f.write(encrypted)
+    def encrypt_cfg(self):
+        """Getting a key
 
-    return key
+        This function encrypt config.yml file.
 
+        Returns:
+          bytes: A URL-safe base64-encoded 32-byte key.
+          This must be kept secret.
+          Anyone with this key is able to create and read messages.
 
-def decrypt_cfg(path='', file='config.yml-encrypted', password='WaterAccounting'):
-    """Getting a key
+        :Example:
 
-    This function decrypt config.yml file.
+            >>> import os
+            >>> from wateraccounting.Collect.credential import encrypt_cfg
+            >>> path = os.path.join(os.getcwd(), 'tests', 'data')
+            >>> file = 'config-test.yml'
+            >>> password = 'WaterAccounting'
+            >>> key = encrypt_cfg(path, file, password)
+            >>> key.decode('utf8')
+            '3aQ3mbD6IV7SHJlQKgkQm4V92jEBuizVFxh-oFm79XQ='
+        """
+        file_in = os.path.join(path, file)
+        file_out = '{fn}-encrypted'.format(fn=file_in)
+        key = get_key(password)
 
-    Args:
-      path (str): Directory to config.yml-encrypted.
-      file (str): File name of config.yml-encrypted.
-      password (str): Default value is "WaterAccounting".
+        with open(file_in, 'rb') as f:
+            data = f.read()
 
-    Returns:
-      str: Decrypted Yaml data.
+        fernet = Fernet(key)
+        encrypted = fernet.encrypt(data)
 
-    :Example:
+        with open(file_out, 'wb') as f:
+            f.write(encrypted)
 
-        >>> import os
-        >>> from wateraccounting.Collect.credential import decrypt_cfg
-        >>> path = os.path.join(os.getcwd(), 'tests', 'data')
-        >>> file = 'config-test.yml-encrypted'
-        >>> password = 'WaterAccounting'
-        >>> config = decrypt_cfg(path, file, password)
-        >>> type(config)
-        <class 'str'>
-    """
-    file_in = os.path.join(path, file)
-    key = get_key(password)
+        return key
 
-    with open(file_in, 'rb') as f:
-        data = f.read()
+    def decrypt_cfg(self, path='', file='config.yml-encrypted', password='WaterAccounting'):
+        """Getting a key
 
-    fernet = Fernet(key)
-    decrypted = fernet.decrypt(data).decode('utf8')
+        This function decrypt config.yml file.
 
-    return decrypted
+        Args:
+          path (str): Directory to config.yml-encrypted.
+          file (str): File name of config.yml-encrypted.
+          password (str): Default value is "WaterAccounting".
+
+        Returns:
+          str: Decrypted Yaml data.
+
+        :Example:
+
+            >>> import os
+            >>> from wateraccounting.Collect.credential import decrypt_cfg
+            >>> path = os.path.join(os.getcwd(), 'tests', 'data')
+            >>> file = 'config-test.yml-encrypted'
+            >>> password = 'WaterAccounting'
+            >>> config = decrypt_cfg(path, file, password)
+            >>> type(config)
+            <class 'str'>
+        """
+        file_in = os.path.join(path, file)
+        key = get_key(password)
+
+        with open(file_in, 'rb') as f:
+            data = f.read()
+
+        fernet = Fernet(key)
+        decrypted = fernet.decrypt(data).decode('utf8')
+
+        return decrypted

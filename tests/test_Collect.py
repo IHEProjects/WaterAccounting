@@ -20,11 +20,6 @@ __path = os.path.dirname(os.path.realpath(__file__))
 __path_data = os.path.join(__path, 'data')
 
 
-# import wateraccounting.Collect as Collect
-# def test_Collect():
-#     assert Collect.__version__ == '0.0.1'
-
-
 def test_credential():
     path = __path_data
     file_org = 'config-test.yml'

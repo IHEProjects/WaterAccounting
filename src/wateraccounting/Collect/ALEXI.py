@@ -47,25 +47,6 @@ from . import collect
 # this = sys.modules[__name__]
 
 
-def _get_user():
-    """Get user information from ``config.yml-encrypted``
-
-    Returns:
-      dict: {'username': '', 'password': ''}.
-    """
-    path = os.path.abspath(
-        os.path.join(
-            os.path.dirname(__file__),
-            '..', '..', '..'))
-    file = 'config.yml-encrypted'
-    password = 'WaterAccounting'
-
-    user = collect.Accounts(path, file, password, Type='FTP_WA')
-    # print(path, user)
-
-    return user
-
-
 def DownloadData(Dir, Startdate, Enddate, latlim, lonlim, TimeStep, Waitbar):
     """Downloads ALEXI ET data
 
@@ -206,7 +187,7 @@ def Download_ALEXI_from_WA_FTP(local_filename, DirFile, filename,
     """
     # Collect account and FTP information
     ftpserver = "ftp.wateraccounting.unesco-ihe.org"
-    user = _get_user()
+    user = collect.get_user('FTP_WA')
     username = user['username']
     password = user['password']
 
