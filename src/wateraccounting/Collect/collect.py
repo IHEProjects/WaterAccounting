@@ -92,8 +92,8 @@ def Accounts(path='', file='config.yml', password='WaterAccounting', Type=None):
         else:
             raise KeyError("{err} not supported {list}.".format(
                 err=Type, list=_list))
-    elif IOError:
-        raise IOError("{file} not found.".format(file=os.path.join(path, file)))
+    elif FileNotFoundError:
+        raise FileNotFoundError("{file} not found.".format(file=os.path.join(path, file)))
         sys.exit(1)
     return _user
 

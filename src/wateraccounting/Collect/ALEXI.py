@@ -1,24 +1,32 @@
 # -*- coding: utf-8 -*-
 """
-**ALEXI.DataAccess**
+**ALEXI**
 
-This script collects ALEXI data from the UN-IHE FTP server.
+`Restrictions`
 
-The data has a monthly temporal resolution
-and a spatial resolution of ``0.05`` degree.
+The data and this python file may not be distributed to others without
+permission of the WA+ team due data restriction of the ALEXI developers.
 
-The resulting tiff files are in the ``WGS84`` projection.
+`Description`
 
-The data is available between ``2003-01-01`` till ``2014-12-31``.
+This package downloads ALEXI data from
+``ftp.wateraccounting.unesco-ihe.org``.
+
+Use the ALEXI.daily function to download
+and create weekly ALEXI images in Gtiff format.
+
+The data is available between ``2003-01-01 till 2015-12-31``.
+
+The output file with the name ``2003.01.01`` contains
+the **total evaporation** in ``mm`` for the period of ``1 January - 7 January``.
 
 **Examples:**
 ::
 
-    from wateraccounting.Collect.ALEXI.DataAccess import ALEXI
-    ALEXI.DownloadData(Dir=os.path.join(__dir_data, 'download'),
-                       Startdate='2005-01-01', Enddate='2005-02-01',
-                       latlim=[50, 54], lonlim=[3, 7], TimeStep='daily',
-                       Waitbar=1)
+    from wateraccounting.Collect import ALEXI
+    ALEXI.daily(Dir='C:/Temp/',
+                Startdate='2003-12-01', Enddate='2004-01-20',
+                latlim=[-10, 30], lonlim=[-20, -10])
 """
 # General modules
 import os
@@ -32,7 +40,7 @@ import numpy as np
 import pandas as pd
 
 # Water Accounting Modules
-import wateraccounting.Collect.collect as collect
+from . import collect
 
 
 # Global Variables
@@ -45,8 +53,10 @@ def _get_user():
     Returns:
       dict: {'username': '', 'password': ''}.
     """
-    path = os.path.abspath(os.path.join(os.path.dirname(__file__),
-                                        '..', '..', '..', '..'))
+    path = os.path.abspath(
+        os.path.join(
+            os.path.dirname(__file__),
+            '..', '..', '..'))
     file = 'config.yml-encrypted'
     password = 'WaterAccounting'
 

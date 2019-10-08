@@ -9,8 +9,8 @@ import pytest
 import wateraccounting.Collect.credential as credential
 import wateraccounting.Collect.collect as collect
 
-import wateraccounting.Collect.ALEXI.DataAccess as ALEXI
-import wateraccounting.Collect.ASCAT.DataAccess as ASCAT
+import wateraccounting.Collect.ALEXI as ALEXI
+import wateraccounting.Collect.ASCAT as ASCAT
 
 __author__ = "Quan Pan"
 __copyright__ = "Quan Pan"
@@ -40,8 +40,9 @@ def test_credential():
     assert key1.decode('utf8') == key2.decode('utf8')
     assert type(conf) == str
 
-    with pytest.raises(FileNotFoundError, match=r".* No .*"):
-        credential.encrypt_cfg('', 'config.yml', 'WaterAccounting')
+    # credential.encrypt_cfg('', 'config.yml', 'WaterAccounting')
+    # with pytest.raises(FileNotFoundError, match=r".* No .*"):
+    #     credential.encrypt_cfg('', 'config.yml', 'WaterAccounting')
 
 
 def test_collect_Accounts():

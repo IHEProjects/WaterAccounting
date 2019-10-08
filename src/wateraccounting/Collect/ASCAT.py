@@ -1,24 +1,33 @@
 # -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 """
-**ASCAT.DataAccess**
+**ASCAT**
 
-This script collects ASCAT data from the VITO server.
+`Restrictions`
 
-The data has a daily temporal resolution
-and a spatial resolution of ``0.25`` degree.
+The data and this python file may not be distributed to others without
+permission of the WA+ team due data restriction of the ALEXI developers.
 
-The resulting tiff files are in the ``WGS84`` projection.
+`Description`
+
+This module downloads ASCAT data from
+``https://land.copernicus.vgt.vito.be/PDF/datapool``.
+
+Use the ASCAT.daily function to download
+and create daily ASCAT images in Gtiff format.
 
 The data is available between ``2007-01-01`` till ``present``.
+
+The output file with the name ``2003.01.01`` contains
+the **soil water** index.
 
 **Examples:**
 ::
 
-    from wateraccounting.Collect.ASCAT.DataAccess import ASCAT
-    ASCAT.DownloadData(Dir=os.path.join(__dir_data, 'download'),
-                       Startdate='2005-01-01', Enddate='2005-02-01',
-                       latlim=[50, 54], lonlim=[3, 7],
-                       Waitbar=1)
+    from wateraccounting.Collect import ASCAT
+    ASCAT.daily(Dir='C:/Temp/',
+                Startdate='2003-12-01', Enddate='2004-01-20',
+                latlim=[-10, 30], lonlim=[-20, -10])
 """
 # General modules
 import os
@@ -32,7 +41,7 @@ import pandas as pd
 from netCDF4 import Dataset
 
 # Water Accounting Modules
-import wateraccounting.Collect.collect as collect
+from . import collect
 
 
 # Global Variables
@@ -45,8 +54,10 @@ def _get_user():
     Returns:
       dict: {'username': '', 'password': ''}.
     """
-    path = os.path.abspath(os.path.join(os.path.dirname(__file__),
-                                        '..', '..', '..', '..'))
+    path = os.path.abspath(
+        os.path.join(
+            os.path.dirname(__file__),
+            '..', '..', '..'))
     file = 'config.yml-encrypted'
     password = 'WaterAccounting'
 
