@@ -39,9 +39,9 @@ def test_credential():
     assert len(key2) == 44
     assert key1.decode('utf8') == key2.decode('utf8')
     assert type(conf) == str
-    
+
     with pytest.raises(FileNotFoundError, match=r".* No .*"):
-        key = credential.encrypt_cfg('', 'config.yml', 'WaterAccounting')
+        credential.encrypt_cfg('', 'config.yml', 'WaterAccounting')
 
 
 def test_collect_Accounts():

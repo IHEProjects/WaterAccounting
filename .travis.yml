@@ -128,7 +128,8 @@ before_install:
   # Install test tools
   - . ./tests/travis_proj_install.sh
   # Install GDAL
-  - travis_wait 20 . ./tests/travis_gdal_install.sh
+  #- travis_wait 20 . ./tests/travis_gdal_install.sh
+  - . ./tests/travis_gdal_install.sh
   # Export GDAL_DATA, PROJ_LIB
   - export GDAL_DATA=$GDALINST/gdal-$GDALVERSION/share/gdal
   - export PROJ_LIB=$GDALINST/gdal-$GDALVERSION/share/proj
@@ -176,11 +177,12 @@ after_success:
 after_script:
   - travis-cleanup
 
-cache:
-  directories:
-    - $GDALBUILD
-    - $GDALINST
-    - $PROJBUILD
-    - $PROJINST
-    - $HOME/.cache/pip
-    - $HOME/miniconda
+cache: false
+#cache:
+#  directories:
+#    - $GDALBUILD
+#    - $GDALINST
+#    - $PROJBUILD
+#    - $PROJINST
+#    - $HOME/.cache/pip
+#    - $HOME/miniconda
