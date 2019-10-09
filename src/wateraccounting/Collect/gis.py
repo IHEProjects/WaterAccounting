@@ -21,6 +21,8 @@ import os
 # import yaml
 # import gzip
 
+import numpy as np
+
 try:
     from osgeo import gdal, osr
 except ImportError:
@@ -28,7 +30,7 @@ except ImportError:
     import osr
 
 
-class GIS:
+class GIS(object):
     """This Base class
 
     Description
@@ -41,7 +43,7 @@ class GIS:
         else:
             self.__path = os.path.dirname(__file__)
 
-    def get_tiff(self, file='', band=''):
+    def get_tiff_band(self, file='', band=''):
         """Get tiff data
 
         This function get tiff band as numpy.ndarray.
@@ -93,7 +95,7 @@ class GIS:
 
         return Data
 
-    def Save_as_tiff(self, name='', data='', geo='', projection=''):
+    def save_as_tiff(self, name='', data='', geo='', projection=''):
         """Save as tiff
 
         This function save the array as a geotiff.

@@ -1,6 +1,13 @@
 wateraccounting.Collect package
 ===============================
 
+Subpackages
+-----------
+
+.. toctree::
+
+    wateraccounting.Collect.wacollect
+
 Submodules
 ----------
 
@@ -20,18 +27,18 @@ wateraccounting.Collect.ASCAT module
     :undoc-members:
     :show-inheritance:
 
-wateraccounting.Collect.base module
------------------------------------
+wateraccounting.Collect.collect module
+--------------------------------------
 
-.. automodule:: wateraccounting.Collect.base
+.. automodule:: wateraccounting.Collect.collect
     :members:
     :undoc-members:
     :show-inheritance:
 
-wateraccounting.Collect.credential module
------------------------------------------
+wateraccounting.Collect.download module
+---------------------------------------
 
-.. automodule:: wateraccounting.Collect.credential
+.. automodule:: wateraccounting.Collect.download
     :members:
     :undoc-members:
     :show-inheritance:
