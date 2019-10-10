@@ -1,6 +1,5 @@
 # Configuration yaml
 config.yml
-credential.yml
 
 # tests download
 tests/data/download/
