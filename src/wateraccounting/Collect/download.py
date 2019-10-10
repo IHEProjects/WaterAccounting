@@ -24,19 +24,13 @@ import gzip
 
 try:
     # setup.py
-    from . import collect
+    from . import gis
 except ImportError:
     # PyCharm
-    from src.wateraccounting.Collect import collect
-
-__location__ = os.path.join(
-    os.getcwd(),
-    os.path.dirname(
-        inspect.getfile(
-            inspect.currentframe())))
+    from src.wateraccounting.Collect import gis
 
 
-class Download(collect.Collect):
+class Download(gis.GIS):
     """This Download class
 
     Description
@@ -49,7 +43,7 @@ class Download(collect.Collect):
     """
     __path = 'Download'
 
-    def __init__(self, workspace='', account='', is_status=True, **kwargs):
+    def __init__(self, workspace='', account='', is_status='True', **kwargs):
         """Class instantiation
         """
         # collect.Collect.__init__(self, workspace, account)

@@ -38,12 +38,6 @@ except ImportError:
     # PyCharm
     from src.wateraccounting.Collect import collect
 
-__location__ = os.path.join(
-    os.getcwd(),
-    os.path.dirname(
-        inspect.getfile(
-            inspect.currentframe())))
-
 
 class GIS(collect.Collect):
     """This Base class
@@ -58,15 +52,15 @@ class GIS(collect.Collect):
     """
     __path = 'GIS'
 
-    def __init__(self, workspace='', account='', is_status=True, **kwargs):
+    def __init__(self, workspace, account, is_status, **kwargs):
         """Class instantiation
         """
         # collect.Collect.__init__(self, workspace, account)
         super(GIS, self).__init__(workspace, account,
                                   is_status=is_status, **kwargs)
 
-    def get_tiff_band(self, file='', band=''):
-        """Get tiff data
+    def get_tiff(self, file='', band=1):
+        """Get tiff band data
 
         This function get tiff band as numpy.ndarray.
 

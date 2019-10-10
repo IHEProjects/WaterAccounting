@@ -143,7 +143,7 @@ class Collect(object):
     stcode = 0
     status = 'Status.'
 
-    def __init__(self, workspace='', account='', is_status=True, **kwargs):
+    def __init__(self, workspace, account, is_status, **kwargs):
         """Class instantiation
         """
         is_continued = True
@@ -157,9 +157,9 @@ class Collect(object):
         if isinstance(is_status, bool):
             self.is_status = is_status
         else:
-            raise TypeError('"{k}" requires string, received "{t}"'
-                            .format(k='account',
-                                    t=type(account)))
+            raise TypeError('"{k}" requires bool, received "{t}"'
+                            .format(k='is_status',
+                                    t=type(is_status)))
 
         if isinstance(workspace, str):
             if workspace != '':
