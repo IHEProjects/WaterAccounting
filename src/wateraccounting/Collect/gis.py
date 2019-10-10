@@ -17,7 +17,9 @@ des
     from wateraccounting import module
 """
 import os
-# import sys
+import sys
+import inspect
+# import shutil
 # import yaml
 # import gzip
 
@@ -29,19 +31,31 @@ except ImportError:
     import gdal
     import osr
 
+try:
+    # setup.py
+    from . import collect
+except ImportError:
+    # PyCharm
+    from src.wateraccounting.Collect import collect
 
-class GIS(object):
+__location__ = os.path.join(
+    os.getcwd(),
+    os.path.dirname(
+        inspect.getfile(
+            inspect.currentframe())))
+
+
+class GIS(collect.Collect):
     """This Base class
 
     Description
     """
-    __path = ''
+    __path = 'GIS'
 
-    def __init__(self, workspace=''):
-        if workspace != '':
-            self.__path = workspace
-        else:
-            self.__path = os.path.dirname(__file__)
+    def __init__(self, workspace='', account=''):
+        """Class instantiation
+        """
+        collect.Collect.__init__(self, workspace, account)
 
     def get_tiff_band(self, file='', band=''):
         """Get tiff data
@@ -170,3 +184,36 @@ class GIS(object):
         dst_ds = None
 
         return
+
+
+def main():
+    from pprint import pprint
+
+    print('\n__location__\n=====')
+    print(__location__)
+    print('0.1', inspect.currentframe())
+    print('0.2', inspect.getfile(inspect.currentframe()))
+    print('1. getcwd:', os.getcwd())
+    print('2. dirname: ', os.path.dirname(inspect.getfile(inspect.currentframe())))
+
+    print('\n__file__\n=====')
+    print(__file__)
+
+    print('\nsys.path\n=====')
+    pprint(sys.path)
+
+    print('\nGIS\n=====')
+    gis = GIS('',
+              # '')
+              #  'test')
+               'FTP_WA')
+              # 'Copernicus')
+
+    print('\ngis._Collect__conf\n=====')
+    pprint(gis._Collect__conf)
+    print('\ngis._Collect__user\n=====')
+    pprint(gis._Collect__user)
+
+
+if __name__ == "__main__":
+    main()

@@ -43,10 +43,6 @@ import pandas as pd
 from . import collect
 
 
-# Global Variables
-# this = sys.modules[__name__]
-
-
 def DownloadData(Dir, Startdate, Enddate, latlim, lonlim, TimeStep, Waitbar):
     """Downloads ALEXI ET data
 

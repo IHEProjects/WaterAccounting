@@ -44,10 +44,6 @@ from netCDF4 import Dataset
 from . import collect
 
 
-# Global Variables
-# this = sys.modules[__name__]
-
-
 def DownloadData(Dir, Startdate, Enddate, latlim, lonlim, TimeStep, Waitbar):
     """Downloads ASCAT SWI data
 

@@ -31,6 +31,8 @@ in the ``WaterAccounting/config.yml`` file.
 """
 import os
 import sys
+import inspect
+# import shutil
 import yaml
 
 import base64
@@ -38,6 +40,29 @@ from cryptography.fernet import Fernet
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
+
+# PyCharm
+# if __name__ == "__main__":
+#
+# >>> from . import collect
+# ImportError: cannot import name 'collect' from '__main__'
+#
+# >>> from Collect import collect
+# ModuleNotFoundError
+#
+# PyCharm->Project Structure->"Sources": WaterAccounting\""
+# from src.wateraccounting.Collect import collect
+# OK
+#
+# PyCharm->Project Structure->"Sources": WaterAccounting\"src\wateraccounting"
+# >>> from Collect import collect
+# OK
+
+__location__ = os.path.join(
+    os.getcwd(),
+    os.path.dirname(
+        inspect.getfile(
+            inspect.currentframe())))
 
 
 class Collect(object):
@@ -49,14 +74,13 @@ class Collect(object):
       workspace (str): Directory to config.yml.
       account (str): Account name of data portal.
     """
-    __tmplate = {
+    __template = {
         0: 'S: WA "{f}" status {c}: {m}',
         1: 'E: WA "{f}" status {c}: {m}',
         2: 'W: WA "{f}" status {c}: {m}',
     }
-
     __conf = {
-        'path': os.path.dirname(os.path.realpath(__file__)),
+        'path': __location__,
         'file': 'collect.yml',
         'status': '',
         'data': {
@@ -107,12 +131,11 @@ class Collect(object):
             },
         }
     }
+
     stcode = 0
     status = 'Status.'
 
-    def __init__(self,
-                 workspace='',
-                 account=''):
+    def __init__(self, workspace='', account=''):
         """Class instantiation
         """
         is_continued = True
@@ -122,9 +145,13 @@ class Collect(object):
                 self.__user['path'] = workspace
             else:
                 self.__user['path'] = os.path.join(
-                    os.path.dirname(os.path.realpath(__file__)),
-                    '..', '..', '..',
+                    __location__, '../', '../', '../'
                 )
+
+            # os.path.join(
+            #     os.path.dirname(os.path.realpath(__file__)),
+            #     '..', '..', '..'
+            # )
 
                 print('"{k}" use default value: "{v}"'
                       .format(k='workspace',
@@ -249,10 +276,10 @@ class Collect(object):
         msg = self.__conf['data']['messages'][cod]['msg']
         lvl = self.__conf['data']['messages'][cod]['level']
         if ext != '':
-            self.status = self.__tmplate[lvl].format(
+            self.status = self.__template[lvl].format(
                 f=fun, c=cod, m='{m}\n   {e}'.format(m=msg, e=ext))
         else:
-            self.status = self.__tmplate[lvl].format(
+            self.status = self.__template[lvl].format(
                 f=fun, c=cod, m='{m}'.format(m=msg))
         self.__conf['status'] = self.status
 
@@ -363,7 +390,7 @@ class Collect(object):
         return decrypted
 
     @classmethod
-    def get_conf(self, key):
+    def get_conf(cls, key):
         """Get configuration
 
         This is the function to get project's configuration data.
@@ -386,18 +413,18 @@ class Collect(object):
             >>> print(status)
             S: WA "get_conf" status 0: No error
         """
-        if key in self.__conf:
-            self.stcode = 0
+        if key in cls.__conf:
+            cls.stcode = 0
         else:
-            self.stcode = 1
-            raise KeyError('Key "{k}" not found in "{l}".'
-                           .format(k=key, l=self.__conf.keys()))
+            cls.stcode = 1
+            raise KeyError('Key "{k}" not found in "{v}".'
+                           .format(k=key, v=cls.__conf.keys()))
 
-        self._status(sys._getframe().f_code.co_name)
-        return self.__conf[key]
+        cls._status(cls, sys._getframe().f_code.co_name)
+        return cls.__conf[key]
 
     @classmethod
-    def get_user(self, key):
+    def get_user(cls, key):
         """Get user information
 
         This is the function to get user's configuration data.
@@ -432,18 +459,18 @@ class Collect(object):
             ...
             KeyError:
         """
-        if key in self.__user:
-            self.stcode = 0
+        if key in cls.__user:
+            cls.stcode = 0
         else:
-            self.stcode = 1
-            raise KeyError('Key "{k}" not found in "{l}".'
-                           .format(k=key, l=self.__user.keys()))
+            cls.stcode = 1
+            raise KeyError('Key "{k}" not found in "{v}".'
+                           .format(k=key, v=cls.__user.keys()))
 
-        self._status(sys._getframe().f_code.co_name)
-        return self.__user[key]
+        cls._status(cls, sys._getframe().f_code.co_name)
+        return cls.__user[key]
 
     @classmethod
-    def get_status(self):
+    def get_status(cls):
         """Get status
 
         This is the function to get project status.
@@ -451,10 +478,10 @@ class Collect(object):
         Returns:
           str: Status.
         """
-        return self.status
+        return cls.status
 
-    @classmethod
-    def wait_bar(self, i, total,
+    @staticmethod
+    def wait_bar(i, total,
                  prefix='', suffix='',
                  decimals=1, length=100, fill='█'):
         """Wait Bar Console
@@ -487,15 +514,30 @@ class Collect(object):
 
 def main():
     from pprint import pprint
-    # path = os.getcwd()
 
+    print('\n__location__\n=====')
+    print(__location__)
+    print('0.1', inspect.currentframe())
+    print('0.2', inspect.getfile(inspect.currentframe()))
+    print('1. getcwd:', os.getcwd())
+    print('2. dirname: ', os.path.dirname(inspect.getfile(inspect.currentframe())))
+
+    print('\n__file__\n=====')
+    print(__file__)
+
+    print('\nsys.path\n=====')
+    pprint(sys.path)
+
+    print('\nCollect\n=====')
     collect = Collect('',
                       # '')
                       # 'test')
-                      # 'FTP_WA')
-                       'Copernicus')
+                      'FTP_WA')
+                      # 'Copernicus')
 
+    print('\ncollect._Collect__conf\n=====')
     pprint(collect._Collect__conf)
+    print('\ncollect._Collect__user\n=====')
     pprint(collect._Collect__user)
 
 
