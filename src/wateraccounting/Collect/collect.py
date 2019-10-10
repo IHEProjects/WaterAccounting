@@ -9,7 +9,8 @@ permission of the WA+ team.
 
 `Description`
 
-Before use this module, set account information in the `WaterAccounting/config.yml` file.
+Before use this module, set account information
+in the ``WaterAccounting/config.yml`` file.
 
 **Examples:**
 ::
@@ -17,21 +18,26 @@ Before use this module, set account information in the `WaterAccounting/config.y
     >>> import os
     >>> from wateraccounting.Collect.collect import Collect
     >>> collect = Collect(os.getcwd(), 'FTP_WA_GUESS')
-    "config.yml-encrypted" key is: ...
+    S: WA "function" status 0: No error
+       "config.yml-encrypted" key is: ...
 
 .. note::
 
-    Create `config.yml` under root folder of the project,
-    based on the `config-example.yml`.
-
-    Run `Collect.credential.encrypt_cfg(path, file, password)`
-    to generate `config.yml-encrypted` file.
+    1. Create ``config.yml`` under root folder of the project,
+       based on the ``config-example.yml``.
+    #. Run ``Collect.credential.encrypt_cfg(path, file, password)``
+       to generate ``config.yml-encrypted`` file.
+    #. Save key to ``credential.yml``.
 """
 import os
 import sys
 import yaml
 
+import base64
 from cryptography.fernet import Fernet
+from cryptography.hazmat.backends import default_backend
+from cryptography.hazmat.primitives import hashes
+from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 
 
 class Collect(object):
@@ -43,6 +49,12 @@ class Collect(object):
       workspace (str): Directory to config.yml.
       account (str): Account name of data portal.
     """
+    __tmplate = {
+        0: 'S: WA "{f}" status {c}: {m}',
+        1: 'E: WA "{f}" status {c}: {m}',
+        2: 'W: WA "{f}" status {c}: {m}',
+    }
+
     __conf = {
         'path': os.path.dirname(os.path.realpath(__file__)),
         'file': 'collect.yml',
@@ -74,7 +86,6 @@ class Collect(object):
     __user = {
         'path': '',
         'file': 'config.yml-encrypted',
-        'status': {},
         'account': {},
         'data': {
             'credential': {
@@ -97,7 +108,7 @@ class Collect(object):
         }
     }
     stcode = 0
-    sttemp = 'WA "{f}" status {c}: {m}.'
+    status = 'Status.'
 
     def __init__(self,
                  workspace='',
@@ -142,29 +153,21 @@ class Collect(object):
                                     t=type(account)))
 
         if is_continued:
-            self.get_conf()
-            self.get_user()
-            print('"{f}" key is: "{v}"'
-                  .format(f=self.__user['file'],
-                          v=self.__user['data']['credential']['key']))
+            self._conf()
+            self._user()
+            message = '"{f}" key is: "{v}"'.format(
+                f=self.__user['file'],
+                v=self.__user['data']['credential']['key'])
 
-    def get_conf(self):
+        self._status(sys._getframe().f_code.co_name, prt=True, ext=message)
+
+    def _conf(self):
         """Get configuration
 
         This function open collect.cfg configuration file.
 
         Returns:
           str: Status message.
-
-        :Example:
-
-            >>> import os
-            >>> from wateraccounting.Collect.collect import Collect
-            >>> collect = Collect(os.getcwd(), 'FTP_WA_GUESS')
-            "config.yml-encrypted" key is: ...
-            >>> conf = collect.get_conf()
-            >>> print(conf)
-            WA "get_conf" status 0: No error.
         """
         f_in = os.path.join(self.__conf['path'], self.__conf['file'])
 
@@ -177,20 +180,17 @@ class Collect(object):
                 # __conf.data[messages, ]
                 try:
                     self.__conf['data'][key] = conf[key]
+                    self.stcode = 0
                 except KeyError:
                     raise KeyError('"{k}" not found in "{f}".'.format(k=key, f=f_in))
         else:
             raise FileNotFoundError('Collect "{f}" not found.'.format(f=f_in))
             sys.exit(1)
 
-        self.stcode = 0
-        self.__conf['status'] = self.sttemp.format(
-            f=sys._getframe().f_code.co_name,
-            c=self.stcode,
-            m=self.__conf['data']['messages'][self.stcode]['msg'])
+        self._status(sys._getframe().f_code.co_name)
         return self.__conf['status']
 
-    def get_user(self):
+    def _user(self):
         """Get user information
 
         This is the main function to configure user's credentials.
@@ -198,20 +198,10 @@ class Collect(object):
         **Don't synchronize the details to github.**
 
         - File to read: ``config.yml-encrypted``
-        - File is from: ``config.yml``
+        - File to read: ``credential.yml``
 
         Returns:
           str: Status message.
-
-        :Example:
-
-            >>> import os
-            >>> from wateraccounting.Collect.collect import Collect
-            >>> collect = Collect(os.getcwd(), 'FTP_WA_GUESS')
-            "config.yml-encrypted" key is: ...
-            >>> user = collect.get_user()
-            >>> print(user)
-            WA "get_user" status 0: No error.
         """
         f_in = os.path.join(self.__user['path'], self.__user['file'])
 
@@ -227,6 +217,7 @@ class Collect(object):
                 # __user.data[accounts, ]
                 try:
                     self.__user['data'][key] = conf[key]
+                    self.stcode = 0
                 except KeyError:
                     raise KeyError('Key "{k}" not found in "{f}".'
                                    .format(k=key, f=f_in))
@@ -235,6 +226,7 @@ class Collect(object):
                     for subkey in self.__user['account']:
                         try:
                             self.__user['account'][subkey] = conf[key][subkey]
+                            self.stcode = 0
                         except KeyError:
                             raise KeyError('Sub key "{k}" not found in "{f}".'
                                            .format(k=subkey, f=f_in))
@@ -242,13 +234,30 @@ class Collect(object):
             raise FileNotFoundError('User "{f}" not found.'.format(f=f_in))
             sys.exit(1)
 
-        # self.__user['status'] = self.__user['data']['messages']['0']
-        self.stcode = 0
-        self.__user['status'] = self.sttemp.format(
-            f=sys._getframe().f_code.co_name,
-            c=self.stcode,
-            m=self.__conf['data']['messages'][self.stcode]['msg'])
-        return self.__user['status']
+        self._status(sys._getframe().f_code.co_name)
+        return self.__conf['status']
+
+    def _status(self, fun, prt=False, ext=''):
+        """Set status
+
+        Args:
+          fun (str): Function name.
+          prt (bool): Is to print on screen?
+          ext (str): Extra message.
+        """
+        cod = self.stcode
+        msg = self.__conf['data']['messages'][cod]['msg']
+        lvl = self.__conf['data']['messages'][cod]['level']
+        if ext != '':
+            self.status = self.__tmplate[lvl].format(
+                f=fun, c=cod, m='{m}\n   {e}'.format(m=msg, e=ext))
+        else:
+            self.status = self.__tmplate[lvl].format(
+                f=fun, c=cod, m='{m}'.format(m=msg))
+        self.__conf['status'] = self.status
+
+        if prt:
+            print(self.status)
 
     def _user_key(self):
         """Getting a key
@@ -259,34 +268,7 @@ class Collect(object):
           bytes: A URL-safe base64-encoded 32-byte key.
           This must be kept secret.
           Anyone with this key is able to create and read messages.
-
-        **Examples:**
-        ::
-
-            import base64
-            from cryptography.fernet import Fernet
-            from cryptography.hazmat.backends import default_backend
-            from cryptography.hazmat.primitives import hashes
-            from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
-
-            # Convert to type bytes
-            pswd = b'password'
-            salt = b'salt'
-            length = 32
-            iterations = 100000
-
-            kdf = PBKDF2HMAC(
-                algorithm=hashes.SHA256(),
-                salt=salt,
-                length=length,
-                iterations=iterations,
-                backend=default_backend()
-            )
-            key = base64.urlsafe_b64encode(kdf.derive(pswd))
         """
-        # from cryptography.fernet import Fernet
-        # key = Fernet.generate_key()
-
         f_in = os.path.join(self.__user['path'],
                             self.__user['data']['credential']['file'])
 
@@ -301,10 +283,43 @@ class Collect(object):
 
         return key
 
-    def _user_encrypt(self, file):
+    def _user_key_generator(self):
         """Getting a key
 
+        This function fun.
+
+        Returns:
+          bytes: A URL-safe base64-encoded 32-byte key.
+          This must be kept secret.
+          Anyone with this key is able to create and read messages.
+        """
+        # from cryptography.fernet import Fernet
+        # key = Fernet.generate_key()
+
+        # Convert to type bytes
+        pswd = self.__user['data']['credential']['password'].encode()
+        salt = self.__user['data']['credential']['salt'].encode()
+        length = self.__user['data']['credential']['length']
+        iterations = self.__user['data']['credential']['iterations']
+
+        kdf = PBKDF2HMAC(
+            algorithm=hashes.SHA256(),
+            salt=salt,
+            length=length,
+            iterations=iterations,
+            backend=default_backend()
+        )
+        key = base64.urlsafe_b64encode(kdf.derive(pswd))
+
+        return key
+
+    def _user_encrypt(self, file):
+        """Encrypt file with given key
+
         This function encrypt config.yml file.
+
+        Args:
+          file (str): File name.
 
         Returns:
           bytes: A URL-safe base64-encoded 32-byte key.
@@ -327,12 +342,15 @@ class Collect(object):
         return key
 
     def _user_decrypt(self, file):
-        """Getting a key
+        """Decrypt file with given key
 
         This function decrypt config.yml file.
 
+        Args:
+          file (str): File name.
+
         Returns:
-          str: Decrypted Yaml data.
+          str: Decrypted Yaml data by utf-8.
         """
         f_in = file
         key = self.__user['data']['credential']['key']
@@ -344,6 +362,98 @@ class Collect(object):
 
         return decrypted
 
+    @classmethod
+    def get_conf(self, key):
+        """Get configuration
+
+        This is the function to get project's configuration data.
+
+        Args:
+          key (str): Key name.
+
+        Returns:
+          dict: Configuration data.
+
+        :Example:
+
+            >>> import os
+            >>> from wateraccounting.Collect.collect import Collect
+            >>> collect = Collect(os.getcwd(), 'FTP_WA_GUESS')
+            S: WA "__init__" status 0: No error
+               "config.yml-encrypted" key is: ...
+
+            >>> status = collect.get_conf('status')
+            >>> print(status)
+            S: WA "get_conf" status 0: No error
+        """
+        if key in self.__conf:
+            self.stcode = 0
+        else:
+            self.stcode = 1
+            raise KeyError('Key "{k}" not found in "{l}".'
+                           .format(k=key, l=self.__conf.keys()))
+
+        self._status(sys._getframe().f_code.co_name)
+        return self.__conf[key]
+
+    @classmethod
+    def get_user(self, key):
+        """Get user information
+
+        This is the function to get user's configuration data.
+
+        **Don't synchronize the details to github.**
+
+        - File to read: ``credential.yml``
+          contains key: ``config.yml-encrypted``.
+        - File to read: ``config.yml-encrypted``
+          generated from: ``config.yml``.
+
+        Args:
+          key (str): Key name.
+
+        Returns:
+          dict: User data.
+
+        :Example:
+
+            >>> import os
+            >>> from wateraccounting.Collect.collect import Collect
+            >>> collect = Collect(os.getcwd(), 'FTP_WA_GUESS')
+            S: WA "__init__" status 0: No error
+               "config.yml-encrypted" key is: ...
+
+            >>> account = collect.get_user('account')
+            >>> account['FTP_WA_GUESS']
+            {'username': 'wateraccountingguest', 'password': 'W@t3r@ccounting'}
+
+            >>> accounts = collect.get_user('accounts')
+            Traceback (most recent call last):
+            ...
+            KeyError:
+        """
+        if key in self.__user:
+            self.stcode = 0
+        else:
+            self.stcode = 1
+            raise KeyError('Key "{k}" not found in "{l}".'
+                           .format(k=key, l=self.__user.keys()))
+
+        self._status(sys._getframe().f_code.co_name)
+        return self.__user[key]
+
+    @classmethod
+    def get_status(self):
+        """Get status
+
+        This is the function to get project status.
+
+        Returns:
+          str: Status.
+        """
+        return self.status
+
+    @classmethod
     def wait_bar(self, i, total,
                  prefix='', suffix='',
                  decimals=1, length=100, fill='█'):
@@ -380,10 +490,10 @@ def main():
     # path = os.getcwd()
 
     collect = Collect('',
-                      '')
+                      # '')
                       # 'test')
                       # 'FTP_WA')
-                      #  'Copernicus')
+                       'Copernicus')
 
     pprint(collect._Collect__conf)
     pprint(collect._Collect__user)

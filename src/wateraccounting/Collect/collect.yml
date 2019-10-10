@@ -1,7 +1,7 @@
-# level:
-#   0:
-#   1:
-#   2:
+#level:
+#  0: Success
+#  1: Error
+#  2: Warning
 
 messages:
   0:

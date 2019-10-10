@@ -5,7 +5,7 @@
 `Restrictions`
 
 The data and this python file may not be distributed to others without
-permission of the WA+ team due data restriction of the **** developers.
+permission of the WA+ team.
 
 `Description`
 
