@@ -40,13 +40,21 @@ class Download(collect.Collect):
     """This Download class
 
     Description
+
+    Args:
+      workspace (str): Directory to config.yml.
+      account (str): Account name of data portal.
+      is_status (bool): Is to print status message.
+      kwargs (dict): Other arguments.
     """
     __path = 'Download'
 
-    def __init__(self, workspace='', account=''):
+    def __init__(self, workspace='', account='', is_status=True, **kwargs):
         """Class instantiation
         """
-        collect.Collect.__init__(self, workspace, account)
+        # collect.Collect.__init__(self, workspace, account)
+        super(Download, self).__init__(workspace, account,
+                                       is_status=is_status, **kwargs)
 
     @classmethod
     def Extract_Data_gz(cls, file, outfile):
@@ -75,33 +83,22 @@ class Download(collect.Collect):
 def main():
     from pprint import pprint
 
-    print('\n__location__\n=====')
-    print(__location__)
-    print('0.1', inspect.currentframe())
-    print('0.2', inspect.getfile(inspect.currentframe()))
-    print('1. getcwd:', os.getcwd())
-    print('2. dirname: ', os.path.dirname(inspect.getfile(inspect.currentframe())))
-
-    print('\n__file__\n=====')
-    print(__file__)
-
-    print('\nsys.path\n=====')
-    pprint(sys.path)
-
     print('\nDownload\n=====')
-    download = Download('',
-                        # '')
-                        #  'test')
-                        'FTP_WA')
-                        #  'Copernicus')
+    download = Download()
+                        # '', {'is_status': False)
+    # download = Download('',
+    #                     # '', 'is_status': False)
+    #                     # 'test', is_status=False)
+    #                     'FTP_WA', is_status=False)
+    #                     # 'Copernicus', is_status=False)
 
-    print('\ndownload._Collect__conf\n=====')
-    pprint(download._Collect__conf)
-    print('\ndownload._Collect__user\n=====')
-    pprint(download._Collect__user)
-
-    print('\ndownload._Download__path:\n=====')
-    pprint(download._Download__path)
+    # print('\ndownload._Collect__conf\n=====')
+    # pprint(download._Collect__conf)
+    # print('\ndownload._Collect__user\n=====')
+    # pprint(download._Collect__user)
+    #
+    # print('\ndownload._Download__path:\n=====')
+    # pprint(download._Download__path)
 
 
 if __name__ == "__main__":

@@ -41,6 +41,17 @@ try:
 except FileNotFoundError:
     pass
 
+# output_collect_yml = os.path.join(
+#     __location__,
+#     "collect.yml")
+# module_collect_yml = os.path.join(
+#     __location__,
+#     "../src/wateraccounting/Collect/collect.yml")
+# try:
+#     shutil.copy(module_collect_yml, output_collect_yml)
+# except FileNotFoundError:
+#     pass
+
 try:
     import sphinx
     from pkg_resources import parse_version

@@ -49,13 +49,21 @@ class GIS(collect.Collect):
     """This Base class
 
     Description
+
+    Args:
+      workspace (str): Directory to config.yml.
+      account (str): Account name of data portal.
+      is_status (bool): Is to print status message.
+      kwargs (dict): Other arguments.
     """
     __path = 'GIS'
 
-    def __init__(self, workspace='', account=''):
+    def __init__(self, workspace='', account='', is_status=True, **kwargs):
         """Class instantiation
         """
-        collect.Collect.__init__(self, workspace, account)
+        # collect.Collect.__init__(self, workspace, account)
+        super(GIS, self).__init__(workspace, account,
+                                  is_status=is_status, **kwargs)
 
     def get_tiff_band(self, file='', band=''):
         """Get tiff data
@@ -189,30 +197,17 @@ class GIS(collect.Collect):
 def main():
     from pprint import pprint
 
-    print('\n__location__\n=====')
-    print(__location__)
-    print('0.1', inspect.currentframe())
-    print('0.2', inspect.getfile(inspect.currentframe()))
-    print('1. getcwd:', os.getcwd())
-    print('2. dirname: ', os.path.dirname(inspect.getfile(inspect.currentframe())))
-
-    print('\n__file__\n=====')
-    print(__file__)
-
-    print('\nsys.path\n=====')
-    pprint(sys.path)
-
     print('\nGIS\n=====')
     gis = GIS('',
-              # '')
-              #  'test')
-               'FTP_WA')
-              # 'Copernicus')
+              # '', 'is_status': False)
+              # 'test', is_status=False)
+              'FTP_WA', is_status=False)
+              # 'Copernicus', is_status=False)
 
-    print('\ngis._Collect__conf\n=====')
-    pprint(gis._Collect__conf)
-    print('\ngis._Collect__user\n=====')
-    pprint(gis._Collect__user)
+    # print('\ngis._Collect__conf\n=====')
+    # pprint(gis._Collect__conf)
+    # print('\ngis._Collect__user\n=====')
+    # pprint(gis._Collect__user)
 
 
 if __name__ == "__main__":
