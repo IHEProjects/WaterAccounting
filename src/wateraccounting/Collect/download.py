@@ -43,7 +43,7 @@ class Download(gis.GIS):
     """
     __path = 'Download'
 
-    def __init__(self, workspace='', account='', is_status='True', **kwargs):
+    def __init__(self, workspace='', account='', is_status=True, **kwargs):
         """Class instantiation
         """
         # collect.Collect.__init__(self, workspace, account)

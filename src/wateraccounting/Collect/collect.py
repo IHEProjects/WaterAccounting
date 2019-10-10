@@ -207,86 +207,6 @@ class Collect(object):
             prt=self.is_status,
             ext=message)
 
-    def _conf(self):
-        """Get configuration
-
-        This function open collect.cfg configuration file.
-
-        Returns:
-          str: Status message.
-        """
-        f_in = os.path.join(self.__conf['path'], self.__conf['file'])
-
-        if os.path.exists(f_in):
-            conf = yaml.load(open(f_in, 'r'), Loader=yaml.FullLoader)
-
-            for key in conf:
-                # __conf.data[messages, ]
-                try:
-                    self.__conf['data'][key] = conf[key]
-                    self.stcode = 0
-                except KeyError:
-                    raise KeyError('"{k}" not found in "{f}".'.format(k=key, f=f_in))
-        else:
-            raise FileNotFoundError('Collect "{f}" not found.'.format(f=f_in))
-            sys.exit(1)
-
-        self._status(
-            inspect.currentframe().f_code.co_name,
-            prt=self.is_status,
-            ext='')
-        return self.__conf['status']
-
-    def _user(self):
-        """Get user information
-
-        This is the main function to configure user's credentials.
-
-        **Don't synchronize the details to github.**
-
-        - File to read: ``config.yml-encrypted``
-        - File to read: ``credential.yml``
-
-        Returns:
-          str: Status message.
-        """
-        f_in = os.path.join(self.__user['path'], self.__user['file'])
-
-        if os.path.exists(f_in):
-            self._user_key()
-            # self._user_encrypt(f_in)
-
-            conf = yaml.load(
-                self._user_decrypt(f_in),
-                Loader=yaml.FullLoader)
-
-            for key in conf:
-                # __user.data[accounts, ]
-                try:
-                    self.__user['data'][key] = conf[key]
-                    self.stcode = 0
-                except KeyError:
-                    raise KeyError('Key "{k}" not found in "{f}".'
-                                   .format(k=key, f=f_in))
-                else:
-                    # __user.account
-                    for subkey in self.__user['account']:
-                        try:
-                            self.__user['account'][subkey] = conf[key][subkey]
-                            self.stcode = 0
-                        except KeyError:
-                            raise KeyError('Sub key "{k}" not found in "{f}".'
-                                           .format(k=subkey, f=f_in))
-        else:
-            raise FileNotFoundError('User "{f}" not found.'.format(f=f_in))
-            sys.exit(1)
-
-        self._status(
-            inspect.currentframe().f_code.co_name,
-            prt=self.is_status,
-            ext='')
-        return self.__conf['status']
-
     def _status(self, fun, prt=False, ext=''):
         """Set status
 
@@ -309,7 +229,91 @@ class Collect(object):
         if prt:
             print(self.status)
 
-    def _user_key(self):
+    def _conf(self):
+        """Get configuration
+
+        This function open collect.cfg configuration file.
+
+        Returns:
+          str: Status message.
+        """
+        f_in = os.path.join(self.__conf['path'],
+                            self.__conf['file'])
+
+        if not os.path.exists(f_in):
+            raise FileNotFoundError('Collect "{f}" not found.'.format(f=f_in))
+
+        conf = yaml.load(open(f_in, 'r'), Loader=yaml.FullLoader)
+
+        for key in conf:
+            # __conf.data[messages, ]
+            try:
+                self.__conf['data'][key] = conf[key]
+                self.stcode = 0
+            except KeyError:
+                raise KeyError('"{k}" not found in "{f}".'.format(k=key, f=f_in))
+
+        self._status(
+            inspect.currentframe().f_code.co_name,
+            prt=self.is_status,
+            ext='')
+        return self.__conf['status']
+
+    def _user(self):
+        """Get user information
+
+        This is the main function to configure user's credentials.
+
+        **Don't synchronize the details to github.**
+
+        - File to read: ``config.yml-encrypted``
+        - File to read: ``credential.yml``
+
+        Returns:
+          str: Status message.
+        """
+        f_cfg = os.path.join(self.__user['path'],
+                             self.__user['file'])
+        f_crd = os.path.join(self.__user['path'],
+                             self.__user['data']['credential']['file'])
+
+        if not os.path.exists(f_cfg):
+            raise FileNotFoundError('User "{f}" not found.'.format(f=f_cfg))
+        if not os.path.exists(f_crd):
+            raise FileNotFoundError('User "{f}" not found.'.format(f=f_crd))
+
+        self._user_key(f_crd)
+        # self._user_encrypt(f_cfg)
+
+        conf = yaml.load(
+            self._user_decrypt(f_cfg),
+            Loader=yaml.FullLoader)
+
+        for key in conf:
+            # __user.data[accounts, ]
+            try:
+                self.__user['data'][key] = conf[key]
+                self.stcode = 0
+            except KeyError:
+                raise KeyError('Key "{k}" not found in "{f}".'
+                               .format(k=key, f=f_cfg))
+            else:
+                # __user.account
+                for subkey in self.__user['account']:
+                    try:
+                        self.__user['account'][subkey] = conf[key][subkey]
+                        self.stcode = 0
+                    except KeyError:
+                        raise KeyError('Sub key "{k}" not found in "{f}".'
+                                       .format(k=subkey, f=f_cfg))
+
+        self._status(
+            inspect.currentframe().f_code.co_name,
+            prt=self.is_status,
+            ext='')
+        return self.__conf['status']
+
+    def _user_key(self, file):
         """Getting a key
 
         This function fun.
@@ -319,17 +323,13 @@ class Collect(object):
           This must be kept secret.
           Anyone with this key is able to create and read messages.
         """
-        f_in = os.path.join(self.__user['path'],
-                            self.__user['data']['credential']['file'])
+        f_in = file
+        key = b''
 
-        if os.path.exists(f_in):
-            with open(f_in, 'rb') as fp_in:
-                key = fp_in.read()
-        else:
-            raise FileNotFoundError('User "{f}" not found.'.format(f=f_in))
-            sys.exit(1)
+        with open(f_in, 'rb') as fp_in:
+            key = fp_in.read()
 
-        self.__user['data']['credential']['key'] = key
+            self.__user['data']['credential']['key'] = key
 
         return key
 
@@ -403,12 +403,14 @@ class Collect(object):
           str: Decrypted Yaml data by utf-8.
         """
         f_in = file
+        decrypted = ''
+
         key = self.__user['data']['credential']['key']
 
         with open(f_in, 'rb') as fp_in:
             data = fp_in.read()
 
-        decrypted = Fernet(key).decrypt(data).decode('utf8')
+            decrypted = Fernet(key).decrypt(data).decode('utf8')
 
         return decrypted
 
