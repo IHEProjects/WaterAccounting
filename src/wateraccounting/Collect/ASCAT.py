@@ -31,7 +31,11 @@ the **soil water** index.
 """
 # General modules
 import os
-# import shutil
+# import sys
+# import glob
+# # import math
+# # import datetime
+
 import requests
 from requests.auth import HTTPBasicAuth
 
@@ -41,7 +45,10 @@ import pandas as pd
 from netCDF4 import Dataset
 
 # Water Accounting Modules
-from . import collect
+try:
+    from .download import Download
+except ImportError:
+    from src.wateraccounting.Collect.download import Download
 
 
 def DownloadData(Dir, Startdate, Enddate, latlim, lonlim, TimeStep, Waitbar):

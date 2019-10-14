@@ -27,44 +27,91 @@ messages:
 sources:
   ALEXI:
     meta:
+      account: FTP_WA
       url: 'ftp://ftp.wateraccounting.unesco-ihe.org'
       protocol: 'ftp'
       time:
-      - 'daily'
-      - 'weekly'
-      - 'monthly'
+        - 'daily'
+        - 'weekly'
+        - 'monthly'
       type:
-      - 'tiff'
+        - 'tiff'
     data:
       E:
         daily:
           name: 'Evaporation'
-          type: 'tiff'
-          unit: ''
           dir: '/WaterAccounting/Data_Satellite/Evaporation/ALEXI/World_05182018/'
-          file: '{fname}'
+          type: 'tiff'
+          unit:
+            from: 'MJ/m2d'
+            to: 'mm/d'
+            factor: 2.45
+          latlim:
+            from: -60
+            to: 70
+            res: -9999
+          lonlim:
+            from: -180
+            to: 180
+            res: -9999
+          timelim:
+            from: 2005-01-01
+            to: 2016-12-31
+          rmtfile: 'ETa_ALEXI_CSFR_mm-day-1_daily_%d.%02d.%02d.tif'
+          locfile: 'EDAY_CERES_%d%03d.dat.gz'
         weekly:
           name: 'Evaporation'
-          type: 'tiff'
-          unit: ''
           dir: '/WaterAccounting/Data_Satellite/Evaporation/ALEXI/World/'
-          file: '{fname}'
+          type: 'tiff'
+          unit:
+            from: 'MJ/m2d'
+            to: 'mm/d'
+            factor: 2.45
+          lat:
+            from: -60
+            to: 70
+            res: -9999
+          lonlim:
+            from: -180
+            to: 180
+            res: -9999
+          timelim:
+            from: 2003-01-01
+            to: 2015-12-31
+          rmtfile: 'ETa_ALEXI_CSFR_mm-week-1_weekly_%s.%02s.%02s.tif'
+          locfile: 'ALEXI_weekly_mm_%s_%s.tif'
 
   ASCAT:
     meta:
+      account: Copernicus
       url: 'https://land.copernicus.vgt.vito.be/PDF/datapool'
       protocol: 'http'
       time:
-      - 'daily'
-      - 'weekly'
-      - 'monthly'
+        - 'daily'
+        - 'weekly'
+        - 'monthly'
       type:
-      - 'nc'
+        - 'nc'
     data:
       SWI:
         daily:
           name: 'Soil Water Index'
-          type: 'nc'
-          unit: ''
           dir: '/Vegetation/Soil_Water/SWI_V3/{year}/{month}/{day}/{name}/'
-          file: '{fname}'
+          type: 'nc'
+          unit:
+            - from: null
+            - to: null
+            - factor: 1
+          lat:
+            from: -90
+            to: 90
+            res: -9999
+          lonlim:
+            from: -180
+            to: 180
+            res: -9999
+          timelim:
+            from: 2007-01-01
+            to: null
+          rmtfile: 'c_gls_SWI_%d%02d%02d1200_GLOBE_ASCAT_V3.1.1.nc'
+          locfile: 'SWI_ASCAT_V3_Percentage_daily_%d.%02d.%02d.tif'

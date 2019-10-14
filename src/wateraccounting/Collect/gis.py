@@ -64,7 +64,6 @@ class GIS(Base):
     __conf = {
         'path': '',
         'file': '',
-        'gis': '',
         'data': {}
     }
 
@@ -245,6 +244,9 @@ class GIS(Base):
         dst_ds = None
 
         return
+
+    def save_netcdf(self):
+        pass
 
 
 def main():

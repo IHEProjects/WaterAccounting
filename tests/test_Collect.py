@@ -6,7 +6,7 @@ import numpy as np
 
 import pytest
 
-from wateraccounting.Collect.collect import Collect
+from wateraccounting.Collect.accounts import Accounts
 from wateraccounting.Collect.gis import GIS
 
 import wateraccounting.Collect.ALEXI as ALEXI
@@ -40,16 +40,16 @@ __path_data = os.path.join(__path, 'data')
 #     #     credential.encrypt_cfg('', 'config.yml', 'WaterAccounting')
 
 
-def test_Collect():
+def test_Accounts():
     path = os.path.join(__path, '../')
     account = 'FTP_WA_GUESS'
 
-    collect = Collect(path, account, is_status=True)
+    accounts = Accounts(path, account, is_status=True)
 
-    assert collect.get_conf('file') == 'base.yml'
+    assert accounts.get_conf('file') == 'base.yml'
 
     with pytest.raises(KeyError, match=r".* not .*"):
-        collect.get_conf('test')
+        accounts.get_conf('test')
 
 
 def test_GIS_get_tiff():

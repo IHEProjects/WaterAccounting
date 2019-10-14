@@ -54,9 +54,8 @@ class Base(object):
                     inspect.currentframe()))),
         'file': 'base.yml',
         'data': {
-            'messages': {
-                '0': {}
-            }
+            'messages': {},
+            'sources': {}
         }
     }
 
@@ -79,6 +78,11 @@ class Base(object):
                                     t=type(is_status)))
 
         self.set_conf()
+        self.set_status(
+            self.stcode,
+            inspect.currentframe().f_code.co_name,
+            prt=self.is_status,
+            ext='')
 
     def set_conf(self):
         """Get configuration
@@ -238,7 +242,7 @@ def main():
 
     # Base __init__
     print('\nBase\n=====')
-    base = Base()
+    base = Base(is_status=True)
 
     # Base attributes
     pprint(base._Base__conf)

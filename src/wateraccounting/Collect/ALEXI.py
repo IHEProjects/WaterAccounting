@@ -34,6 +34,7 @@ import os
 import glob
 import math
 import datetime
+
 from ftplib import FTP
 
 import numpy as np

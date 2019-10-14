@@ -27,18 +27,18 @@ wateraccounting.Collect.ASCAT module
     :undoc-members:
     :show-inheritance:
 
-wateraccounting.Collect.base module
------------------------------------
+wateraccounting.Collect.accounts module
+---------------------------------------
 
-.. automodule:: wateraccounting.Collect.base
+.. automodule:: wateraccounting.Collect.accounts
     :members:
     :undoc-members:
     :show-inheritance:
 
-wateraccounting.Collect.collect module
---------------------------------------
+wateraccounting.Collect.base module
+-----------------------------------
 
-.. automodule:: wateraccounting.Collect.collect
+.. automodule:: wateraccounting.Collect.base
     :members:
     :undoc-members:
     :show-inheritance:

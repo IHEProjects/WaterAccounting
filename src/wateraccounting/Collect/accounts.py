@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-**Collect**
+**Accounts**
 
 `Restrictions`
 
@@ -16,16 +16,16 @@ in the ``WaterAccounting/config.yml`` file.
 ::
 
     >>> import os
-    >>> from wateraccounting.Collect.collect import Collect
-    >>> collect = Collect(os.getcwd(), 'FTP_WA_GUESS', is_status=True)
-    S: WA.Collect "function" status 0: No error
+    >>> from wateraccounting.Collect.accounts import Accounts
+    >>> accounts = Accounts(os.getcwd(), 'FTP_WA_GUESS', is_status=True)
+    S: WA.Accounts "function" status 0: No error
        "config.yml-encrypted" key is: ...
 
 .. note::
 
     1. Create ``config.yml`` under root folder of the project,
        based on the ``config-example.yml``.
-    #. Run ``Collect.credential.encrypt_cfg(path, file, password)``
+    #. Run ``Accounts.credential.encrypt_cfg(path, file, password)``
        to generate ``config.yml-encrypted`` file.
     #. Save key to ``credential.yml``.
 
@@ -48,8 +48,8 @@ except ImportError:
     from src.wateraccounting.Collect.base import Base
 
 
-class Collect(Base):
-    """This Collect class
+class Accounts(Base):
+    """This Accounts class
 
     Description
 
@@ -88,15 +88,15 @@ class Collect(Base):
         """Class instantiation
         """
         Base.__init__(self, is_status)
-        # super(Collect, self).__init__(is_status)
+        # super(Accounts, self).__init__(is_status)
 
         self.stmsg = {
-            0: 'S: WA.Collect "{f}" status {c}: {m}',
-            1: 'E: WA.Collect "{f}" status {c}: {m}',
-            2: 'W: WA.Collect "{f}" status {c}: {m}',
+            0: 'S: WA.Accounts "{f}" status {c}: {m}',
+            1: 'E: WA.Accounts "{f}" status {c}: {m}',
+            2: 'W: WA.Accounts "{f}" status {c}: {m}',
         }
         self.stcode = 0
-        self.status = 'Collect status.'
+        self.status = 'Accounts status.'
 
         for argkey, argval in kwargs.items():
             if argkey == 'passward':
@@ -327,12 +327,12 @@ class Collect(Base):
         :Example:
 
             >>> import os
-            >>> from wateraccounting.Collect.collect import Collect
-            >>> collect = Collect(os.getcwd(), 'FTP_WA_GUESS', is_status=False)
-            >>> account = collect.get_user('account')
+            >>> from wateraccounting.Collect.accounts import Accounts
+            >>> accounts = Accounts(os.getcwd(), 'FTP_WA_GUESS', is_status=False)
+            >>> account = accounts.get_user('account')
             >>> account['FTP_WA_GUESS']
             {'username': 'wateraccountingguest', 'password': 'W@t3r@ccounting'}
-            >>> accounts = collect.get_user('accounts')
+            >>> accounts = accounts.get_user('accounts')
             Traceback (most recent call last):
             ...
             KeyError:
@@ -386,28 +386,24 @@ def main():
     from pprint import pprint
 
     # @classmethod
-    # print('\nCollect.check_conf()\n=====')
-    # pprint(Collect.check_conf('data', is_status=False))
+    # print('\nAccounts.check_conf()\n=====')
+    # pprint(Accounts.check_conf('data', is_status=False))
 
-    # Collect __init__
-    print('\nCollect\n=====')
-    collect = Collect('',
-                      # '', is_status=True)
-                      # 'test', is_status=True)
-                      'FTP_WA', is_status=True)
-                      # 'Copernicus', is_status=True)
+    # Accounts __init__
+    print('\nAccounts\n=====')
+    accounts = Accounts('', 'FTP_WA', is_status=True)
 
     # Base attributes
-    print('\ncollect._Base__conf\n=====')
-    pprint(collect._Base__conf)
+    print('\naccounts._Base__conf\n=====')
+    pprint(accounts._Base__conf)
 
-    # Collect attributes
-    print('\ncollect._Collect__conf\n=====')
-    pprint(collect._Collect__conf)
+    # Accounts attributes
+    print('\naccounts._Accounts__conf\n=====')
+    pprint(accounts._Accounts__conf)
 
-    # Collect methods
-    print('\ncollect.Base.get_status()\n=====')
-    pprint(collect.get_status())
+    # Accounts methods
+    print('\naccounts.Base.get_status()\n=====')
+    pprint(accounts.get_status())
 
 
 if __name__ == "__main__":
