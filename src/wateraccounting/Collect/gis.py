@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-**Name**
+**GIS**
 
 `Restrictions`
 
@@ -9,19 +9,32 @@ permission of the WA+ team.
 
 `Description`
 
-des
+Before use this module, set account information
+in the ``WaterAccounting/config.yml`` file.
 
 **Examples:**
 ::
 
-    from wateraccounting import module
+    >>> import os
+    >>> from wateraccounting.Collect.gis import GIS
+    >>> gis = GIS(os.getcwd(), 'FTP_WA_GUESS', is_status=True)
+    S: WA.GIS "function" status 0: No error
+       "config.yml-encrypted" key is: ...
+
+.. note::
+
+    1. Create ``config.yml`` under root folder of the project,
+       based on the ``config-example.yml``.
+    #. Run ``Collect.credential.encrypt_cfg(path, file, password)``
+       to generate ``config.yml-encrypted`` file.
+    #. Save key to ``credential.yml``.
+
 """
 import os
-import sys
+# import sys
 import inspect
 # import shutil
 # import yaml
-# import gzip
 
 import numpy as np
 
@@ -32,14 +45,12 @@ except ImportError:
     import osr
 
 try:
-    # setup.py
-    from . import collect
+    from .base import Base
 except ImportError:
-    # PyCharm
-    from src.wateraccounting.Collect import collect
+    from src.wateraccounting.Collect.base import Base
 
 
-class GIS(collect.Collect):
+class GIS(Base):
     """This Base class
 
     Description
@@ -50,14 +61,61 @@ class GIS(collect.Collect):
       is_status (bool): Is to print status message.
       kwargs (dict): Other arguments.
     """
-    __path = 'GIS'
+    __conf = {
+        'path': '',
+        'file': '',
+        'gis': '',
+        'data': {}
+    }
 
-    def __init__(self, workspace, account, is_status, **kwargs):
+    def __init__(self, workspace, is_status, **kwargs):
         """Class instantiation
         """
-        # collect.Collect.__init__(self, workspace, account)
-        super(GIS, self).__init__(workspace, account,
-                                  is_status=is_status, **kwargs)
+        Base.__init__(self, is_status)
+        # super(GIS, self).__init__(is_status)
+
+        self.stmsg = {
+            0: 'S: WA.GIS "{f}" status {c}: {m}',
+            1: 'E: WA.GIS "{f}" status {c}: {m}',
+            2: 'W: WA.GIS "{f}" status {c}: {m}',
+        }
+        self.stcode = 0
+        self.status = 'GIS status.'
+
+        if isinstance(workspace, str):
+            if workspace != '':
+                self.__conf['path'] = workspace
+            else:
+                self.__conf['path'] = os.path.join(
+                    self._Base__conf['path'], '../', '../', '../'
+                )
+            if self.is_status:
+                print('"{k}": "{v}"'
+                      .format(k='workspace',
+                              v=self.__conf['path']))
+        else:
+            raise TypeError('"{k}" requires string, received "{t}"'
+                            .format(k='workspace',
+                                    t=type(workspace)))
+
+        if self.stcode == 0:
+            # self._conf()
+            message = ''
+
+        self._status(
+            inspect.currentframe().f_code.co_name,
+            prt=self.is_status,
+            ext=message)
+
+    def _status(self, fun, prt=False, ext=''):
+        """Set status
+
+        Args:
+          fun (str): Function name.
+          prt (bool): Is to print on screen?
+          ext (str): Extra message.
+        """
+        self.status = self.set_status(self.stcode, fun, prt, ext)
 
     def get_tiff(self, file='', band=1):
         """Get tiff band data
@@ -76,9 +134,10 @@ class GIS(collect.Collect):
 
             >>> import os
             >>> from wateraccounting.Collect.gis import GIS
+            >>> gis = GIS(os.getcwd(), is_status=False)
             >>> path = os.path.join(os.getcwd(), 'tests', 'data', 'BigTIFF')
             >>> file = os.path.join(path, 'Classic.tif')
-            >>> data = Open_tiff_array(file, 1)
+            >>> data = gis.get_tiff(file, 1)
 
             >>> type(data)
             <class 'numpy.ndarray'>
@@ -111,7 +170,7 @@ class GIS(collect.Collect):
 
         return Data
 
-    def save_as_tiff(self, name='', data='', geo='', projection=''):
+    def save_tiff(self, name='', data='', geo='', projection=''):
         """Save as tiff
 
         This function save the array as a geotiff.
@@ -125,13 +184,13 @@ class GIS(collect.Collect):
 
         :Example:
 
-            >>> from wateraccounting.Collect.collect import Open_tiff_array
-            >>> from wateraccounting.Collect.collect import Save_as_tiff
+            >>> from wateraccounting.Collect.gis import GIS
+            >>> gis = GIS(os.getcwd(), is_status=False)
             >>> path = os.path.join(os.getcwd(), 'tests', 'data', 'BigTIFF')
             >>> file = os.path.join(path, 'Classic.tif')
             >>> test = os.path.join(path, 'test.tif')
 
-            >>> data = Open_tiff_array(file, 1)
+            >>> data = gis.get_tiff(file, 1)
             >>> data
             array([[255, 255, 255, ...   0,   0,   0],
                    [255, 255, 255, ...   0,   0,   0],
@@ -141,8 +200,8 @@ class GIS(collect.Collect):
                    [  0,   0,   0, ...,   0,   0,   0],
                    [  0,   0,   0, ...,   0,   0,   0]], dtype=uint8)
 
-            >>> Save_as_tiff(test, data, [0, 1, 0, 0, 1, 0], "WGS84")
-            >>> data = Open_tiff_array(test, 1)
+            >>> gis.save_tiff(test, data, [0, 1, 0, 0, 1, 0], "WGS84")
+            >>> data = gis.get_tiff(test, 1)
             >>> data
             array([[255., 255., 255., ...   0.,   0.,   0.],
                    [255., 255., 255., ...   0.,   0.,   0.],
@@ -191,17 +250,23 @@ class GIS(collect.Collect):
 def main():
     from pprint import pprint
 
-    print('\nGIS\n=====')
-    gis = GIS('',
-              # '', 'is_status': False)
-              # 'test', is_status=False)
-              'FTP_WA', is_status=False)
-              # 'Copernicus', is_status=False)
+    # @classmethod
 
-    # print('\ngis._Collect__conf\n=====')
-    # pprint(gis._Collect__conf)
-    # print('\ngis._Collect__user\n=====')
-    # pprint(gis._Collect__user)
+    # GIS __init__
+    print('\nGIS\n=====')
+    gis = GIS('', is_status=True)
+
+    # Base attributes
+    print('\ngis._Base__conf\n=====')
+    pprint(gis._Base__conf)
+
+    # GIS attributes
+    print('\ngis._GIS__conf:\n=====')
+    pprint(gis._GIS__conf)
+
+    # GIS methods
+    print('\ngis.Base.get_status()\n=====')
+    pprint(gis.get_status())
 
 
 if __name__ == "__main__":

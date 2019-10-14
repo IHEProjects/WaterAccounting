@@ -40,7 +40,10 @@ import numpy as np
 import pandas as pd
 
 # Water Accounting Modules
-from . import collect
+try:
+    from .download import Download
+except ImportError:
+    from src.wateraccounting.Collect.download import Download
 
 
 def DownloadData(Dir, Startdate, Enddate, latlim, lonlim, TimeStep, Waitbar):

@@ -18,7 +18,7 @@ in the ``WaterAccounting/config.yml`` file.
     >>> import os
     >>> from wateraccounting.Collect.collect import Collect
     >>> collect = Collect(os.getcwd(), 'FTP_WA_GUESS', is_status=True)
-    S: WA "function" status 0: No error
+    S: WA.Collect "function" status 0: No error
        "config.yml-encrypted" key is: ...
 
 .. note::
@@ -28,10 +28,6 @@ in the ``WaterAccounting/config.yml`` file.
     #. Run ``Collect.credential.encrypt_cfg(path, file, password)``
        to generate ``config.yml-encrypted`` file.
     #. Save key to ``credential.yml``.
-
-.. todo::
-
-    1. 20191010, QPan, add section **source** from ``self.__conf`` to ``collect.yml``
 
 """
 import os
@@ -46,31 +42,13 @@ from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 
-# PyCharm
-# if __name__ == "__main__":
-#
-# >>> from . import collect
-# ImportError: cannot import name 'collect' from '__main__'
-#
-# >>> from Collect import collect
-# ModuleNotFoundError
-#
-# PyCharm->Project Structure->"Sources": WaterAccounting\""
-# from src.wateraccounting.Collect import collect
-# OK
-#
-# PyCharm->Project Structure->"Sources": WaterAccounting\"src\wateraccounting"
-# >>> from Collect import collect
-# OK
-
-__location__ = os.path.join(
-    os.getcwd(),
-    os.path.dirname(
-        inspect.getfile(
-            inspect.currentframe())))
+try:
+    from .base import Base
+except ImportError:
+    from src.wateraccounting.Collect.base import Base
 
 
-class Collect(object):
+class Collect(Base):
     """This Collect class
 
     Description
@@ -81,41 +59,7 @@ class Collect(object):
       is_status (bool): Is to print status message.
       kwargs (dict): Other arguments.
     """
-    __template = {
-        0: 'S: WA "{f}" status {c}: {m}',
-        1: 'E: WA "{f}" status {c}: {m}',
-        2: 'W: WA "{f}" status {c}: {m}',
-    }
     __conf = {
-        'path': __location__,
-        'file': 'collect.yml',
-        'status': '',
-        'data': {
-            'messages': {
-                '0': {}
-            },
-            'source': {
-                'ALEXI': {
-                    'Account'
-                    'E': {
-                        'name': 'Evaporation',
-                        'type': 'tif',
-                        'url': 'ftp://'
-                    }
-                },
-                'ASCAT': {
-                    'SWI': {
-                        'name': 'Soil Water Index',
-                        'type': 'nc',
-                        'url': 'https://land.copernicus.vgt.vito.be/PDF/datapool'
-                               '/Vegetation/Soil_Water/SWI_V3'
-                               '/{year}/{month}/{day}/{name}/{fname}'
-                    }
-                },
-            }
-        }
-    }
-    __user = {
         'path': '',
         'file': 'config.yml-encrypted',
         'account': {},
@@ -140,38 +84,37 @@ class Collect(object):
         }
     }
 
-    stcode = 0
-    status = 'Status.'
-
     def __init__(self, workspace, account, is_status, **kwargs):
         """Class instantiation
         """
-        is_continued = True
+        Base.__init__(self, is_status)
+        # super(Collect, self).__init__(is_status)
+
+        self.stmsg = {
+            0: 'S: WA.Collect "{f}" status {c}: {m}',
+            1: 'E: WA.Collect "{f}" status {c}: {m}',
+            2: 'W: WA.Collect "{f}" status {c}: {m}',
+        }
+        self.stcode = 0
+        self.status = 'Collect status.'
 
         for argkey, argval in kwargs.items():
             if argkey == 'passward':
-                self.__user['data']['credential'][argkey] = argval
+                self.__conf['data']['credential'][argkey] = argval
             if argkey == 'key':
-                self.__user['data']['credential'][argkey] = argval
-
-        if isinstance(is_status, bool):
-            self.is_status = is_status
-        else:
-            raise TypeError('"{k}" requires bool, received "{t}"'
-                            .format(k='is_status',
-                                    t=type(is_status)))
+                self.__conf['data']['credential'][argkey] = argval
 
         if isinstance(workspace, str):
             if workspace != '':
-                self.__user['path'] = workspace
+                self.__conf['path'] = workspace
             else:
-                self.__user['path'] = os.path.join(
-                    __location__, '../', '../', '../'
+                self.__conf['path'] = os.path.join(
+                    self._Base__conf['path'], '../', '../', '../'
                 )
             if self.is_status:
                 print('"{k}": "{v}"'
                       .format(k='workspace',
-                              v=self.__user['path']))
+                              v=self.__conf['path']))
         else:
             raise TypeError('"{k}" requires string, received "{t}"'
                             .format(k='workspace',
@@ -179,28 +122,23 @@ class Collect(object):
 
         if isinstance(account, str):
             if account != '':
-                if account in self.__user['data']['accounts']:
-                    self.__user['account'][account] = {}
-                else:
-                    raise KeyError('"{k}" not supported.'
-                                   .format(k=account))
+                self.__conf['account'][account] = {}
             else:
-                self.__user['account']['FTP_WA_GUESS'] = {}
+                self.__conf['account']['FTP_WA_GUESS'] = {}
             if self.is_status:
                 print('"{k}": "{v}"'
                       .format(k='account',
-                              v=self.__user['account']))
+                              v=self.__conf['account']))
         else:
             raise TypeError('"{k}" requires string, received "{t}"'
                             .format(k='account',
                                     t=type(account)))
 
-        if is_continued:
-            self._conf()
+        if self.stcode == 0:
             self._user()
             message = '"{f}" key is: "{v}"'.format(
-                f=self.__user['file'],
-                v=self.__user['data']['credential']['key'])
+                f=self.__conf['file'],
+                v=self.__conf['data']['credential']['key'])
 
         self._status(
             inspect.currentframe().f_code.co_name,
@@ -215,49 +153,7 @@ class Collect(object):
           prt (bool): Is to print on screen?
           ext (str): Extra message.
         """
-        cod = self.stcode
-        msg = self.__conf['data']['messages'][cod]['msg']
-        lvl = self.__conf['data']['messages'][cod]['level']
-        if ext != '':
-            self.status = self.__template[lvl].format(
-                f=fun, c=cod, m='{m}\n   {e}'.format(m=msg, e=ext))
-        else:
-            self.status = self.__template[lvl].format(
-                f=fun, c=cod, m='{m}'.format(m=msg))
-        self.__conf['status'] = self.status
-
-        if prt:
-            print(self.status)
-
-    def _conf(self):
-        """Get configuration
-
-        This function open collect.cfg configuration file.
-
-        Returns:
-          str: Status message.
-        """
-        f_in = os.path.join(self.__conf['path'],
-                            self.__conf['file'])
-
-        if not os.path.exists(f_in):
-            raise FileNotFoundError('Collect "{f}" not found.'.format(f=f_in))
-
-        conf = yaml.load(open(f_in, 'r'), Loader=yaml.FullLoader)
-
-        for key in conf:
-            # __conf.data[messages, ]
-            try:
-                self.__conf['data'][key] = conf[key]
-                self.stcode = 0
-            except KeyError:
-                raise KeyError('"{k}" not found in "{f}".'.format(k=key, f=f_in))
-
-        self._status(
-            inspect.currentframe().f_code.co_name,
-            prt=self.is_status,
-            ext='')
-        return self.__conf['status']
+        self.status = self.set_status(self.stcode, fun, prt, ext)
 
     def _user(self):
         """Get user information
@@ -268,14 +164,11 @@ class Collect(object):
 
         - File to read: ``config.yml-encrypted``
         - File to read: ``credential.yml``
-
-        Returns:
-          str: Status message.
         """
-        f_cfg = os.path.join(self.__user['path'],
-                             self.__user['file'])
-        f_crd = os.path.join(self.__user['path'],
-                             self.__user['data']['credential']['file'])
+        f_cfg = os.path.join(self.__conf['path'],
+                             self.__conf['file'])
+        f_crd = os.path.join(self.__conf['path'],
+                             self.__conf['data']['credential']['file'])
 
         if not os.path.exists(f_cfg):
             raise FileNotFoundError('User "{f}" not found.'.format(f=f_cfg))
@@ -290,18 +183,18 @@ class Collect(object):
             Loader=yaml.FullLoader)
 
         for key in conf:
-            # __user.data[accounts, ]
+            # __conf.data[accounts, ]
             try:
-                self.__user['data'][key] = conf[key]
+                self.__conf['data'][key] = conf[key]
                 self.stcode = 0
             except KeyError:
                 raise KeyError('Key "{k}" not found in "{f}".'
                                .format(k=key, f=f_cfg))
             else:
-                # __user.account
-                for subkey in self.__user['account']:
+                # __conf.account
+                for subkey in self.__conf['account']:
                     try:
-                        self.__user['account'][subkey] = conf[key][subkey]
+                        self.__conf['account'][subkey] = conf[key][subkey]
                         self.stcode = 0
                     except KeyError:
                         raise KeyError('Sub key "{k}" not found in "{f}".'
@@ -311,7 +204,6 @@ class Collect(object):
             inspect.currentframe().f_code.co_name,
             prt=self.is_status,
             ext='')
-        return self.__conf['status']
 
     def _user_key(self, file):
         """Getting a key
@@ -329,7 +221,7 @@ class Collect(object):
         with open(f_in, 'rb') as fp_in:
             key = fp_in.read()
 
-            self.__user['data']['credential']['key'] = key
+            self.__conf['data']['credential']['key'] = key
 
         return key
 
@@ -347,10 +239,10 @@ class Collect(object):
         # key = Fernet.generate_key()
 
         # Convert to type bytes
-        pswd = self.__user['data']['credential']['password'].encode()
-        salt = self.__user['data']['credential']['salt'].encode()
-        length = self.__user['data']['credential']['length']
-        iterations = self.__user['data']['credential']['iterations']
+        pswd = self.__conf['data']['credential']['password'].encode()
+        salt = self.__conf['data']['credential']['salt'].encode()
+        length = self.__conf['data']['credential']['length']
+        iterations = self.__conf['data']['credential']['iterations']
 
         kdf = PBKDF2HMAC(
             algorithm=hashes.SHA256(),
@@ -378,7 +270,7 @@ class Collect(object):
         """
         f_in = file
         f_out = '{f}-encrypted'.format(f=f_in)
-        key = self.__user['data']['credential']['key']
+        key = self.__conf['data']['credential']['key']
 
         with open(f_in, 'rb') as fp_in:
             data = fp_in.read()
@@ -405,7 +297,7 @@ class Collect(object):
         f_in = file
         decrypted = ''
 
-        key = self.__user['data']['credential']['key']
+        key = self.__conf['data']['credential']['key']
 
         with open(f_in, 'rb') as fp_in:
             data = fp_in.read()
@@ -413,39 +305,6 @@ class Collect(object):
             decrypted = Fernet(key).decrypt(data).decode('utf8')
 
         return decrypted
-
-    def get_conf(self, key):
-        """Get configuration information
-
-        This is the function to get project's configuration data.
-
-        Args:
-          key (str): Key name.
-
-        Returns:
-          dict: Configuration data.
-
-        :Example:
-
-            >>> import os
-            >>> from wateraccounting.Collect.collect import Collect
-            >>> collect = Collect(os.getcwd(), 'FTP_WA_GUESS', is_status=False)
-            >>> status = collect.get_conf('status')
-            >>> print(status)
-            S: WA "get_conf" status 0: No error
-        """
-        if key in self.__conf:
-            self.stcode = 0
-        else:
-            self.stcode = 1
-            raise KeyError('Key "{k}" not found in "{v}".'
-                           .format(k=key, v=self.__conf.keys()))
-
-        self._status(
-            inspect.currentframe().f_code.co_name,
-            prt=self.is_status,
-            ext='')
-        return self.__conf[key]
 
     def get_user(self, key):
         """Get user information
@@ -478,55 +337,18 @@ class Collect(object):
             ...
             KeyError:
         """
-        if key in self.__user:
+        if key in self.__conf:
             self.stcode = 0
         else:
             self.stcode = 1
             raise KeyError('Key "{k}" not found in "{v}".'
-                           .format(k=key, v=self.__user.keys()))
+                           .format(k=key, v=self.__conf.keys()))
 
         self._status(
             inspect.currentframe().f_code.co_name,
             prt=self.is_status,
             ext='')
-        return self.__user[key]
-
-    def get_status(self):
-        """Get status
-
-        This is the function to get project status.
-
-        Returns:
-          str: Status.
-        """
-        return self.status
-
-    @classmethod
-    def check_conf(cls, key):
-        """Check configuration information
-
-        This is the function to get user's configuration data.
-
-        **Don't synchronize the details to github.**
-
-        - File to read: ``collect.yml``.
-
-        Args:
-          key (str): Key name.
-
-        Returns:
-          dict: Configuration data.
-
-        :Example:
-
-            >>> from wateraccounting.Collect.collect import Collect
-            >>> conf = Collect.check_conf('data')
-            "workspace": ...
-            >>> conf['messages'][0]
-            {'msg': 'No error', 'level': 0}
-        """
-        this_class = cls('', '', is_status=True)
-        return this_class.get_conf(key)
+        return self.__conf[key]
 
     @staticmethod
     def wait_bar(i, total,
@@ -563,35 +385,28 @@ class Collect(object):
 def main():
     from pprint import pprint
 
-    print('\n__location__\n=====')
-    print(__location__)
-    print('0.1', inspect.currentframe())
-    print('0.2', inspect.getfile(inspect.currentframe()))
-    print('1. getcwd:', os.getcwd())
-    print('2. dirname: ', os.path.dirname(inspect.getfile(inspect.currentframe())))
-
-    print('\n__file__\n=====')
-    print(__file__)
-
-    print('\nsys.path\n=====')
-    pprint(sys.path)
-
     # @classmethod
-    print('\nCollect.check_conf()\n=====')
-    pprint(Collect.check_conf('data'))
+    # print('\nCollect.check_conf()\n=====')
+    # pprint(Collect.check_conf('data', is_status=False))
 
+    # Collect __init__
     print('\nCollect\n=====')
     collect = Collect('',
-                      # '', 'is_status': False)
-                      # 'test', is_status=False)
-                      'FTP_WA', is_status=False)
-                      # 'Copernicus', is_status=False)
+                      # '', is_status=True)
+                      # 'test', is_status=True)
+                      'FTP_WA', is_status=True)
+                      # 'Copernicus', is_status=True)
 
+    # Base attributes
+    print('\ncollect._Base__conf\n=====')
+    pprint(collect._Base__conf)
+
+    # Collect attributes
     print('\ncollect._Collect__conf\n=====')
     pprint(collect._Collect__conf)
-    print('\ncollect._Collect__user\n=====')
-    pprint(collect._Collect__user)
-    print('\ncollect.get_status()\n=====')
+
+    # Collect methods
+    print('\ncollect.Base.get_status()\n=====')
     pprint(collect.get_status())
 
 

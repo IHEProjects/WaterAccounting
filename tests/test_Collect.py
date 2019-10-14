@@ -7,6 +7,7 @@ import numpy as np
 import pytest
 
 from wateraccounting.Collect.collect import Collect
+from wateraccounting.Collect.gis import GIS
 
 import wateraccounting.Collect.ALEXI as ALEXI
 import wateraccounting.Collect.ASCAT as ASCAT
@@ -37,47 +38,49 @@ __path_data = os.path.join(__path, 'data')
 #     # credential.encrypt_cfg('', 'config.yml', 'WaterAccounting')
 #     # with pytest.raises(FileNotFoundError, match=r".* No .*"):
 #     #     credential.encrypt_cfg('', 'config.yml', 'WaterAccounting')
-#
-#
-# def test_collect_Accounts():
-#     path = __path_data
-#     file = 'config-test.yml-encrypted'
-#     password = 'WaterAccounting'
-#
-#     assert collect.Accounts(path, file, password, 'FTP_WA_GUESS') == {
-#         'username': 'wateraccountingguest',
-#         'password': 'W@t3r@ccounting'}
-#
-#     with pytest.raises(KeyError, match=r".* not .*"):
-#         collect.Accounts(path, file, password, 'test')
-#
-#
-# def test_collect_Open_tiff_array():
-#     path = __path_data
-#     file = os.path.join(path, 'BigTIFF', 'Classic.tif')
-#     data = collect.Open_tiff_array(file, 1)
-#
-#     assert type(data) == np.ndarray
-#     assert data.shape == (64, 64)
-#
-#     with pytest.raises(AttributeError, match=r".* not .*"):
-#         collect.Open_tiff_array(file, 99)
-#
-#
-# def test_collect_Save_as_tiff():
-#     path = __path_data
-#
-#     file_in = os.path.join(path, 'BigTIFF', 'Classic.tif')
-#     data = collect.Open_tiff_array(file_in, 1)
-#
-#     file_out = os.path.join(path, 'BigTIFF', 'test.tif')
-#     collect.Save_as_tiff(file_out, data, [0, 1, 0, 0, 1, 0], "WGS84")
-#     data = collect.Open_tiff_array(file_out, 1)
-#
-#     assert type(data) == np.ndarray
-#     assert data.shape == (64, 64)
-#
-#
+
+
+def test_Collect():
+    path = os.path.join(__path, '../')
+    account = 'FTP_WA_GUESS'
+
+    collect = Collect(path, account, is_status=True)
+
+    assert collect.get_conf('file') == 'base.yml'
+
+    with pytest.raises(KeyError, match=r".* not .*"):
+        collect.get_conf('test')
+
+
+def test_GIS_get_tiff():
+    path = __path_data
+    file = os.path.join(path, 'BigTIFF', 'Classic.tif')
+
+    gis = GIS(path, is_status=True)
+    data = gis.get_tiff(file, 1)
+
+    assert type(data) == np.ndarray
+    assert data.shape == (64, 64)
+
+    with pytest.raises(AttributeError, match=r".* not .*"):
+        gis.get_tiff(file, 99)
+
+
+def test_GIS_save_tiff():
+    path = __path_data
+    file_in = os.path.join(path, 'BigTIFF', 'Classic.tif')
+    file_out = os.path.join(path, 'BigTIFF', 'Classic-test.tif')
+
+    gis = GIS(path, is_status=True)
+    data_in = gis.get_tiff(file_in, 1)
+
+    gis.save_tiff(file_out, data_in, [0, 1, 0, 0, 1, 0], "WGS84")
+    data_out = gis.get_tiff(file_out, 1)
+
+    assert type(data_out) == np.ndarray
+    assert data_out.shape == (64, 64)
+
+
 # def test_ALEXI():
 #     # assert ALEXI.__version__ == '0.1'
 #     path = os.path.join(__path_data, 'download')
@@ -107,8 +110,8 @@ __path_data = os.path.join(__path, 'data')
 #         'Evaporation', 'ALEXI', 'Weekly')))
 #     print(nfiles)
 #     assert nfiles > 0
-#
-#
+
+
 # def test_ASCAT():
 #     # assert ASCAT.__version__ == '0.1'
 #     path = os.path.join(__path_data, 'download')

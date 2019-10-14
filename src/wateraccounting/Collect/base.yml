@@ -1,0 +1,70 @@
+#level:
+#  0: Success
+#  1: Error
+#  2: Warning
+
+messages:
+  0:
+    msg: 'No error'
+    level: 0
+
+  1:
+    msg: 'Error'
+    level: 0
+
+  2:
+    msg: 'Warning'
+    level: 0
+
+  202:
+    msg: 'OK'
+    level: 1
+
+  404:
+    msg: 'Not Found'
+    level: 1
+
+sources:
+  ALEXI:
+    meta:
+      url: 'ftp://ftp.wateraccounting.unesco-ihe.org'
+      protocol: 'ftp'
+      time:
+      - 'daily'
+      - 'weekly'
+      - 'monthly'
+      type:
+      - 'tiff'
+    data:
+      E:
+        daily:
+          name: 'Evaporation'
+          type: 'tiff'
+          unit: ''
+          dir: '/WaterAccounting/Data_Satellite/Evaporation/ALEXI/World_05182018/'
+          file: '{fname}'
+        weekly:
+          name: 'Evaporation'
+          type: 'tiff'
+          unit: ''
+          dir: '/WaterAccounting/Data_Satellite/Evaporation/ALEXI/World/'
+          file: '{fname}'
+
+  ASCAT:
+    meta:
+      url: 'https://land.copernicus.vgt.vito.be/PDF/datapool'
+      protocol: 'http'
+      time:
+      - 'daily'
+      - 'weekly'
+      - 'monthly'
+      type:
+      - 'nc'
+    data:
+      SWI:
+        daily:
+          name: 'Soil Water Index'
+          type: 'nc'
+          unit: ''
+          dir: '/Vegetation/Soil_Water/SWI_V3/{year}/{month}/{day}/{name}/'
+          file: '{fname}'
