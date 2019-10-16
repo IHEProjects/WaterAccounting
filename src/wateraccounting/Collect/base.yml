@@ -51,8 +51,13 @@ products:
             url: 'ftp://ftp.wateraccounting.unesco-ihe.org'
             dir: '/WaterAccounting/Data_Satellite/Evaporation/ALEXI/World_05182018/'
             method: 'ftp'
-            ftype: 'dat'
-            dtype: 'np.float32'
+            ftype:
+              d: 'gz'
+              t: 'dat'
+              o: 'GTiff.tif'
+            dtype:
+              i: 'float32'
+              o: 'float32'
             freq: 'D'
             variables:
               ETa:
@@ -83,8 +88,13 @@ products:
             url: 'ftp://ftp.wateraccounting.unesco-ihe.org'
             dir: '/WaterAccounting/Data_Satellite/Evaporation/ALEXI/World/'
             method: 'ftp'
-            ftype: 'tif'
-            dtype: 'np.float32'
+            ftype:
+              d: 'GTiff.tif'
+              t: '-'
+              o: 'GTiff.tif'
+            dtype:
+              i: 'float32'
+              o: 'float32'
             freq: '7D'
             variables:
               ETa:
@@ -140,8 +150,13 @@ products:
             url: 'https://land.copernicus.vgt.vito.be/PDF/datapool'
             dir: '/Vegetation/Soil_Water_Index/Daily_SWI_12.5km_Global_V3/{Y:>04s}/{m:>02s}/{d:>02s}/SWI_{Y:>04s}/{m:>02s}/{d:>02s}1200_GLOBE_ASCAT_V3.1.1/'
             method: 'requests'
-            ftype: 'nc'
-            dtype: 'np.ubyte'
+            ftype:
+              d: 'nc'
+              t: '-'
+              o: 'GTiff.tif'
+            dtype:
+              i: 'ubyte'
+              o: 'float32'
             freq: 'D'
             variables:
               SWI_010:
@@ -201,7 +216,13 @@ products:
             url: 'https://nomads.ncdc.noaa.gov'
             dir: '/data/cfsr/{Y:>04s}{m:>02s}/'
             method: 'curl'
-            ftype: 'grb2'
+            ftype:
+              d: 'grb2'
+              t: 'nc'
+              o: 'GTiff.tif'
+            dtype:
+              i: 'float64'
+              o: 'float32'
             freq: 'D'
             variables:
               dlwsfc:
@@ -269,6 +290,7 @@ products:
                   s: 1979-01-01
                   e: 2011-03-31
             rmtname: '{var}.gdas.{Y:>04s}{m:>02s}.grb2'
+            # band = (int(Date.strftime('%d')) - 1) * 28 + (i + 1) * 7
             tmpfile: 'Output{Y:>04s}{m:>02s}{d:>02s}-{i}.nc'
             locfile: '{Var:.3s}R_CFSR_W-m2_{Y:>04s}.{m:>02s}.{d:>02s}.tif'
           monthly:
@@ -286,7 +308,13 @@ products:
             url: 'https://nomads.ncdc.noaa.gov'
             dir: '/modeldata/cfsv2_analysis_timeseries/{Y:>04s}/{Y:>04s}{m:>02s}/'
             method: 'curl'
-            ftype: 'grib2'
+            ftype:
+              d: 'grib2'
+              t: 'nc'
+              o: 'GTiff.tif'
+            dtype:
+              i: 'float64'
+              o: 'float32'
             freq: 'D'
             variables:
               dlwsfc:
@@ -386,7 +414,13 @@ products:
             url: 'ftp://chg-ftpout.geog.ucsb.edu'
             dir: '/pub/org/chg/products/CHIRPS-2.0/global_daily/tifs/p05/{Y:>04s}/'
             method: 'ftp'
-            ftype: 'gz'
+            ftype:
+              d: 'gz'
+              t: 'GTiff.tif'
+              o: 'GTiff.tif'
+            dtype:
+              i: 'float32'
+              o: 'float32'
             freq: 'D'
             variables:
               P:
@@ -417,7 +451,13 @@ products:
             url: 'ftp://chg-ftpout.geog.ucsb.edu'
             dir: '/pub/org/chg/products/CHIRPS-2.0/global_monthly/tifs/'
             method: 'ftp'
-            ftype: 'gz'
+            ftype:
+              d: 'gz'
+              t: 'GTiff.tif'
+              o: 'GTiff.tif'
+            dtype:
+              i: 'float32'
+              o: 'float32'
             freq: 'MS'
             variables:
               P:
@@ -466,7 +506,13 @@ products:
             url: 'ftp://ftp.wateraccounting.unesco-ihe.org'
             dir: '/WaterAccounting/Data_Satellite/Evaporation/CMRSET/Global/'
             method: 'ftp'
-            ftype: 'tif'
+            ftype:
+              d: 'GTiff.tif'
+              t: '-'
+              o: 'GTiff.tif'
+            dtype:
+              i: 'float64'
+              o: 'float32'
             freq: 'MS'
             variables:
               ETa:
@@ -520,7 +566,13 @@ products:
             url: 'https://edcintl.cr.usgs.gov'
             dir: '/downloads/sciweb1/shared/hydrosheds/sa_dem_3s_grid/{Var:.2s}/'
             method: 'request'
-            ftype: 'adf'
+            ftype:
+              d: 'zip'
+              t: 'AIG.adf'
+              o: 'GTiff.tif'
+            dtype:
+              i: 'https://gis.stackexchange.com/questions/22067/loading-adf-files-into-qgis'
+              o: 'https://gis.stackexchange.com/questions/22067/loading-adf-files-into-qgis'
             freq: '-'
             variables:
               af:
@@ -647,7 +699,10 @@ products:
             url: 'https://edcintl.cr.usgs.gov'
             dir: '/downloads/sciweb1/shared/hydrosheds/sa_15s_zip_grid/'
             method: 'request'
-            ftype: 'adf'
+            ftype:
+              d: 'zip'
+              t: 'AIG.adf'
+              o: 'GTiff.tif'
             freq: '-'
             variables:
               af:
@@ -774,7 +829,10 @@ products:
             url: 'https://edcintl.cr.usgs.gov'
             dir: '/downloads/sciweb1/shared/hydrosheds/sa_30s_zip_bil/'
             method: 'request'
-            ftype: 'bil'
+            ftype:
+              d: 'zip'
+              t: 'EHdr.bil'
+              o: 'GTiff.tif'
             freq: '-'
             variables:
               af:
@@ -903,7 +961,10 @@ products:
             url: 'https://edcintl.cr.usgs.gov'
             dir: '/downloads/sciweb1/shared/hydrosheds/sa_dir_3s_zip_grid/{Var:.3s}/'
             method: 'request'
-            ftype: 'adf'
+            ftype:
+              d: 'zip'
+              t: 'AIG.adf'
+              o: 'GTiff.tif'
             freq: 'MS'
             variables:
               af:

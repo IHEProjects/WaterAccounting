@@ -1,6 +1,6 @@
 # None value
 #   null: account
-#   '-': data[freq, unit, time, ]
+#   '-': data[ftype, freq, unit, time, ]
 
 # Data types
 #   time:
@@ -18,15 +18,15 @@
 #   request  : urllib.request
 #   curl     : pycurl.Curl
 
-# File types
-#   tif, nc, grb2, grib2,
+# File types, "Driver.FileExtension"
+#   grb2, grib2
+#   tif, nc,
 #   gz:
 #     dat(dtype="<f4")
 #   zip:
 #     adf, bil
 
 # Numeric types
-#   Numpy  : https://docs.scipy.org/doc/numpy/user/basics.types.html
 #   Python : https://docs.python.org/3/library/stdtypes.html
 #     Text Type      : str
 #     Numeric Types  : int, float, complex
@@ -35,27 +35,10 @@
 #     Set Types      : set, frozenset
 #     Boolean Type   : bool
 #     Binary Types   : bytes, by
-#
-#   Numpy type    Decsription      Min                  Max
-#   np.byte       Byte             -128                 127
-#   np.ubyte      Unsigned byte    0                    255
-#   np.int8       Byte             -128                 127
-#   np.int16      Integer          -32768               32767
-#   np.int32      Integer          -2147483648          2147483647
-#   np.int64      Integer          -9223372036854775808 9223372036854775807
-#   np.uint8      Unsigned integer 0                    255
-#   np.uint16     Unsigned integer 0                    65535
-#   np.uint32     Unsigned integer 0                    4294967295
-#   np.uint64     Unsigned integer 0                    18446744073709551615
-#   np.float32    Float            1.17549e-38          3.40282e+38
-#   np.float64    Double           2.22507e-308         1.79769e+308
-#   np.float_
-#   np.complex64
-#   np.complex128
-#   np.complex_
+#   Numpy  : https://docs.scipy.org/doc/numpy/user/basics.types.html
+#   NetCDF : https://www.unidata.ucar.edu/software/netcdf/docs/data_type.html
 #
 #   np.float32, <f4
-
 
 # Datetime
 #   strftime codes: http://strftime.org/
@@ -110,8 +93,13 @@ products:
             url: 'ftp://ftp.wateraccounting.unesco-ihe.org'
             dir: '/WaterAccounting/Data_Satellite/Evaporation/ALEXI/World_05182018/'
             method: 'ftp'
-            ftype: 'dat'
-            dtype: 'float32'
+            ftype:
+              d: 'gz'
+              t: 'dat'
+              o: 'GTiff.tif'
+            dtype:
+              i: 'float32'
+              o: 'float32'
             freq: 'D'
             variables:
               ETa:
