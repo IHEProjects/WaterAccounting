@@ -10,23 +10,21 @@ permission of the WA+ team.
 `Description`
 
 Before use this module, set account information
-in the ``WaterAccounting/config.yml`` file.
+in the ``WaterAccounting/accounts.yml`` file.
 
 **Examples:**
 ::
 
-    >>> import os
-    >>> from wateraccounting.Collect.accounts import Accounts
-    >>> accounts = Accounts(os.getcwd(), 'FTP_WA_GUESS', is_status=True)
-    S: WA.Accounts "function" status 0: No error
-       "config.yml-encrypted" key is: ...
+    import os
+    from wateraccounting.Collect.accounts import Accounts
+    accounts = Accounts(os.getcwd(), 'FTP_WA_GUESS', is_status=True)
 
 .. note::
 
-    1. Create ``config.yml`` under root folder of the project,
+    1. Create ``accounts.yml`` under root folder of the project,
        based on the ``config-example.yml``.
     #. Run ``Accounts.credential.encrypt_cfg(path, file, password)``
-       to generate ``config.yml-encrypted`` file.
+       to generate ``accounts.yml-encrypted`` file.
     #. Save key to ``credential.yml``.
 
 """
@@ -54,7 +52,7 @@ class Accounts(Base):
     Description
 
     Args:
-      workspace (str): Directory to config.yml.
+      workspace (str): Directory to accounts.yml.
       account (str): Account name of data product.
       is_status (bool): Is to print status message.
       kwargs (dict): Other arguments.
@@ -162,7 +160,7 @@ class Accounts(Base):
 
         **Don't synchronize the details to github.**
 
-        - File to read: ``config.yml-encrypted``
+        - File to read: ``accounts.yml-encrypted``
         - File to read: ``credential.yml``
         """
         f_cfg = os.path.join(self.__conf['path'],
@@ -258,7 +256,7 @@ class Accounts(Base):
     def _user_encrypt(self, file):
         """Encrypt file with given key
 
-        This function encrypt config.yml file.
+        This function encrypt accounts.yml file.
 
         Args:
           file (str): File name.
@@ -286,7 +284,7 @@ class Accounts(Base):
     def _user_decrypt(self, file):
         """Decrypt file with given key
 
-        This function decrypt config.yml file.
+        This function decrypt accounts.yml file.
 
         Args:
           file (str): File name.
@@ -314,9 +312,9 @@ class Accounts(Base):
         **Don't synchronize the details to github.**
 
         - File to read: ``credential.yml``
-          contains key: ``config.yml-encrypted``.
-        - File to read: ``config.yml-encrypted``
-          generated from: ``config.yml``.
+          contains key: ``accounts.yml-encrypted``.
+        - File to read: ``accounts.yml-encrypted``
+          generated from: ``accounts.yml``.
 
         Args:
           key (str): Key name.

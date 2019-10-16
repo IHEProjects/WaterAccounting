@@ -28,7 +28,7 @@ PyPI upload, run ``setup.py``::
 
 .. warning::
 
-    Must contain **config.yml** file.
+    Must contain **config.yml** and **accounts.yml-encrypted** file.
 
 .. note::
 

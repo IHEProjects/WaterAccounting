@@ -31,7 +31,7 @@ products:
       owner: 'IHE Delft'
       description:
         ''
-      website: 'https://www.wateraccounting.org'
+      websites: ['https://www.wateraccounting.org']
       protocols: ['FTP']
       methods: ['ftp']
       ftypes: ['tif']
@@ -116,7 +116,7 @@ products:
          soil properties and drainage patterns. Satellite measurements integrate over
          relative large-scale areas, with the presence of vegetation adding complexity to
          the interpretation.'
-      website: 'https://www.copernicus.eu'
+      websites: ['https://www.copernicus.eu']
       protocols: ['HTTPS']
       methods: ['requests']
       ftypes: ['nc']
@@ -174,7 +174,7 @@ products:
          approaches for taking in, or assimilating, observations from data sources including
          surface observations, upper air balloon observations, aircraft observations, and
          satellite observations.'
-      website: 'https://www.noaa.gov'
+      websites: ['https://www.noaa.gov']
       protocols: ['FTP', 'HTTPS', 'TDS']
       methods: ['curl']
       ftypes: ['grb2', 'grib2']
@@ -363,7 +363,7 @@ products:
         'Since 1999, USGS and CHC scientists—supported by funding from USAID, NASA, and
          NOAA—have developed techniques for producing rainfall maps, especially in areas
          where surface data is sparse.'
-      website: 'https://geog.ucsb.edu/'
+      websites: ['https://geog.ucsb.edu']
       protocols: ['FTP']
       methods: ['ftp']
       ftypes: ['gz', 'nc']
@@ -443,7 +443,7 @@ products:
       owner: 'IHE Delft'
       description:
         ''
-      website: 'https://www.wateraccounting.org'
+      websites: ['https://www.wateraccounting.org']
       protocols: ['FTP']
       methods: ['ftp']
       ftypes: ['tif']
@@ -497,7 +497,7 @@ products:
          river networks, watershed boundaries, drainage directions, and flow accumulations.
          HydroSHEDS is based on high-resolution elevation data obtained during a Space
          Shuttle flight for NASA''s Shuttle Radar Topography Mission (SRTM).'
-      website: 'http://earlywarning.usgs.gov'
+      websites: ['http://earlywarning.usgs.gov']
       protocols: ['HTTPS']
       methods: ['request']
       ftypes: ['zip']
@@ -641,7 +641,11 @@ products:
             name: 'HydroSHEDS Drainage Directions'
             description:
               ''
-            dir: '/WaterAccounting/Data_Satellite/Evaporation/CMRSET/Global/'
+            # 201910, QPan:
+            #   https://edcintl.cr.usgs.gov/downloads/sciweb1/shared/hydrosheds/sa_dem_3s_grid/AF/n00e005_dem_grid.zip
+            url: 'https://edcintl.cr.usgs.gov'
+            dir: '/downloads/sciweb1/shared/hydrosheds/sa_dem_3s_grid/{Var:.3s}/'
+            method: 'request'
             ftype: 'zip'
             freq: 'MS'
             variables:

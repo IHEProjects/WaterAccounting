@@ -6,6 +6,7 @@ Subpackages
 
 .. toctree::
 
+    wateraccounting.Collect.products
     wateraccounting.Collect.scripts
 
 Submodules

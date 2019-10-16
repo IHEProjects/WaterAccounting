@@ -49,7 +49,7 @@ products:
       owner: 'IHE Delft'
       description:
         ''
-      website: 'https://www.wateraccounting.org'
+      websites: ['https://www.wateraccounting.org']
       protocols: ['FTP']
       methods: ['ftp']
       ftypes: ['tif']

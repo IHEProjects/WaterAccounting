@@ -7,6 +7,17 @@
 The data and this python file may not be distributed to others without
 permission of the WA+ team.
 
+`Description`
+
+Before use this module, set account information
+in the ``WaterAccounting/accounts.yml`` file.
+
+**Examples:**
+::
+
+    from wateraccounting.Collect.base import Base
+    base = Base(is_status=True)
+
 .. todo::
 
     1. 20191010, QPan, add section **sources** from ``self.__conf`` to ``base.yml``

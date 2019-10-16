@@ -10,16 +10,14 @@ permission of the WA+ team.
 `Description`
 
 Before use this module, set account information
-in the ``WaterAccounting/config.yml`` file.
+in the ``WaterAccounting/accounts.yml`` file.
 
 **Examples:**
 ::
 
-    >>> import os
-    >>> from wateraccounting.Collect.download import Download
-    >>> download = Download(os.getcwd(), 'FTP_WA_GUESS', is_status=True)
-    S: WA.Download "function" status 0: No error
-       "config.yml-encrypted" key is: ...
+    import os
+    from wateraccounting.Collect.download import Download
+    download = Download(os.getcwd(), 'FTP_WA_GUESS', is_status=True)
 
 """
 import os
@@ -47,7 +45,7 @@ class Download(Accounts, GIS):
     Description
 
     Args:
-      workspace (str): Directory to config.yml.
+      workspace (str): Directory to accounts.yml.
       account (str): Account name of data product.
       is_status (bool): Is to print status message.
       kwargs (dict): Other arguments.
