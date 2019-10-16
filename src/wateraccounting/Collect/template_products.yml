@@ -1,6 +1,6 @@
 # None value
-# null: account
-# '-': data[unit, time, freq]
+#   null: account
+#   '-': data[freq, unit, time, ]
 
 # Data types
 #   time:
@@ -19,28 +19,69 @@
 #   curl     : pycurl.Curl
 
 # File types
-#   tif, gz, nc, grb2, grib2
+#   tif, nc, grb2, grib2,
+#   gz:
+#     dat(dtype="<f4")
+#   zip:
+#     adf, bil
+
+# Numeric types
+#   Numpy  : https://docs.scipy.org/doc/numpy/user/basics.types.html
+#   Python : https://docs.python.org/3/library/stdtypes.html
+#     Text Type      : str
+#     Numeric Types  : int, float, complex
+#     Sequence Types : list, tuple, range
+#     Mapping Type   : dict
+#     Set Types      : set, frozenset
+#     Boolean Type   : bool
+#     Binary Types   : bytes, by
+#
+#   Numpy type    Decsription      Min                  Max
+#   np.byte       Byte             -128                 127
+#   np.ubyte      Unsigned byte    0                    255
+#   np.int8       Byte             -128                 127
+#   np.int16      Integer          -32768               32767
+#   np.int32      Integer          -2147483648          2147483647
+#   np.int64      Integer          -9223372036854775808 9223372036854775807
+#   np.uint8      Unsigned integer 0                    255
+#   np.uint16     Unsigned integer 0                    65535
+#   np.uint32     Unsigned integer 0                    4294967295
+#   np.uint64     Unsigned integer 0                    18446744073709551615
+#   np.float32    Float            1.17549e-38          3.40282e+38
+#   np.float64    Double           2.22507e-308         1.79769e+308
+#   np.float_
+#   np.complex64
+#   np.complex128
+#   np.complex_
+#
+#   np.float32, <f4
+
 
 # Datetime
-# strftime codes: http://strftime.org/
-# pandas date_range alias: https://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html#timeseries-offset-aliases
-#   D  : calendar day frequency
-#   7D : week frequency
-#   MS : month start frequency
+#   strftime codes: http://strftime.org/
+#   pandas date_range alias: https://pandas.pydata.org/pandas-docs/stable/user_guide/timeseries.html#timeseries-offset-aliases
+#     D  : calendar day frequency
+#     7D : week frequency
+#     MS : month start frequency
 
 # Name
-# var: variable name, lower case
-# Var: variable name, upper case
+#   var: variable name, lower case
+#   Var: variable name, upper case
 #
-# i: ith part of file, ``for i in range(0, 4):``
+#   i: ith part of file, ``for i in range(0, 4):``
 #
-# '{:%Y-%m-%d %H:%M}'.format(datetime(2001, 2, 3, 4, 5)) => 2001-02-03 04:05
-# Y: year, stirng[4]
-# m: month, string[2]
-# d: day, string[2]
-# j: day of year, string[3]
+#   '{:%Y-%m-%d %H:%M}'.format(datetime(2001, 2, 3, 4, 5)) => 2001-02-03 04:05
+#   Y: year, stirng[4]
+#   m: month, string[2]
+#   d: day, string[2]
+#   j: day of year, string[3]
 #
-# latlon: DEM tile's name, string[7], n00e005
+#   latlon: DEM tile's name, string[7], n00e005
+
+# File
+#   rmtname : downloaded to './download/'
+#   tmpfile : generated to './temporary/', to be deleted at the end
+#   locfile : saved to './'
 
 products:
   ALEXI:
@@ -52,7 +93,7 @@ products:
       websites: ['https://www.wateraccounting.org']
       protocols: ['FTP']
       methods: ['ftp']
-      ftypes: ['tif']
+      ftypes: ['gz']
       datasets: ['ET']
       versions: ['v1']
       datatypes: ['daily', 'weekly']
@@ -69,7 +110,8 @@ products:
             url: 'ftp://ftp.wateraccounting.unesco-ihe.org'
             dir: '/WaterAccounting/Data_Satellite/Evaporation/ALEXI/World_05182018/'
             method: 'ftp'
-            ftype: 'tif'
+            ftype: 'dat'
+            dtype: 'float32'
             freq: 'D'
             variables:
               ETa:

@@ -34,7 +34,7 @@ products:
       websites: ['https://www.wateraccounting.org']
       protocols: ['FTP']
       methods: ['ftp']
-      ftypes: ['tif']
+      ftypes: ['gz']
       datasets: ['Evaporation']
       versions: ['v1']
       datatypes: ['daily', 'weekly']
@@ -51,7 +51,8 @@ products:
             url: 'ftp://ftp.wateraccounting.unesco-ihe.org'
             dir: '/WaterAccounting/Data_Satellite/Evaporation/ALEXI/World_05182018/'
             method: 'ftp'
-            ftype: 'tif'
+            ftype: 'dat'
+            dtype: 'np.float32'
             freq: 'D'
             variables:
               ETa:
@@ -71,7 +72,7 @@ products:
                   s: 2005-01-01
                   e: 2016-12-31
             rmtname: 'EDAY_CERES_{Y:>04s}{j:>03s}.dat.gz'
-            tmpfile: ''
+            tmpfile: 'EDAY_CERES_{Y:>04s}{j:>03s}.dat'
             locfile: '{var:.3s}_ALEXI_CSFR_mm-day-1_daily_{Y:>04s}.{m:>02s}.{d:>02s}.tif'
           weekly:
             name: 'Weekly Evaporation'
@@ -83,6 +84,7 @@ products:
             dir: '/WaterAccounting/Data_Satellite/Evaporation/ALEXI/World/'
             method: 'ftp'
             ftype: 'tif'
+            dtype: 'np.float32'
             freq: '7D'
             variables:
               ETa:
@@ -139,6 +141,7 @@ products:
             dir: '/Vegetation/Soil_Water_Index/Daily_SWI_12.5km_Global_V3/{Y:>04s}/{m:>02s}/{d:>02s}/SWI_{Y:>04s}/{m:>02s}/{d:>02s}1200_GLOBE_ASCAT_V3.1.1/'
             method: 'requests'
             ftype: 'nc'
+            dtype: 'np.ubyte'
             freq: 'D'
             variables:
               SWI_010:
@@ -515,9 +518,9 @@ products:
             # 201910, QPan:
             #   https://edcintl.cr.usgs.gov/downloads/sciweb1/shared/hydrosheds/sa_dem_3s_grid/AF/n00e005_dem_grid.zip
             url: 'https://edcintl.cr.usgs.gov'
-            dir: '/downloads/sciweb1/shared/hydrosheds/sa_dem_3s_grid/{Var:.3s}/'
+            dir: '/downloads/sciweb1/shared/hydrosheds/sa_dem_3s_grid/{Var:.2s}/'
             method: 'request'
-            ftype: 'zip'
+            ftype: 'adf'
             freq: '-'
             variables:
               af:
@@ -528,11 +531,11 @@ products:
                 lat:
                   s: -35.0
                   n: 38.0
-                  r: 0.05
+                  r: 0.00083333333333333
                 lon:
                   w: -19.0
                   e: 55.0
-                  r: 0.05
+                  r: 0.00083333333333333
                 time:
                   s: '-'
                   e: '-'
@@ -544,11 +547,11 @@ products:
                 lat:
                   s: -12.0
                   n: 61.0
-                  r: 0.05
+                  r: 0.00083333333333333
                 lon:
                   w: 57.0
                   e: 180.0
-                  r: 0.05
+                  r: 0.00083333333333333
                 time:
                   s: '-'
                   e: '-'
@@ -560,11 +563,11 @@ products:
                 lat:
                   s: -56.0
                   n: -10.0
-                  r: 0.05
+                  r: 0.00083333333333333
                 lon:
                   w: 112.0
                   e: 180.0
-                  r: 0.05
+                  r: 0.00083333333333333
                 time:
                   s: '-'
                   e: '-'
@@ -576,11 +579,11 @@ products:
                 lat:
                   s: 5.0
                   n: 39.0
-                  r: 0.05
+                  r: 0.00083333333333333
                 lon:
                   w: -119.0
                   e: -60.0
-                  r: 0.05
+                  r: 0.00083333333333333
                 time:
                   s: '-'
                   e: '-'
@@ -592,11 +595,11 @@ products:
                 lat:
                   s: 12.0
                   n: 62.0
-                  r: 0.05
+                  r: 0.00083333333333333
                 lon:
                   w: -14.0
                   e: 70.0
-                  r: 0.05
+                  r: 0.00083333333333333
                 time:
                   s: '-'
                   e: '-'
@@ -608,11 +611,11 @@ products:
                 lat:
                   s: 24.0
                   n: 60.0
-                  r: 0.05
+                  r: 0.00083333333333333
                 lon:
                   w: -138.0
                   e: -52.0
-                  r: 0.05
+                  r: 0.00083333333333333
                 time:
                   s: '-'
                   e: '-'
@@ -624,30 +627,28 @@ products:
                 lat:
                   s: -56.0
                   n: 15.0
-                  r: 0.05
+                  r: 0.00083333333333333
                 lon:
                   w: -93.0
                   e: -32.0
-                  r: 0.05
+                  r: 0.00083333333333333
                 time:
                   s: '-'
                   e: '-'
             rmtname: '{latlon}_dem_grid.zip'
-            tmpfile: ''
-            locfile: ''
-      DIR:
-        v1:
-          3s:
-            name: 'HydroSHEDS Drainage Directions'
+            tmpfile: '{}_temporary.tif'
+            locfile: 'DEM_HydroShed_m_3s.tif'
+          15s:
+            name: 'HydroSHEDS Digital Elevation Model'
             description:
               ''
             # 201910, QPan:
-            #   https://edcintl.cr.usgs.gov/downloads/sciweb1/shared/hydrosheds/sa_dem_3s_grid/AF/n00e005_dem_grid.zip
+            #   https://edcintl.cr.usgs.gov/downloads/sciweb1/shared/hydrosheds/sa_15s_zip_grid/af_dem_15s_grid.zip
             url: 'https://edcintl.cr.usgs.gov'
-            dir: '/downloads/sciweb1/shared/hydrosheds/sa_dem_3s_grid/{Var:.3s}/'
+            dir: '/downloads/sciweb1/shared/hydrosheds/sa_15s_zip_grid/'
             method: 'request'
-            ftype: 'zip'
-            freq: 'MS'
+            ftype: 'adf'
+            freq: '-'
             variables:
               af:
                 unit:
@@ -655,23 +656,279 @@ products:
                   t: 'm'
                   m: 1
                 lat:
+                  s: -35.0
+                  n: 38.0
+                  r: 0.00416667
+                lon:
+                  w: -19.0
+                  e: 55.0
+                  r: 0.00416667
+                time:
+                  s: '-'
+                  e: '-'
+              as:
+                unit:
+                  f: 'm'
+                  t: 'm'
+                  m: 1
+                lat:
+                  s: -12.0
+                  n: 61.0
+                  r: 0.00416667
+                lon:
+                  w: 57.0
+                  e: 180.0
+                  r: 0.00416667
+                time:
+                  s: '-'
+                  e: '-'
+              au:
+                unit:
+                  f: 'm'
+                  t: 'm'
+                  m: 1
+                lat:
+                  s: -56.0
+                  n: -10.0
+                  r: 0.00416667
+                lon:
+                  w: 112.0
+                  e: 180.0
+                  r: 0.00416667
+                time:
+                  s: '-'
+                  e: '-'
+              ca:
+                unit:
+                  f: 'm'
+                  t: 'm'
+                  m: 1
+                lat:
+                  s: 5.0
+                  n: 39.0
+                  r: 0.00416667
+                lon:
+                  w: -119.0
+                  e: -60.0
+                  r: 0.00416667
+                time:
+                  s: '-'
+                  e: '-'
+              eu:
+                unit:
+                  f: 'm'
+                  t: 'm'
+                  m: 1
+                lat:
+                  s: 12.0
+                  n: 62.0
+                  r: 0.00416667
+                lon:
+                  w: -14.0
+                  e: 70.0
+                  r: 0.00416667
+                time:
+                  s: '-'
+                  e: '-'
+              na:
+                unit:
+                  f: 'm'
+                  t: 'm'
+                  m: 1
+                lat:
+                  s: 24.0
+                  n: 60.0
+                  r: 0.00416667
+                lon:
+                  w: -138.0
+                  e: -52.0
+                  r: 0.00416667
+                time:
+                  s: '-'
+                  e: '-'
+              sa:
+                unit:
+                  f: 'm'
+                  t: 'm'
+                  m: 1
+                lat:
+                  s: -56.0
+                  n: 15.0
+                  r: 0.00416667
+                lon:
+                  w: -93.0
+                  e: -32.0
+                  r: 0.00416667
+                time:
+                  s: '-'
+                  e: '-'
+            rmtname: '{var:.2s}_dem_15s_grid.zip'
+            tmpfile: '{}_merged.tif'
+            locfile: 'DEM_HydroShed_m_15s.tif'
+          30s:
+            name: 'HydroSHEDS Digital Elevation Model'
+            description:
+              ''
+            # 201910, QPan:
+            #   https://edcintl.cr.usgs.gov/downloads/sciweb1/shared/hydrosheds/sa_30s_zip_bil/af_dem_30s_bil.zip
+            url: 'https://edcintl.cr.usgs.gov'
+            dir: '/downloads/sciweb1/shared/hydrosheds/sa_30s_zip_bil/'
+            method: 'request'
+            ftype: 'bil'
+            freq: '-'
+            variables:
+              af:
+                unit:
+                  f: 'm'
+                  t: 'm'
+                  m: 1
+                lat:
+                  s: -35.0
+                  n: 38.0
+                  r: 0.00833334
+                lon:
+                  w: -19.0
+                  e: 55.0
+                  r: 0.00833334
+                time:
+                  s: '-'
+                  e: '-'
+              as:
+                unit:
+                  f: 'm'
+                  t: 'm'
+                  m: 1
+                lat:
+                  s: -12.0
+                  n: 61.0
+                  r: 0.00833334
+                lon:
+                  w: 57.0
+                  e: 180.0
+                  r: 0.00833334
+                time:
+                  s: '-'
+                  e: '-'
+              au:
+                unit:
+                  f: 'm'
+                  t: 'm'
+                  m: 1
+                lat:
+                  s: -56.0
+                  n: -10.0
+                  r: 0.00833334
+                lon:
+                  w: 112.0
+                  e: 180.0
+                  r: 0.00833334
+                time:
+                  s: '-'
+                  e: '-'
+              ca:
+                unit:
+                  f: 'm'
+                  t: 'm'
+                  m: 1
+                lat:
+                  s: 5.0
+                  n: 39.0
+                  r: 0.00833334
+                lon:
+                  w: -119.0
+                  e: -60.0
+                  r: 0.00833334
+                time:
+                  s: '-'
+                  e: '-'
+              eu:
+                unit:
+                  f: 'm'
+                  t: 'm'
+                  m: 1
+                lat:
+                  s: 12.0
+                  n: 62.0
+                  r: 0.00833334
+                lon:
+                  w: -14.0
+                  e: 70.0
+                  r: 0.00833334
+                time:
+                  s: '-'
+                  e: '-'
+              na:
+                unit:
+                  f: 'm'
+                  t: 'm'
+                  m: 1
+                lat:
+                  s: 24.0
+                  n: 60.0
+                  r: 0.00833334
+                lon:
+                  w: -138.0
+                  e: -52.0
+                  r: 0.00833334
+                time:
+                  s: '-'
+                  e: '-'
+              sa:
+                unit:
+                  f: 'm'
+                  t: 'm'
+                  m: 1
+                lat:
+                  s: -56.0
+                  n: 15.0
+                  r: 0.00833334
+                lon:
+                  w: -93.0
+                  e: -32.0
+                  r: 0.00833334
+                time:
+                  s: '-'
+                  e: '-'
+            rmtname: '{var:.2s}_dem_30s_bil.zip'
+            tmpfile: '{}_merged.tif'
+            locfile: 'DEM_HydroShed_m_30s.tif'
+      DIR:
+        v1:
+          3s:
+            name: 'HydroSHEDS Drainage Directions'
+            description:
+              ''
+            # 201910, QPan:
+            #   https://edcintl.cr.usgs.gov/downloads/sciweb1/shared/hydrosheds/sa_dir_3s_zip_grid/AF/n00e005_dir_grid.zip
+            url: 'https://edcintl.cr.usgs.gov'
+            dir: '/downloads/sciweb1/shared/hydrosheds/sa_dir_3s_zip_grid/{Var:.3s}/'
+            method: 'request'
+            ftype: 'adf'
+            freq: 'MS'
+            variables:
+              af:
+                unit:
+                  f: '-'
+                  t: '-'
+                  m: 1
+                lat:
                   s: -90.0
                   n: 90.0
-                  r: 0.05
+                  r: 0.00833334
                 lon:
                   w: -180.0
                   e: 180.0
-                  r: 0.05
+                  r: 0.0
                 time:
-                  s: 2000-01-01
-                  e: 2012-12-31
+                  s: '-'
+                  e: '-'
               as:
               au:
               ca:
               eu:
               na:
               sa:
-            rmtname: 'M01CMRSETGlobalY{Y:>04s}M{m:>02s}.tif'
-            tmpfile: ''
-            locfile: '{var:.3s}_CMRSET_mm-month-1_monthly_{Y:>04s}.{m:>02s}.{d:>02s}.tif'
+            rmtname: '{latlon}_dir_grid.zip'
+            tmpfile: '{}_temporary.tif'
+            locfile: 'DIR_HydroShed_-_3s.tif'
 

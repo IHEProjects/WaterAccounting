@@ -206,7 +206,7 @@ class Download(Accounts, GIS):
         #     os.remove(os.path.join(output_folder, f))
         pass
 
-    def get_gz(self, file, outfile):
+    def unzip_gz(self, file, outfile):
         """Extract zip file
 
         This function extract zip file as gz file.
