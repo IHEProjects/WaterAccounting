@@ -5,11 +5,11 @@
 `Restrictions`
 
 The data and this python file may not be distributed to others without
-permission of the WA+ team due data restriction of the ALEXI developers.
+permission of the WA+ team.
 
 `Description`
 
-This package downloads ALEXI data from
+This module downloads ALEXI data from
 ``ftp.wateraccounting.unesco-ihe.org``.
 
 Use the ALEXI.daily function to download
@@ -32,6 +32,8 @@ the **total evaporation** in ``mm`` for the period of ``1 January - 7 January``.
 import os
 # import sys
 import glob
+# import shutil
+
 import math
 import datetime
 
@@ -39,6 +41,7 @@ from ftplib import FTP
 
 import numpy as np
 import pandas as pd
+# from netCDF4 import Dataset
 
 # Water Accounting Modules
 try:

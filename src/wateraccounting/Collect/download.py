@@ -48,7 +48,7 @@ class Download(Accounts, GIS):
 
     Args:
       workspace (str): Directory to config.yml.
-      account (str): Account name of data portal.
+      account (str): Account name of data product.
       is_status (bool): Is to print status message.
       kwargs (dict): Other arguments.
     """
@@ -93,6 +93,14 @@ class Download(Accounts, GIS):
         #         'Longitude must be between 180E and 180W. Now value is set to maximum')
         #     lonlim[0] = np.max(lonlim[0], -180)
         #     lonlim[1] = np.min(lonlim[1], 180)
+        pass
+
+    def cal_latlon_index(self):
+        # # Define IDs
+        # yID = 3000 - np.int16(
+        #     np.array([np.ceil((latlim[1] + 60) * 20), np.floor((latlim[0] + 60) * 20)]))
+        # xID = np.int16(
+        #     np.array([np.floor((lonlim[0]) * 20), np.ceil((lonlim[1]) * 20)]) + 3600)
         pass
 
     def check_time_lim(self):
@@ -141,6 +149,45 @@ class Download(Accounts, GIS):
         #
         #     # amount of Dates weekly
         #     Dates = pd.date_range(Date, Enddate, freq='7D')
+        pass
+
+    def check_product(self, product=''):
+        if product == '':
+            pass
+        elif product == 'ALEXI':
+            pass
+        elif product == 'ASCAT':
+            pass
+        elif product == 'CFSR':
+            pass
+        else:
+            raise ValueError('Unknown method: {v}'.format(v=method))
+        pass
+
+    def check_method(self, method=''):
+        if method == '':
+            pass
+        elif method == 'ftp':
+            pass
+        elif method == 'request':
+            pass
+        elif method == 'curl':
+            pass
+        else:
+            raise ValueError('Unknown method: {v}'.format(v=method))
+        pass
+
+    def check_version(self, version=''):
+        if version == '':
+            pass
+        elif version == 'v1':
+            pass
+        elif version == 'v2':
+            pass
+        elif version == 'v3':
+            pass
+        else:
+            raise ValueError('Unknown version: {v}'.format(v=version))
         pass
 
     def create_folder(self):
@@ -195,23 +242,30 @@ def main():
     download = Download('', 'FTP_WA', is_status=False)
     # 'Copernicus', is_status=False)
 
-    # Base attributes
-    print('\ndownload._Base__conf\n=====')
-    pprint(download._Base__conf)
+    # # Base attributes
+    # print('\ndownload._Base__conf\n=====')
+    # pprint(download._Base__conf)
+    #
+    # # Accounts attributes
+    # print('\ndownload._Accounts__conf\n=====')
+    # pprint(download._Accounts__conf)
+    #
+    # # GIS attributes
+    # print('\ndownload._GIS__conf:\n=====')
+    # pprint(download._GIS__conf)
+    #
+    # # Download attributes
+    #
+    # # Download methods
+    # print('\ndownload.Base.get_status()\n=====')
+    # pprint(download.get_status())
 
-    # Accounts attributes
-    print('\ndownload._Accounts__conf\n=====')
-    pprint(download._Accounts__conf)
-
-    # GIS attributes
-    print('\ndownload._GIS__conf:\n=====')
-    pprint(download._GIS__conf)
-
-    # Download attributes
-
-    # Download methods
-    print('\ndownload.Base.get_status()\n=====')
-    pprint(download.get_status())
+    print('\n\n=====')
+    for key, val in download._Base__conf['data']['products'].items():
+        print(key)
+        print('-----')
+        pprint(val['meta'])
+        pprint(val['data'])
 
 
 if __name__ == "__main__":

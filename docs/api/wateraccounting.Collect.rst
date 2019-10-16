@@ -6,26 +6,10 @@ Subpackages
 
 .. toctree::
 
-    wateraccounting.Collect.wacollect
+    wateraccounting.Collect.scripts
 
 Submodules
 ----------
-
-wateraccounting.Collect.ALEXI module
-------------------------------------
-
-.. automodule:: wateraccounting.Collect.ALEXI
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-wateraccounting.Collect.ASCAT module
-------------------------------------
-
-.. automodule:: wateraccounting.Collect.ASCAT
-    :members:
-    :undoc-members:
-    :show-inheritance:
 
 wateraccounting.Collect.accounts module
 ---------------------------------------

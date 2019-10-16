@@ -1,12 +1,11 @@
 # -*- coding: utf-8 -*-
-# -*- coding: utf-8 -*-
 """
 **ASCAT**
 
 `Restrictions`
 
 The data and this python file may not be distributed to others without
-permission of the WA+ team due data restriction of the ASCAT developers.
+permission of the WA+ team.
 
 `Description`
 
@@ -33,6 +32,8 @@ the **soil water** index.
 import os
 # import sys
 # import glob
+# import shutil
+
 # # import math
 # # import datetime
 
@@ -41,7 +42,6 @@ from requests.auth import HTTPBasicAuth
 
 import numpy as np
 import pandas as pd
-# import h5py
 from netCDF4 import Dataset
 
 # Water Accounting Modules

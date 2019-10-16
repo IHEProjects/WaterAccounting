@@ -55,13 +55,13 @@ class Accounts(Base):
 
     Args:
       workspace (str): Directory to config.yml.
-      account (str): Account name of data portal.
+      account (str): Account name of data product.
       is_status (bool): Is to print status message.
       kwargs (dict): Other arguments.
     """
     __conf = {
         'path': '',
-        'file': 'config.yml-encrypted',
+        'file': 'accounts.yml-encrypted',
         'account': {},
         'data': {
             'credential': {
@@ -112,7 +112,7 @@ class Accounts(Base):
                     self._Base__conf['path'], '../', '../', '../'
                 )
             if self.is_status:
-                print('"{k}": "{v}"'
+                print('I: "{k:10}": "{v}"'
                       .format(k='workspace',
                               v=self.__conf['path']))
         else:
@@ -126,7 +126,7 @@ class Accounts(Base):
             else:
                 self.__conf['account']['FTP_WA_GUESS'] = {}
             if self.is_status:
-                print('"{k}": "{v}"'
+                print('I: "{k:10}": "{v}"'
                       .format(k='account',
                               v=self.__conf['account']))
         else:

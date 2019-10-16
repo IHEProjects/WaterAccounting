@@ -57,7 +57,7 @@ class GIS(Base):
 
     Args:
       workspace (str): Directory to config.yml.
-      account (str): Account name of data portal.
+      account (str): Account name of data product.
       is_status (bool): Is to print status message.
       kwargs (dict): Other arguments.
     """
@@ -116,15 +116,15 @@ class GIS(Base):
         """
         self.status = self.set_status(self.stcode, fun, prt, ext)
 
-    def get_tiff(self, file='', band=1):
-        """Get tiff band data
+    def get_tif(self, file='', band=1):
+        """Get tif band data
 
-        This function get tiff band as numpy.ndarray.
+        This function get tif band as numpy.ndarray.
 
         Args:
           file (str): 'C:/file/to/path/file.tif' or a gdal file (gdal.Open(file))
-            string that defines the input tiff file or gdal file.
-          band (int): Defines the band of the tiff that must be opened.
+            string that defines the input tif file or gdal file.
+          band (int): Defines the band of the tif that must be opened.
 
         Returns:
           :obj:`numpy.ndarray`: Band data.
@@ -136,7 +136,7 @@ class GIS(Base):
             >>> gis = GIS(os.getcwd(), is_status=False)
             >>> path = os.path.join(os.getcwd(), 'tests', 'data', 'BigTIFF')
             >>> file = os.path.join(path, 'Classic.tif')
-            >>> data = gis.get_tiff(file, 1)
+            >>> data = gis.get_tif(file, 1)
 
             >>> type(data)
             <class 'numpy.ndarray'>
@@ -169,8 +169,8 @@ class GIS(Base):
 
         return Data
 
-    def save_tiff(self, name='', data='', geo='', projection=''):
-        """Save as tiff
+    def save_tif(self, name='', data='', geo='', projection=''):
+        """Save as tif
 
         This function save the array as a geotiff.
 
@@ -189,7 +189,7 @@ class GIS(Base):
             >>> file = os.path.join(path, 'Classic.tif')
             >>> test = os.path.join(path, 'test.tif')
 
-            >>> data = gis.get_tiff(file, 1)
+            >>> data = gis.get_tif(file, 1)
             >>> data
             array([[255, 255, 255, ...   0,   0,   0],
                    [255, 255, 255, ...   0,   0,   0],
@@ -199,8 +199,8 @@ class GIS(Base):
                    [  0,   0,   0, ...,   0,   0,   0],
                    [  0,   0,   0, ...,   0,   0,   0]], dtype=uint8)
 
-            >>> gis.save_tiff(test, data, [0, 1, 0, 0, 1, 0], "WGS84")
-            >>> data = gis.get_tiff(test, 1)
+            >>> gis.save_tif(test, data, [0, 1, 0, 0, 1, 0], "WGS84")
+            >>> data = gis.get_tif(test, 1)
             >>> data
             array([[255., 255., 255., ...   0.,   0.,   0.],
                    [255., 255., 255., ...   0.,   0.,   0.],

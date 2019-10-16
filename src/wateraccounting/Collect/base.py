@@ -55,7 +55,7 @@ class Base(object):
         'file': 'base.yml',
         'data': {
             'messages': {},
-            'sources': {}
+            'products': {}
         }
     }
 
@@ -139,7 +139,7 @@ class Base(object):
         lvl = self.__conf['data']['messages'][cod]['level']
         if ext != '':
             self.status = self.stmsg[lvl].format(
-                f=fun, c=cod, m='{m}\n   {e}'.format(m=msg, e=ext))
+                f=fun, c=cod, m='{m}\nI: {e}'.format(m=msg, e=ext))
         else:
             self.status = self.stmsg[lvl].format(
                 f=fun, c=cod, m='{m}'.format(m=msg))
