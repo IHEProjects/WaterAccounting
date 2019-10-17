@@ -571,8 +571,8 @@ products:
               t: 'AIG.adf'
               o: 'GTiff.tif'
             dtype:
-              i: 'https://gis.stackexchange.com/questions/22067/loading-adf-files-into-qgis'
-              o: 'https://gis.stackexchange.com/questions/22067/loading-adf-files-into-qgis'
+              i: 'int16'
+              o: 'float32'
             freq: '-'
             variables:
               af:

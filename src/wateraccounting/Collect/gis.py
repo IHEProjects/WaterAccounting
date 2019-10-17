@@ -37,10 +37,11 @@ import inspect
 import numpy as np
 
 try:
-    from osgeo import gdal, osr
+    from osgeo import gdal, osr, gdalconst
 except ImportError:
     import gdal
     import osr
+    import gdalconst
 
 try:
     from .base import Base
