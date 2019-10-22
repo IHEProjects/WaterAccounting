@@ -163,21 +163,23 @@ class Accounts(Base):
         - File to read: ``accounts.yml-encrypted``
         - File to read: ``credential.yml``
         """
-        f_cfg = os.path.join(self.__conf['path'],
-                             self.__conf['file'])
+        f_cfg_org = os.path.join(self.__conf['path'],
+                                 self.__conf['file'].split('-encrypted')[0])
+        f_cfg_enc = os.path.join(self.__conf['path'],
+                                 self.__conf['file'])
         f_crd = os.path.join(self.__conf['path'],
                              self.__conf['data']['credential']['file'])
 
-        if not os.path.exists(f_cfg):
-            raise FileNotFoundError('User "{f}" not found.'.format(f=f_cfg))
+        if not os.path.exists(f_cfg_enc):
+            raise FileNotFoundError('User "{f}" not found.'.format(f=f_cfg_enc))
         if not os.path.exists(f_crd):
             raise FileNotFoundError('User "{f}" not found.'.format(f=f_crd))
 
         self._user_key(f_crd)
-        # self._user_encrypt(f_cfg)
+        # self._user_encrypt(f_cfg_org)
 
         conf = yaml.load(
-            self._user_decrypt(f_cfg),
+            self._user_decrypt(f_cfg_enc),
             Loader=yaml.FullLoader)
 
         for key in conf:
@@ -187,7 +189,7 @@ class Accounts(Base):
                 self.stcode = 0
             except KeyError:
                 raise KeyError('Key "{k}" not found in "{f}".'
-                               .format(k=key, f=f_cfg))
+                               .format(k=key, f=f_cfg_enc))
             else:
                 # __conf.account
                 for subkey in self.__conf['account']:
@@ -196,7 +198,7 @@ class Accounts(Base):
                         self.stcode = 0
                     except KeyError:
                         raise KeyError('Sub key "{k}" not found in "{f}".'
-                                       .format(k=subkey, f=f_cfg))
+                                       .format(k=subkey, f=f_cfg_enc))
 
         self._status(
             inspect.currentframe().f_code.co_name,
@@ -369,7 +371,8 @@ class Accounts(Base):
         if os.name == 'posix' and total == 0:
             total = 0.0001
 
-        percent = ('{0:.' + str(decimals) + 'f}').format(100 * (i / float(total)))
+        percent = ('{0:.' + str(decimals) + 'f}').format(100 *
+                                                         (i / float(total)))
         filled = int(length * i // total)
         bar = fill * filled + '-' * (length - filled)
 

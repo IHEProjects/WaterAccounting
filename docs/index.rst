@@ -8,6 +8,10 @@ From the root of the project, run::
 
     python setup.py --version
 
+Format scripts by PEP8
+
+    autopep8 --in-place --aggressive src/wateraccounting/Collect/base.py
+
 Unit test, run::
 
     python setup.py test

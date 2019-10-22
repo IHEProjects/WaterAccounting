@@ -56,6 +56,9 @@ import yaml
 
 class Base(object):
     """This Base class
+
+    Args:
+      is_status (bool): Is to print status message.
     """
     __conf = {
         'path': os.path.join(
@@ -99,9 +102,6 @@ class Base(object):
         """Get configuration
 
         This function open collect.cfg configuration file.
-
-        Returns:
-          str: Status message.
         """
         f_in = os.path.join(self.__conf['path'],
                             self.__conf['file'])
@@ -117,7 +117,9 @@ class Base(object):
                 self.__conf['data'][key] = conf[key]
                 self.stcode = 0
             except KeyError:
-                raise KeyError('"{k}" not found in "{f}".'.format(k=key, f=f_in))
+                raise KeyError(
+                    '"{k}" not found in "{f}".'.format(
+                        k=key, f=f_in))
 
         self.set_status(
             self.stcode,
@@ -126,7 +128,7 @@ class Base(object):
             ext='')
 
     def set_status(self, cod, fun, prt=False, ext=''):
-        """Status
+        """Set Status
 
         Returns:
           str: Status message.
@@ -231,10 +233,10 @@ def main():
 
     print('\n__location__\n=====')
     __location__ = os.path.join(
-            os.getcwd(),
-            os.path.dirname(
-                inspect.getfile(
-                    inspect.currentframe())))
+        os.getcwd(),
+        os.path.dirname(
+            inspect.getfile(
+                inspect.currentframe())))
     print(__location__)
     print('0.1', inspect.currentframe())
     print('0.2', inspect.getfile(
